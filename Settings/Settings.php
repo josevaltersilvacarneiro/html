@@ -11,11 +11,13 @@ define('__PORT__',	$_SERVER['REMOTE_USER']);	// the user's port
 define('__ACCESS__',	date(DATE_RSS, time()));	// date of access
 
 define('__URL__',
-	'http://' . $_SERVER['HTTP_HOST'] . '/');	// public url
+	'http://' . $_SERVER['HTTP_HOST'] . '/'
+);							// public url
+
 define('__ROOT__',
-	substr($_SERVER['DOCUMENT_ROOT'], -1) == '/' ?
+	substr($_SERVER['DOCUMENT_ROOT'], -1) == DIRECTORY_SEPARATOR ?
 	$_SERVER['DOCUMENT_ROOT'] :
-	$_SERVER['DOCUMENT_ROOT'] . '/'
+	$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR
 );							// file path that will run
 
 /*
