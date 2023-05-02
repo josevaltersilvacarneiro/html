@@ -23,6 +23,12 @@ define('__ROOT__',
 
 define('__FILE_TYPE__', 'html'); 			// file type that will be returned
 
+define('__CONTROLLER__',
+	'__ROOT__' . 'App'  .
+	DIRECTORY_SEPARATOR . 'Controller' .
+	DIRECTORY_SEPARATOR
+);
+
 /*
  * if you are going to use CDN, change the file path
  * for the file path in CDN
