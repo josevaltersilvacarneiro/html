@@ -20,6 +20,9 @@ define('__ROOT__',
 	$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR
 );							// file path that will run
 
+
+define('__FILE_TYPE__', 'html'); 			// file type that will be returned
+
 /*
  * if you are going to use CDN, change the file path
  * for the file path in CDN
