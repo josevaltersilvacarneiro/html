@@ -29,6 +29,11 @@ define('__CONTROLLER__',
 	DIRECTORY_SEPARATOR
 );
 
+define('__VIEW__',
+	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
+	'View' . DIRECTORY_SEPARATOR
+);
+
 /*
  * if you are going to use CDN, change the file path
  * for the file path in CDN
