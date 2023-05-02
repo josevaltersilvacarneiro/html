@@ -20,9 +20,6 @@ define('__ROOT__',
 	$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR
 );							// file path that will run
 
-
-define('__FILE_TYPE__', 'html'); 			// file type that will be returned
-
 define('__CONTROLLER__',
 	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
 	'Controller' 	 . DIRECTORY_SEPARATOR
