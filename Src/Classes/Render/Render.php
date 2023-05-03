@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * This package is responsible for rendering
+ * pages that are in __VIEW__.
+ *
+ * Copyright (C) 2023, José V S Carneiro
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @package	Src\Classes\Render
+ */
+
+namespace Src\Classes\Render;
+
+/**
+ * This class renders the page. However, it
+ * must be extended by the Controller.
+ *
+ * @var	string	$dir		directory in __VIEW__
+ * @var	string	$headerTitle	page title
+ * @var const	PATH		path to the directory where the Layout is
+ *
+ * @method	void	setDir(string $dir)	sets up the Controller directory
+ * @method	void	setTitle(string $title)	sets up the head title
+ * @method	string	getDir()		returns the Controller directory
+ * @method	string	getTitle()		returns the head title
+ * @method	void	renderLayout()		renders the main layout
+ * @method	void	addHeader()		renders the page header
+ * @method	void	addMain()		renders the page main
+ * @method	void	addFooter()		renders the page footer
+ *
+ * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version	0.1
+ * @abstract
+ * @see		App\Controller\Controller
+ * @copyright	Copyright (C) 2023, José V S Carneiro
+ * @license	GPLv3
+ */
+
+abstract class Render
+{
+	private string $dir;
+	private string $headerTitle;
+
+	private const PATH = __VIEW__;
+
+	protected function setDir(string $dir): void
+	{
+		$this->dir = $dir;
+	}
+
+	protected function setTitle(string $headerTitle): void
+	{
+		$this->headerTitle = $headerTitle;
+	}
+
+	protected function getDir(): string
+	{
+		return $this->dir;
+	}
+
+	protected function getTitle(): string
+	{
+		return $this->headerTitle;
+	}
+
+	/**
+	 * This function includes the file $filename
+	 * if it exists, it's a regular file and can
+	 * be read.
+	 *
+	 * @param	string	$filename path of the file to be included
+	 * @return	void
+	 *
+	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version	0.1
+	 * @access	private
+	 * @see		https://www.php.net/manual/en/function.is-file.php
+	 * @see		https://www.php.net/manual/en/function.is-readable.php
+	 */
+
+	private function import(string $filename): void
+	{
+		if (is_file($filename) && is_readable($filename))
+			require_once $filename;
+	}
+	
+	protected function renderLayout(): void
+	{
+		$this->import(self::PATH . 'Layout.php');
+	}
+
+	protected function addHeader(): void
+	{
+		$this->import(self::PATH . $this->getDir() . "Header-${__VERSION__}.php");
+	}
+
+	protected function addMain(): void
+	{
+		$this->import(self::PATH . $this->getDir() . "Main-${__VERSION__}.php");
+	}
+
+	protected function addFooter(): void
+	{
+		$this->import(self::PATH . $this->getDir() . "Footer-${__VERSION__}.php");
+	}
+}
