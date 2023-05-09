@@ -50,14 +50,14 @@ define('__ROOT__',
  * Controller	- interconnects inputs and outputs
  */
 
-define('__CONTROLLER__',
-	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
-	'Controller' 	 . DIRECTORY_SEPARATOR
-);
-
 define('__VIEW__',
 	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
 	'View' 		 . DIRECTORY_SEPARATOR
+);
+
+define('__CONTROLLER__',
+	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
+	'Controller' 	 . DIRECTORY_SEPARATOR
 );
 
 /*
