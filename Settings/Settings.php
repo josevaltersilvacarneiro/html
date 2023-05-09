@@ -42,6 +42,14 @@ define('__ROOT__',
 	$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR
 );							// file path that will run
 
+/*
+ * MVC
+ *
+ * Model	- business rules
+ * View		- the model's data is displayed
+ * Controller	- interconnects inputs and outputs
+ */
+
 define('__CONTROLLER__',
 	__ROOT__ . 'App' . DIRECTORY_SEPARATOR .
 	'Controller' 	 . DIRECTORY_SEPARATOR
