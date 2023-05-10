@@ -49,7 +49,7 @@ trait TraitUrlParser
 	protected function getUrl(): array
 	{
 		return explode(
-			'/',
+			DIRECTORY_SEPARATOR,
 			rtrim($_GET['url']),
 			FILTER_SANITIZE_URL
 		);
