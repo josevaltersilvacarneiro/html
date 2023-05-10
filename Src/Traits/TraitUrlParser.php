@@ -48,6 +48,10 @@ trait TraitUrlParser
 
 	protected function getUrl(): array
 	{
-		return explode('/', rtrim($_GET['url']), FILTER_SANITIZE_URL);
+		return explode(
+			'/',
+			rtrim($_GET['url']),
+			FILTER_SANITIZE_URL
+		);
 	}
 }
