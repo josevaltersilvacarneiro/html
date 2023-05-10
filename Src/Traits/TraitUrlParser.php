@@ -24,6 +24,18 @@
 
 namespace Src\Traits;
 
+/**
+ * This trait offers functions that parses
+ * the url.
+ *
+ * @method	array getUrl() returns a array with each string between DIRECTORY_SEPARATOR
+ *
+ * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version	0.1
+ * @copyright	Copyright (C) 2023, José V S Carneiro
+ * @license	GPLv3
+ */
+
 trait TraitUrlParser
 {
 	/**
