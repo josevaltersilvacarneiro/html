@@ -27,7 +27,9 @@ namespace Src\Traits;
 trait TraitUrlParser
 {
 	/**
-	 * This method returns a array containing the url arguments.
+	 * This method returns a array containing
+	 * the url arguments.
+	 * 
 	 * For example:
 	 *
 	 * http://test.com/foo/bar => array {
@@ -35,7 +37,13 @@ trait TraitUrlParser
 	 * 	[1] => string(3) "bar",
 	 * }
 	 *
-	 * @return array
+	 * @return	array
+	 *
+	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version	0.1
+	 * @access	protected
+	 * @see		https://www.php.net/manual/en/function.rtrim.php
+	 * @see		https://www.php.net/manual/en/function.explode.php
 	 */
 
 	protected function getUrl(): array
