@@ -52,16 +52,25 @@ trait TraitUrlParser
 	 * @return	array
 	 *
 	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.1
+	 * @version	0.1.1
 	 * @access	protected
-	 * @see		https://www.php.net/manual/en/function.rtrim.php
-	 * @see		https://www.php.net/manual/en/function.explode.php
+	 * @see		https://datatracker.ietf.org/doc/html/rfc1738
+	 * @see		https://datatracker.ietf.org/doc/html/rfc1630
+	 * @see		https://www.ibm.com/docs/en/cics-ts/5.2?topic=concepts-components-url
 	 */
 
 	protected function getUrl(): array
 	{
+		/**
+		 * @see	.htaccess in \
+		 * @see	https://www.php.net/manual/en/reserved.variables.get.php
+		 * @see	https://www.php.net/manual/en/function.rtrim.php
+		 * @see	https://www.php.net/manual/en/function.explode.php
+		 */
+
 		return explode(
-			DIRECTORY_SEPARATOR,
+			'/',	# RFCs 1630, 1738 - [...] The slash ("/", ASCII 2F hex)
+				# character is reserved for the delimiting [...]
 			rtrim($_GET['url']),
 			FILTER_SANITIZE_URL
 		);
