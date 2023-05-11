@@ -25,7 +25,7 @@
 namespace Src\Classes\Render;
 
 use Src\Classes\Render\RenderInterface;
-use Src\Traits\TraitImport;
+use Src\Traits\{TraitProperty, TraitImport};
 
 /**
  * This class contains methods that render the web
@@ -33,6 +33,8 @@ use Src\Traits\TraitImport;
  * renderer of the specific page type.
  *
  * @var 	string  $dir            	directory in __VIEW__
+ *
+ * @property-read string $dir
  *
  * @method      void    setDir(string $dir)     sets up the Controller directory
  * @method      string  getDir()                returns the Controller directory
@@ -47,6 +49,7 @@ use Src\Traits\TraitImport;
 
 abstract class Render implements RenderInterface
 {
+	use TraitProperty;
 	use TraitImport;
 
 	private string $dir;
