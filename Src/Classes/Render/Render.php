@@ -22,10 +22,10 @@
  * @package     Src\Classes\Render
  */
 
-namespace Src\Classes\Render;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
-use Src\Classes\Render\RenderInterface;
-use Src\Traits\{TraitProperty, TraitImport};
+use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
+use Josevaltersilvacarneiro\Html\Src\Traits\{TraitProperty, TraitImport};
 
 /**
  * This class contains methods that render the web

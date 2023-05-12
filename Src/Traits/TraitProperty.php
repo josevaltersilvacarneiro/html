@@ -22,7 +22,7 @@
  * @package     Src\Traits
  */
 
-namespace Src\Traits;
+namespace Josevaltersilvacarneiro\Html\Src\Traits;
 
 /**
  * This trait offers functions that handle

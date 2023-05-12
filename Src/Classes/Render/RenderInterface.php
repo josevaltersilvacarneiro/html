@@ -22,7 +22,7 @@
  * @package     Src\Classes\Render
  */
 
-namespace Src\Classes\Render;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
 interface RenderInterface
 {

@@ -22,9 +22,9 @@
  * @package	Src\Classes\Routes
  */
 
-namespace Src\Classes\Routes;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Routes;
 
-use Src\Traits\TraitUrlParser;
+use Josevaltersilvacarneiro\Html\Src\Traits\TraitUrlParser;
 use \DirectoryIterator;
 
 /**

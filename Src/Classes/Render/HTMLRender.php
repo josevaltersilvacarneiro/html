@@ -22,9 +22,9 @@
  * @package	Src\Classes\Render
  */
 
-namespace Src\Classes\Render;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
-use Src\Classes\Render\Render;
+use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
 
 /**
  * This class is specific to render HTML pages.
