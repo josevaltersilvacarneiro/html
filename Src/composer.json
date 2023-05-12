@@ -1,0 +1,19 @@
+{
+    "name": "josevaltersilvacarneiro/html",
+    "description": "Structure of a php web project using MVC and Solid",
+    "type": "project",
+    "license": "GPLv3",
+    "autoload": {
+        "psr-4": {
+            "Josevaltersilvacarneiro\\Html\\": "../",
+            "Josevaltersilvacarneiro\\Html\\": "../"
+        }
+    },
+    "authors": [
+        {
+            "name": "José Valter Silva Carneiro",
+            "email": "git@josevaltersilvacarneiro.net"
+        }
+    ],
+    "require": {}
+}
