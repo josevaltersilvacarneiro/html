@@ -28,10 +28,10 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * This trait offers functions that handles
  * the required files.
  *
- * @method	void import(string $filename) includes the file passed as argument
+ * @method	bool import(string $filename) includes the file passed as argument
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.1
+ * @version	0.2
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license	GPLv3
  */
@@ -40,22 +40,27 @@ trait TraitImport
 {
 	/**
          * This function includes the file $filename
-         * if it exists, it's a regular file and can
-         * be read.
+	 * and returns true if it exists, it's a re-
+	 * gular file and can be read; otherwise re-
+	 * turns false.
          *
          * @param       string  $filename path of the file to be included
-         * @return      void
+         * @return      bool
          *
          * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
-         * @version     0.1.1
+         * @version     0.2
          * @access      protected
          * @see         https://www.php.net/manual/en/function.is-file.php
          * @see         https://www.php.net/manual/en/function.is-readable.php
          */
 
-	protected function import(string $filename): void
+	protected function import(string $filename): bool
         {
-                if (is_file($filename) && is_readable($filename))
-                        require_once $filename;
+                if (is_file($filename) && is_readable($filename)) {
+			require_once $filename;
+			return true;
+		}
+
+		return false;
         }
 }
