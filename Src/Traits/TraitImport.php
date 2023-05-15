@@ -28,6 +28,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * This trait offers functions that handles
  * the required files.
  *
+ * @method	bool fexists(string $filename)					returns true if file exists
  * @method	bool import(string $filename) 					includes the file
  * @method	void importPage(string $path, string $dir, string $filename)	tries to include a file
  *
@@ -61,9 +62,8 @@ trait TraitImport
 
 	/**
          * This function includes the file $filename
-	 * and returns true if it exists, it's a re-
-	 * gular file and can be read; otherwise re-
-	 * turns false.
+	 * and returns true if it was successful;
+	 * otherwise returns false.
          *
          * @param       string  $filename path of the file to be included
          * @return      bool
