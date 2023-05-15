@@ -2,4 +2,4 @@ RewriteEngine	on
 RewriteCond	%{REQUEST_FILENAME}	!-f
 RewriteRule	^(.*)$ /Public/index.php?url=$1 [QSA,L]
 
-php_value memory_limit 256
+php_value memory_limit 256M
