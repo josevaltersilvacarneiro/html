@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package	Src\Classes\Render
+ * @package	Josevaltersilvacarneiro\Html\Src\Classes\Render
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
@@ -47,7 +47,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
  * @version	0.2
  * @abstract
- * @see		App\Controller\HTMLController
+ * @see		Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license	GPLv3
  */
