@@ -40,6 +40,26 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
 trait TraitImport
 {
 	/**
+	 * This function returns true if the file $filename
+	 * exists, it's a regular file and can be read;
+	 * otherwise returns false.
+	 *
+	 * @param	string	$filename file path
+	 * @return	bool
+	 *
+	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version	0.3
+	 * @access	private
+	 * @see		https://www.php.net/manual/en/function.is-file.php
+	 * @see		https://www.php.net/manual/en/function.is-readable.php
+	 */
+
+	private function fexists(string $filename): bool
+	{
+		return is_file($filename) && is_readable($filename);
+	}
+
+	/**
          * This function includes the file $filename
 	 * and returns true if it exists, it's a re-
 	 * gular file and can be read; otherwise re-
@@ -49,15 +69,13 @@ trait TraitImport
          * @return      bool
          *
          * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
-         * @version     0.3
+         * @version     0.3.1
          * @access      protected
-         * @see         https://www.php.net/manual/en/function.is-file.php
-         * @see         https://www.php.net/manual/en/function.is-readable.php
          */
 
 	protected function import(string $filename): bool
         {
-                if (is_file($filename) && is_readable($filename)) {
+                if ($this->fexists($filename)) {
 			require_once $filename;
 			return true;
 		}
