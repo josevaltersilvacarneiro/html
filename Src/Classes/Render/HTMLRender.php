@@ -36,16 +36,18 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @method	void	setTitle(string $title)				sets up the head title
  * @method	void	setDescription(string $headerDescription)	sets up the head title
  * @method	void	setKeywords(string $keywords)			sets up the head keywords
+ * @method	void	setRobots(string $robots)			sets up the head robots
  * @method	string	getTitle()					returns the head title
  * @method	string	getDescription()				returns the head description
  * @method	string	getKeywords()					returns the head keywords
+ * @method	string	getRobots()					returns the head robots
  *
  * @method	void	addHeader()					renders the page header
  * @method	void	addMain()					renders the page main
  * @method	void	addFooter()					renders the page footer
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.2
+ * @version	0.3
  * @abstract
  * @see		Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -57,6 +59,7 @@ abstract class HTMLRender extends Render
 	private string $headerTitle;
 	private string $headerDescription;
 	private string $keywords;
+	private string $robots = "index";
 
 	protected function setTitle(string $headerTitle): void
 	{
@@ -73,6 +76,11 @@ abstract class HTMLRender extends Render
 		$this->keywords = $keywords;
 	}
 
+	protected function setRobots(string $robots): void
+	{
+		$this->robots = $robots;
+	}
+
 	protected function getTitle(): string
 	{
 		return $this->headerTitle;
@@ -86,6 +94,11 @@ abstract class HTMLRender extends Render
 	protected function getKeywords(): string
 	{
 		return $this->keywords;
+	}
+
+	protected function getRobots(): string
+	{
+		return $this->robots;
 	}
 
 	protected function addHeader(): void
