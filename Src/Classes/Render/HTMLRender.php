@@ -30,15 +30,22 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * This class is specific to render HTML pages.
  *
  * @var		string	$headerTitle		page title
+ * @var		string	$headerDescription	page description
+ * @var		string	$keywords		page keywords
  *
- * @method	void	setTitle(string $title)	sets up the head title
- * @method	string	getTitle()		returns the head title
- * @method	void	addHeader()		renders the page header
- * @method	void	addMain()		renders the page main
- * @method	void	addFooter()		renders the page footer
+ * @method	void	setTitle(string $title)				sets up the head title
+ * @method	void	setDescription(string $headerDescription)	sets up the head title
+ * @method	void	setKeywords(string $keywords)			sets up the head keywords
+ * @method	string	getTitle()					returns the head title
+ * @method	string	getDescription()				returns the head description
+ * @method	string	getKeywords()					returns the head keywords
+ *
+ * @method	void	addHeader()					renders the page header
+ * @method	void	addMain()					renders the page main
+ * @method	void	addFooter()					renders the page footer
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.1
+ * @version	0.2
  * @abstract
  * @see		App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -48,15 +55,37 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
 abstract class HTMLRender extends Render
 {
 	private string $headerTitle;
+	private string $headerDescription;
+	private string $keywords;
 
 	protected function setTitle(string $headerTitle): void
 	{
 		$this->headerTitle = $headerTitle;
 	}
 
+	protected function setDescription(string $headerDescription): void
+	{
+		$this->headerDescription = $headerDescription;
+	}
+
+	protected function setKeywords(string $keywords): void
+	{
+		$this->keywords = $keywords;
+	}
+
 	protected function getTitle(): string
 	{
 		return $this->headerTitle;
+	}
+
+	protected function getDescription(): string
+	{
+		return $this->headerDescription;
+	}
+
+	protected function getKeywords(): string
+	{
+		return $this->keywords;
 	}
 
 	protected function addHeader(): void
