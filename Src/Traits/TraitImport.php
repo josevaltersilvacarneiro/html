@@ -49,13 +49,13 @@ trait TraitImport
 	 * @return	bool
 	 *
 	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.3
-	 * @access	private
+	 * @version	0.3.1
+	 * @access	protected
 	 * @see		https://www.php.net/manual/en/function.is-file.php
 	 * @see		https://www.php.net/manual/en/function.is-readable.php
 	 */
 
-	private function fexists(string $filename): bool
+	protected function fexists(string $filename): bool
 	{
 		return is_file($filename) && is_readable($filename);
 	}
