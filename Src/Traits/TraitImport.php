@@ -28,10 +28,11 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * This trait offers functions that handles
  * the required files.
  *
- * @method	bool import(string $filename) includes the file passed as argument
+ * @method	bool import(string $filename) 					includes the file
+ * @method	void importPage(string $path, string $dir, string $filename)	tries to include a file
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.2
+ * @version	0.3
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license	GPLv3
  */
@@ -48,7 +49,7 @@ trait TraitImport
          * @return      bool
          *
          * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
-         * @version     0.2
+         * @version     0.3
          * @access      protected
          * @see         https://www.php.net/manual/en/function.is-file.php
          * @see         https://www.php.net/manual/en/function.is-readable.php
@@ -62,5 +63,26 @@ trait TraitImport
 		}
 
 		return false;
+	}
+
+	/**
+	 * This function tries to include a file
+	 * according to the $path and $dir pas-
+	 * sed as arguments.
+	 *
+	 * @param	string	$path	main path
+	 * @param	string	$dir	specific path
+	 * @param	string	$filename
+	 * @return	void
+	 *
+	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version	0.3
+	 * @access	protected
+	 */
+
+	protected function importPage(string $path, string $dir, string $filename): void
+        {
+		if (!$this->import($path . $dir . $filename))
+			$this->import($path . $filename);
         }
 }
