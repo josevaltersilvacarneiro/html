@@ -27,7 +27,6 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 interface RenderInterface
 {
 	public const PATH 	= __VIEW__;
-	public const CSS_PATH	= __CSS__;
 
 	public function setDir(string $dir): void;
 	public function getDir(): string;
