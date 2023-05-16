@@ -103,16 +103,16 @@ abstract class HTMLRender extends Render
 
 	protected function addHeader(): void
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Header-${__VERSION__}.php");
+		$this->importPage(self::PATH, $this->getDir(), "Header-" . __VERSION__ . ".php");
 	}
 
 	protected function addMain(): void
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Main-${__VERSION__}.php");
+		$this->importPage(self::PATH, $this->getDir(), "Main-"   . __VERSION__ . ".php");
 	}
 
 	protected function addFooter(): void
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Footer-${__VERSION__}.php");
+		$this->importPage(self::PATH, $this->getDir(), "Footer-" . __VERSION__ . ".php");
 	}
 }
