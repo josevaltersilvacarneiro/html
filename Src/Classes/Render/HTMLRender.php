@@ -61,6 +61,9 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
 
 abstract class HTMLRender extends Render
 {
+	private const CSS_PATH = __ROOT__ . 'Public' . DIRECTORY_SEPARATOR .
+		'Css' . DIRECTORY_SEPARATOR;
+
 	private string $headerTitle;
 	private string $headerDescription;
 	private string $keywords;
@@ -114,19 +117,17 @@ abstract class HTMLRender extends Render
 	 * @param	string	$element	html element [Header|Main|Footer]
 	 *
 	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.4
+	 * @version	0.4.1
 	 * @access	private
 	 */
 	
 	private function getCSS(string $element): string
         {
-                $filename       = self::CSS_PATH . $this->getDir() .
-                        $element . "-" . __VERSION__ . ".css";
+                $filename       = $this->getDir() . $element . "-" . __VERSION__ . ".css";
                 
-                $otherFilename  = self::CSS_PATH .
-                        $element . "-" . __VERSION__ . ".css";
-                
-                return $this->fexists($filename) ? $filename : $otherFilename;
+                $otherFilename  = __CSS__ . $element . "-" . __VERSION__ . ".css";
+
+                return $this->fexists(self::CSS_PATH . $filename) ? __CSS__ . $filename : $otherFilename;
         }
 
         protected function getCSSHeader(): string
