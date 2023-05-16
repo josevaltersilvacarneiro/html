@@ -56,7 +56,7 @@ abstract class Render implements RenderInterface
 
 	public function setDir(string $dir): void
         {
-                $this->dir = $dir;
+                $this->dir = $dir . DIRECTORY_SEPARATOR;
         }
 
 	public function getDir(): string
