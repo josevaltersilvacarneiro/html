@@ -38,10 +38,9 @@ use Josevaltersilvacarneiro\Html\Src\Traits\{TraitProperty, TraitImport};
  *
  * @method      void    setDir(string $dir)     sets up the Controller directory
  * @method      string  getDir()                returns the Controller directory
- * @method      void    renderLayout()          renders the main layout
  *
  * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version     0.2
+ * @version     0.3
  * @abstract
  * @copyright   Copyright (C) 2023, José V S Carneiro
  * @license     GPLv3
@@ -63,9 +62,4 @@ abstract class Render implements RenderInterface
         {
                 return $this->dir;
 	}
-
-	public function renderLayout(): void   
-        {
-                $this->import(self::PATH . 'Layout.php');
-        }
 }

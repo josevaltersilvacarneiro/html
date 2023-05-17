@@ -46,9 +46,10 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @method	void	addHeader()					renders the page header
  * @method	void	addMain()					renders the page main
  * @method	void	addFooter()					renders the page footer
+ * @method      void    renderLayout()          			renders the layout
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.5
+ * @version	0.6
  * @abstract
  * @see		Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -116,4 +117,9 @@ abstract class HTMLRender extends Render
 	{
 		$this->importPage(self::PATH, $this->getDir(), "Footer-" . __VERSION__ . ".php");
 	}
+
+	public function renderLayout(): void   
+        {
+                $this->import(self::PATH . 'HTMLLayout.php');
+        }
 }
