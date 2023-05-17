@@ -42,17 +42,12 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @method	string	getKeywords()					returns the head keywords
  * @method	string	getRobots()					returns the head robots
  *
- * @method	string getCSS(string $element)				ret.s the css file according to the html element
- * @method	string getCSSHeader()					ret.s the css file for the element header
- * @method	string getCSSMain()					ret.s the css file for the element main
- * @method	string getCSSFooter()					ret.s the css file for the element footer
- *
  * @method	void	addHeader()					renders the page header
  * @method	void	addMain()					renders the page main
  * @method	void	addFooter()					renders the page footer
  *
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.4
+ * @version	0.5
  * @abstract
  * @see		Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -61,9 +56,6 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
 
 abstract class HTMLRender extends Render
 {
-	private const CSS_PATH = __ROOT__ . 'Public' . DIRECTORY_SEPARATOR .
-		'Css' . DIRECTORY_SEPARATOR;
-
 	private string $headerTitle;
 	private string $headerDescription;
 	private string $keywords;
@@ -107,42 +99,6 @@ abstract class HTMLRender extends Render
 	protected function getRobots(): string
 	{
 		return $this->robots;
-	}
-
-	/**
-	 * This function returns the full path to the
-	 * css file according to the html $element
-	 * passed as parameter.
-	 *
-	 * @param	string	$element	html element [Header|Main|Footer]
-	 *
-	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.4.1
-	 * @access	private
-	 */
-	
-	private function getCSS(string $element): string
-        {
-                $filename       = $this->getDir() . $element . "-" . __VERSION__ . ".css";
-                
-                $otherFilename  = __CSS__ . $element . "-" . __VERSION__ . ".css";
-
-                return $this->fexists(self::CSS_PATH . $filename) ? __CSS__ . $filename : $otherFilename;
-        }
-
-        protected function getCSSHeader(): string
-        {
-                return $this->getCSS("Header");
-        }
-         
-        protected function getCSSMain(): string
-        {
-                return $this->getCSS("Main");
-        }
-
-        protected function getCSSFooter(): string
-        {
-		return $this->getCSS("Footer");
 	}
 
 	protected function addHeader(): void
