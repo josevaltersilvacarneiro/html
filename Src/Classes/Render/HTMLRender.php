@@ -32,6 +32,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @var		string	$headerTitle		page title
  * @var		string	$headerDescription	page description
  * @var		string	$keywords		page keywords
+ * @var		string	$robots			page robots [ All, Index, Follow, NoIndex, NoFollow, None, NoArchive [
  *
  * @method	void	setTitle(string $title)				sets up the head title
  * @method	void	setDescription(string $headerDescription)	sets up the head title
@@ -59,7 +60,7 @@ abstract class HTMLRender extends Render
 	private string $headerTitle;
 	private string $headerDescription;
 	private string $keywords;
-	private string $robots = "index";
+	private string $robots = "Index";
 
 	protected function setTitle(string $headerTitle): void
 	{
