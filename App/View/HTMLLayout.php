@@ -22,10 +22,6 @@
  * @package     Josevaltersilvacarneiro\Html\App\View
  */
 
-?>
-
-<?php 
-
 /**
  * DOCUMENTATION
  * 
