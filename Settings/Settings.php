@@ -65,6 +65,14 @@ define('__CONTROLLER__',
  * for the file path in CDN
  */
 
-define('__IMG__',	__URL__ . 'Public/Images/');	// image files
-define('__CSS__',	__URL__ . 'Public/Css/');	// css files
-define('__JS__',	__URL__ . 'Public/JavaScript');	// js files
+define('__IMG__',
+	__URL__ . 'Public' . DIRECTORY_SEPARATOR .
+	'Images' . DIRECTORY_SEPARATOR);	// image files
+
+define('__CSS__',
+	__URL__ . 'Public' . DIRECTORY_SEPARATOR .
+	'Css' . DIRECTORY_SEPARATOR);		// css files
+
+define('__JS__',
+	__URL__ . 'Public' . DIRECTORY_SEPARATOR .
+	'JavaScript' . DIRECTORY_SEPARATOR);	// js files
