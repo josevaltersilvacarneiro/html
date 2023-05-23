@@ -44,7 +44,7 @@ header('Content-Type: text/html;charset=UTF-8');
  * to find out which.
  *
  * @author	José V S Carneiro
- * @version	0.1
+ * @version	0.2
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license	GPLv3
  */
@@ -80,4 +80,20 @@ header('Content-Type: text/html;charset=UTF-8');
 		<?php $this->addMain() ?>
 		<?php $this->addFooter() ?>
 	</body>
+	<script type="module">
+
+		/**
+			* This calls the dispatcher, that will
+			* run the appropriate controller.
+		 */
+
+		import { Dispatch }
+			from "<?=__JS__ . 'App' . DIRECTORY_SEPARATOR . 'Dispatch.js'?>";
+		
+		let page = "<?=$this->dir?>".slice(0, -1).toLowerCase();	/* removes the slash and
+											puts all characters
+											in lower case	*/
+
+		let dispatch = new Dispatch(page);
+	</script>
 </html>
