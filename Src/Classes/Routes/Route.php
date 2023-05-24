@@ -24,7 +24,7 @@
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Routes;
 
-use Josevaltersilvacarneiro\Html\Src\Traits\TraitUrlParser;
+use Josevaltersilvacarneiro\Html\Src\Traits\{TraitProperty, TraitUrlParser};
 use \DirectoryIterator;
 
 /**
@@ -47,6 +47,7 @@ use \DirectoryIterator;
 
 abstract class Route
 {
+	use TraitProperty;
 	use TraitUrlParser;
 
 	private const DEFAULT_ROUTE 	= 'Home';
