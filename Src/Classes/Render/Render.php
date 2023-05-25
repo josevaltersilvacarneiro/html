@@ -32,9 +32,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\{TraitProperty, TraitImport};
  * pages. However, it must be extended by the                                    
  * renderer of the specific page type.
  *
- * @var 	string  $dir            	directory in __VIEW__
- *
- * @property-read string $dir
+ * @var 		string  $dir            		directory in __VIEW__
  *
  * @method      void    setDir(string $dir)     sets up the Controller directory
  * @method      string  getDir()                returns the Controller directory
@@ -54,12 +52,12 @@ abstract class Render implements RenderInterface
 	private string $dir;
 
 	public function setDir(string $dir): void
-        {
-                $this->dir = $dir . DIRECTORY_SEPARATOR;
-        }
+	{
+		$this->dir = $dir . DIRECTORY_SEPARATOR;
+	}
 
 	public function getDir(): string
-        {
-                return $this->dir;
+    {
+        return $this->dir;
 	}
 }
