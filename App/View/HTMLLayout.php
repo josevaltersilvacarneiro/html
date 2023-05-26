@@ -68,6 +68,12 @@ header('Content-Type: text/html;charset=UTF-8');
 		<meta name=robots content="<?=$this->robots?>">
 		
 		<base href="<?=__URL__?>">
+
+		<!-- google web fonts -->
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
 		
 		<link rel=stylesheet href="<?=__CSS__ . 'Reset.css'?>">
 		<link rel=stylesheet
