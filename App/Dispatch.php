@@ -25,14 +25,14 @@
 namespace Josevaltersilvacarneiro\Html\App;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
-use Josevaltersilvacarneiro\Html\App\Controller\{HTMLController, JSONController};
+use Josevaltersilvacarneiro\Html\App\Controller\{HTMLController, APIController};
 
 /**
  * This class creates the controller object,
  * calls the method and passes the parameters
  * appropriately.
  *
- * @var		HTMLController|JSONController	$obj			the object - for example, Home
+ * @var		HTMLController|APIController	$obj			the object - for example, Home
  * @var		string							$method			a method that belongs to $obj
  * @var		string							$parameters		parameters invoked in the url
  *
@@ -49,11 +49,11 @@ use Josevaltersilvacarneiro\Html\App\Controller\{HTMLController, JSONController}
 
 class Dispatch extends Route
 {
-	private HTMLController|JSONController	$obj;
+	private HTMLController|APIController	$obj;
 	private string							$method;
 	private array							$parameters;
 
-	function __construct()
+	public function __construct()
 	{
 		self::addController();
 		self::addParameters();
