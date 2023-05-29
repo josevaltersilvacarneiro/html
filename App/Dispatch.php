@@ -32,26 +32,26 @@ use Josevaltersilvacarneiro\Html\App\Controller\{HTMLController, APIController};
  * calls the method and passes the parameters
  * appropriately.
  *
- * @var		HTMLController|APIController	$obj			the object - for example, Home
- * @var		string							$method			a method that belongs to $obj
- * @var		string							$parameters		parameters invoked in the url
+ * @var HTMLController|APIController $obj the object - for example, Home
+ * @var string $method a method that belongs to $obj
+ * @var string $parameters parameters invoked in the url
  *
- * @method	void							addController()	sets up the controller object
- * @method	void							addMethod()		sets up a method in $obj
- * @method	void							addParameters()	sets up the params in $method
+ * @method void addController() sets up the controller object
+ * @method void addMethod() sets up a method in $obj
+ * @method void addParameters() sets up the params in $method
  *
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
- * @see			Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version 0.1
+ * @see Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
+ * @copyright Copyright (C) 2023, José V S Carneiro
+ * @license GPLv3
  */
 
 class Dispatch extends Route
 {
-	private HTMLController|APIController	$obj;
-	private string							$method;
-	private array							$parameters;
+	private HTMLController|APIController $obj;
+	private string $method;
+	private array $parameters;
 
 	public function __construct()
 	{
@@ -85,12 +85,12 @@ class Dispatch extends Route
 	 * to the service that the user requested. The route
 	 * property returns this service.
 	 * 
-	 * @return	void
+	 * @return void
 	 * 
-	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.1
-	 * @access	private
-	 * @see		https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
+	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version 0.1
+	 * @access private
+	 * @see https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
 	 */
 
 	private function addController(): void
@@ -107,14 +107,14 @@ class Dispatch extends Route
 	 * $this->obj and calls it if true; otherwise
 	 * just returns.
 	 * 
-	 * @return	void
+	 * @return void
 	 * 
-	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version 0.1
-	 * @access	private
-	 * @see 	https://www.php.net/manual/en/function.isset.php
-	 * @see 	https://www.php.net/manual/en/function.method-exists.php
-	 * @see		https://www.php.net/manual/en/function.call-user-func-array.php
+	 * @access private
+	 * @see https://www.php.net/manual/en/function.isset.php
+	 * @see https://www.php.net/manual/en/function.method-exists.php
+	 * @see https://www.php.net/manual/en/function.call-user-func-array.php
 	 */
 
 	private function addMethod(): void
@@ -141,13 +141,13 @@ class Dispatch extends Route
 	 * were passed in url and sets them if true;
 	 * otherwise, just returns.
 	 * 
-	 * @return	void
+	 * @return void
 	 * 
-	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.1
-	 * @access	private
-	 * @see 	https://www.php.net/manual/en/function.count.php
-	 * @see		https://www.php.net/manual/en/function.array-slice.php
+	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version 0.1
+	 * @access private
+	 * @see https://www.php.net/manual/en/function.count.php
+	 * @see https://www.php.net/manual/en/function.array-slice.php
 	 */
 
 	private function addParameters(): void
