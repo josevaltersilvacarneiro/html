@@ -58,6 +58,9 @@ class Dispatch extends Route
 		self::addController();
 		self::addParameters();
 		self::addMethod();
+
+		if (method_exists($this->obj, 'renderLayout'))
+			$this->obj->renderLayout();
 	}
 
 	public function setMethod(string $method): void
@@ -118,7 +121,7 @@ class Dispatch extends Route
 	 */
 
 	private function addMethod(): void
-	{
+	{		
 		if (
 			!isset($this->url[1]) || 
 			!method_exists($this->obj, $this->url[1])
@@ -130,7 +133,7 @@ class Dispatch extends Route
 		call_user_func_array(
 			[
 				$this->obj,
-				$this->getMethod(),
+				$this->getMethod()
 			],
 			$this->getParameters()
 		);
