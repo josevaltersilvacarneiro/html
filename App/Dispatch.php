@@ -51,7 +51,7 @@ class Dispatch extends Route
 {
 	private HTMLController|APIController $obj;
 	private string $method;
-	private array $parameters;
+	private array $parameters = array();
 
 	public function __construct()
 	{
@@ -129,7 +129,7 @@ class Dispatch extends Route
 			return ; /* if the method doesn't exist, return */
 		
 		$this->setMethod($this->url[1]);
-
+		
 		call_user_func_array(
 			[
 				$this->obj,
