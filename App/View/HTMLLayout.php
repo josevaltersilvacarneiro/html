@@ -66,6 +66,7 @@ header('Content-Type: text/html;charset=UTF-8');
 		<meta name=rating content="14 years">
 		<meta http-equiv=cache-control name=no-cache>
 		<meta name=robots content="<?=$this->robots?>">
+		<meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1">
 		
 		<base href="<?=__URL__?>">
 
