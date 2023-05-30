@@ -28,7 +28,7 @@ define('__VERSION__',	'v1');				// current code version
 define('__AUTHOR__',	'José V S Carneiro');		// who wrote this code
 
 define('__IP__',	$_SERVER['REMOTE_ADDR']);	// the user's IP address
-define('__PORT__',	$_SERVER['REMOTE_USER']);	// the user's port
+define('__PORT__',	$_SERVER['REMOTE_PORT']);	// the user's port
 
 define('__ACCESS__',	date(DATE_RSS, time()));	// date of access
 
