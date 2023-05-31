@@ -19,10 +19,10 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\App\Model\Dao
+ * @package     Josevaltersilvacarneiro\Html\Src\Classes\Sql
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Model\Dao;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
 
 require_once '_DSN.php';
 
