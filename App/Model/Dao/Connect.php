@@ -38,7 +38,7 @@ use \PDOException;
  * @method void connectDB() sets up the database connection
  * 
  * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version 0.1
+ * @version 0.2
  * @abstract
  * @see https://www.php.net/manual/en/book.pdo.php
  * @copyright Copyright (C) 2023, José V S Carneiro
@@ -53,6 +53,7 @@ abstract class Connect
 	{
 		try {
 			$this->conn = new PDO(_DSN, _USER, _PASS);
+			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			return false;
 		}
