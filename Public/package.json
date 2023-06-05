@@ -1,0 +1,12 @@
+{
+	"name": "@josevaltersilvacarneiro/html/Public/JavaScript/App",
+	"description": "Dynamic pages without request",
+	"keywords": ["MVC", "Solid", "Git"],
+	"author": "José V S Carneiro",
+	"license": "GPLv3",
+
+	"scripts": {
+		"compile": "tsc",
+		"watch": "tsc -w"
+	}
+}
