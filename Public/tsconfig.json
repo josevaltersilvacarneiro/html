@@ -3,7 +3,8 @@
         "outDir": "JavaScript",
         "target": "ESNext",
         "noEmitOnError": true,
-	"noImplicitAny": true
+	"noImplicitAny": true,
+	"strict": true
     },
     "include": ["TypeScript/**/*"]
 }
