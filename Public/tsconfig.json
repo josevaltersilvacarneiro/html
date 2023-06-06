@@ -2,7 +2,8 @@
     "compilerOptions": {
         "outDir": "JavaScript",
         "target": "ESNext",
-        "noEmitOnError": true
+        "noEmitOnError": true,
+	"noImplicitAny": true
     },
     "include": ["TypeScript/**/*"]
 }
