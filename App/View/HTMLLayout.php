@@ -29,11 +29,11 @@ header('Content-Type: text/html;charset=UTF-8');
  * 
  * What is available for use and can be used:
  *
- * $this->title		- gets the page title
+ * $this->title			- gets the page title
  * $this->description	- gets the page description, i.e. a brief overview
- * $this->keywords	- gets the page keywords
- * $this->robots	- gets the page robots, i.e. the indexing level for the page
- * $this->dir		- gets the page directory, i.e. the dir according to the served page (for example, Login/)
+ * $this->keywords		- gets the page keywords
+ * $this->robots		- gets the page robots, i.e. the indexing level for the page
+ * $this->dir			- gets the page directory, i.e. the dir according to the served page (for example, Login/)
  *
  * $this->addHeader()	- adds the page header
  * $this->addMain()	- adds the main page content
@@ -43,10 +43,10 @@ header('Content-Type: text/html;charset=UTF-8');
  * @see Josevaltersilvacarneiro\Html\Settings\Settings
  * to find out which.
  *
- * @author	José V S Carneiro
- * @version	0.2
+ * @author		José V S Carneiro
+ * @version		0.3
  * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license	GPLv3
+ * @license		GPLv3
  */
 
 ?>
@@ -87,20 +87,5 @@ header('Content-Type: text/html;charset=UTF-8');
 		<?php $this->addMain() ?>
 		<?php $this->addFooter() ?>
 	</body>
-	<script type="module">
-
-		/**
-			* This calls the dispatcher, that will
-			* run the appropriate controller.
-		 */
-
-		import { Dispatch }
-			from "<?=__JS__ . 'App' . DIRECTORY_SEPARATOR . 'Dispatch.js'?>";
-		
-		let page = "<?=$this->dir?>".slice(0, -1).toLowerCase();	/* removes the slash and
-											puts all characters
-											in lower case	*/
-
-		let dispatch = new Dispatch(page);
-	</script>
+	<script type="module" src="<?=__JS__ . 'Public/app.js'?>"></script>
 </html>
