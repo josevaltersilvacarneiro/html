@@ -22,7 +22,29 @@
  * @module github.com/josevaltersilvacarneiro/html/Public/TypeScript/Src/Useful
  */
 
-export { isEmailValid, isPasswordValid };
+export { isNameValid, isEmailValid, isPasswordValid };
+
+/**
+ * @func        isEmailValid    returns true if the name passed as parameter is valid; otherwise returns false
+ * 
+ * @param       {string}        name   @example  José
+ * 
+ * @returns     {boolean}
+ *
+ * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version     0.1
+ * @access      public
+ * @see         {@link https://www.w3schools.com/jsref/jsref_regexp_test.asp} to learn more
+ * @copyright   Copyright (C) 2023, José V S Carneiro
+ * @license     GPLv3
+ */
+
+function isNameValid(name: string): boolean
+{
+    const regx = /[A-Z][a-z]{2,30}/;
+
+    return regx.test(name);
+}
 
 /**
  * @func        isEmailValid    returns true if the email passed as parameter is valid; otherwise returns false
