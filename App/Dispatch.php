@@ -1,8 +1,8 @@
 <?php
 
 /**
- * This package is responsible for laying out
- * the pages.
+ * This package is responsible for initializing
+ * the service.
  *                                       
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -25,33 +25,33 @@
 namespace Josevaltersilvacarneiro\Html\App;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
-use Josevaltersilvacarneiro\Html\App\Controller\{HTMLController, APIController};
+use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
 /**
  * This class creates the controller object,
  * calls the method and passes the parameters
  * appropriately.
  *
- * @var HTMLController|APIController $obj the object - for example, Home
- * @var string $method a method that belongs to $obj
- * @var string $parameters parameters invoked in the url
+ * @var Controller	$obj		the controller - for example, Home
+ * @var string		$method		method that belongs to the $obj
+ * @var string		$parameters	parameters of the method $method
  *
- * @method void addController() sets up the controller object
- * @method void addMethod() sets up a method in $obj
- * @method void addParameters() sets up the params in $method
+ * @method void addController()	sets up the controller object
+ * @method void addMethod()		sets up a method in $obj
+ * @method void addParameters()	sets up the params in $method
  *
- * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version 0.1
- * @see Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
- * @copyright Copyright (C) 2023, José V S Carneiro
- * @license GPLv3
+ * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version		0.2
+ * @see			Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
+ * @copyright	Copyright (C) 2023, José V S Carneiro
+ * @license		GPLv3
  */
 
 class Dispatch extends Route
 {
-	private HTMLController|APIController $obj;
-	private string $method;
-	private array $parameters = array();
+	private	Controller	$obj;
+	private	string		$method;
+	private	array		$parameters = array();
 
 	public function __construct()
 	{
@@ -59,8 +59,7 @@ class Dispatch extends Route
 		self::addParameters();
 		self::addMethod();
 
-		if (method_exists($this->obj, 'renderLayout'))
-			$this->obj->renderLayout();
+		$this->obj->renderLayout();
 	}
 
 	public function setMethod(string $method): void
@@ -88,12 +87,14 @@ class Dispatch extends Route
 	 * to the service that the user requested. The route
 	 * property returns this service.
 	 * 
-	 * @return void
+	 * @return	void
 	 * 
-	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version 0.1
-	 * @access private
-	 * @see https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		private
+	 * @see			https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
 	 */
 
 	private function addController(): void
@@ -110,14 +111,16 @@ class Dispatch extends Route
 	 * $this->obj and calls it if true; otherwise
 	 * just returns.
 	 * 
-	 * @return void
+	 * @return		void
 	 * 
-	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version 0.1
-	 * @access private
-	 * @see https://www.php.net/manual/en/function.isset.php
-	 * @see https://www.php.net/manual/en/function.method-exists.php
-	 * @see https://www.php.net/manual/en/function.call-user-func-array.php
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		private
+	 * @see			https://www.php.net/manual/en/function.isset.php
+	 * @see			https://www.php.net/manual/en/function.method-exists.php
+	 * @see			https://www.php.net/manual/en/function.call-user-func-array.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
 	 */
 
 	private function addMethod(): void
@@ -144,13 +147,15 @@ class Dispatch extends Route
 	 * were passed in url and sets them if true;
 	 * otherwise, just returns.
 	 * 
-	 * @return void
+	 * @return		void
 	 * 
-	 * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version 0.1
-	 * @access private
-	 * @see https://www.php.net/manual/en/function.count.php
-	 * @see https://www.php.net/manual/en/function.array-slice.php
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		private
+	 * @see			https://www.php.net/manual/en/function.count.php
+	 * @see			https://www.php.net/manual/en/function.array-slice.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
 	 */
 
 	private function addParameters(): void
