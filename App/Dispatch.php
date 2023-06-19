@@ -24,6 +24,9 @@
 
 namespace Josevaltersilvacarneiro\Html\App;
 
+use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
+use Josevaltersilvacarneiro\Html\App\Controller\JSONController;
+
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
@@ -49,7 +52,7 @@ use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
 class Dispatch extends Route
 {
-	private	Controller	$obj;
+	private	HTMLController|JSONController	$obj;
 	private	string		$method;
 	private	array		$parameters = array();
 
