@@ -53,7 +53,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\Log;
 
 class Dispatch extends Route
 {
-	private	HTMLController|APIController	$obj;
+	private	Controller	$obj;
 	private	?string		$method;
 	private	array		$parameters = array();
 
