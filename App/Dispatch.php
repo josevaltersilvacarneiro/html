@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1,encoding="UTF-8");
+
 /**
  * This package is responsible for initializing
  * the service.
@@ -23,9 +25,6 @@
  */
 
 namespace Josevaltersilvacarneiro\Html\App;
-
-use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
-use Josevaltersilvacarneiro\Html\App\Controller\APIController;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
@@ -51,11 +50,11 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\Log;
  * @license		GPLv3
  */
 
-class Dispatch extends Route
+final class Dispatch extends Route
 {
-	private	Controller	$obj;
-	private	?string		$method;
-	private	array		$parameters = array();
+	private Controller	$obj;
+	private ?string		$method;
+	private array		$parameters = array();
 
 	/**
 	 * Initializes the object.
@@ -130,11 +129,11 @@ class Dispatch extends Route
 	}
 
 	/**
-	 * This method calls a controller dynamically according
-	 * to the service that the user requested. The route
-	 * property returns this service.
+	 * This method instantiates the CONTROLLER dynamically
+	 * according to the service that the user requested.
+	 * The route property returns this service.
 	 * 
-	 * @return	void
+	 * @return		void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.1
@@ -175,7 +174,7 @@ class Dispatch extends Route
 
 	/**
 	 * This method sets the parameters passed
-	 * by the user.
+	 * by the user in url.
 	 * 
 	 * @return		void
 	 * 
