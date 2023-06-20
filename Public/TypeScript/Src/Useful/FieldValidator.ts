@@ -22,7 +22,7 @@
  * @module github.com/josevaltersilvacarneiro/html/Public/TypeScript/Src/Useful
  */
 
-export { isNameValid, isEmailValid, isPasswordValid };
+export { isNameValid, isEmailValid, isPasswordValid, isCodeValid };
 
 /**
  * @func        isEmailValid    returns true if the name passed as parameter is valid; otherwise returns false
@@ -85,4 +85,27 @@ function isEmailValid(email: string): boolean {
 
 function isPasswordValid(password: string): boolean {
 	return password.length > 8 && /[A-Z]/.test(password);
+}
+
+/**
+ * @func    isCodeValid returns true if the code passed as parameter is correct; otherwise returns false
+ * 
+ * @param   {string} code @example  "548796"
+ * 
+ * @returns {boolean}
+ *
+ * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version     0.1
+ * @access      public
+ * @see         {@link https://www.w3schools.com/jsref/jsref_regexp_test.asp} to learn more
+ * @copyright   Copyright (C) 2023, José V S Carneiro
+ * @license     GPLv3
+ */
+
+function isCodeValid(code: string): boolean {
+
+    // the code is correct if the size is equal to
+    // six and all characters are numbers
+
+    return code.length === 6 && /^[0-9]{6}$/.test(code);
 }
