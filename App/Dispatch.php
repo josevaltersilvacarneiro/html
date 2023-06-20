@@ -146,16 +146,14 @@ class Dispatch extends Route
 	}
 
 	/**
-	 * This method checks if more than two parameters
-	 * were passed in url and sets them if true;
-	 * otherwise, just returns.
+	 * This method sets the parameters passed
+	 * by the user.
 	 * 
 	 * @return		void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		private
-	 * @see			https://www.php.net/manual/en/function.count.php
 	 * @see			https://www.php.net/manual/en/function.array-slice.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
@@ -163,12 +161,6 @@ class Dispatch extends Route
 
 	private function addParameters(): void
 	{
-		$length = count($this->url);
-
-		if ($length <= 2)
-			return ; /* if no more than two parameters are passed
-						in the url, return */
-
 		$parameters = array_slice($this->url, 2);
 		$this->setParameters($parameters);
 	}
