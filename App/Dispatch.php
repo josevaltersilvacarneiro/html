@@ -29,6 +29,7 @@ use Josevaltersilvacarneiro\Html\App\Controller\APIController;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
+use Josevaltersilvacarneiro\Html\Src\Classes\Log\Log;
 
 /**
  * This class creates the controller object,
@@ -37,14 +38,14 @@ use Josevaltersilvacarneiro\Html\App\Controller\Controller;
  *
  * @var Controller	$obj		the controller - for example, Home
  * @var string		$method		method that belongs to the $obj
- * @var string		$parameters	parameters of the method $method
+ * @var string		$parameters	parameters of the $method
  *
  * @method void addController()	sets up the controller object
  * @method void addMethod()		sets up a method in $obj
  * @method void addParameters()	sets up the params in $method
  *
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -53,19 +54,62 @@ use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 class Dispatch extends Route
 {
 	private	HTMLController|APIController	$obj;
-	private	string		$method;
+	private	?string		$method;
 	private	array		$parameters = array();
+
+	/**
+	 * Initializes the object.
+	 * 
+	 * @return		void
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.2
+	 * @access		public
+	 * @see			https://www.php.net/manual/en/function.is-null.php
+	 * @see			https://www.php.net/manual/en/function.method-exists.php
+	 * @see			https://www.php.net/manual/en/function.call-user-func-array.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
 
 	public function __construct()
 	{
-		self::addController();
-		self::addParameters();
-		self::addMethod();
+		$this->addController();
+		$this->addMethod();
+		$this->addParameters();
+		
+		try {
+			if (!is_null($this->getMethod()) &&
+				method_exists($this->obj, $this->getMethod())) {
+
+				// if the method isn't null and exists
+				// in the controller, call it
+				
+				call_user_func_array(
+					[
+						$this->obj,
+						$this->getMethod()
+					],
+					$this->getParameters()
+				);
+			}
+		} catch (\BadMethodCallException $e) {
+
+			// if an exception was thrown here, then
+			// the application user made a terrible
+			// request. IT COULD BE A HACKER ATTACK
+			
+			$log = new Log();
+
+			$user = $this->obj->getSession()->getSessionuser();
+
+			$log->store("The user ${user} made a bad request: " . $e->getMessage());
+		}
 
 		$this->obj->renderLayout();
 	}
 
-	public function setMethod(string $method): void
+	public function setMethod(?string $method): void
 	{
 		$this->method = $method;
 	}
@@ -75,7 +119,7 @@ class Dispatch extends Route
 		$this->parameters = $parameters;
 	}
 
-	public function getMethod(): string
+	public function getMethod(): ?string
 	{
 		return $this->method;
 	}
@@ -109,40 +153,24 @@ class Dispatch extends Route
 	}
 
 	/**
-	 * This method checks if the second parameter
-	 * passed in url is an existing method in
-	 * $this->obj and calls it if true; otherwise
-	 * just returns.
+	 * This method sets the second parameter
+	 * passed in url as method in $this->obj.
 	 * 
 	 * @return		void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		private
-	 * @see			https://www.php.net/manual/en/function.isset.php
-	 * @see			https://www.php.net/manual/en/function.method-exists.php
-	 * @see			https://www.php.net/manual/en/function.call-user-func-array.php
+	 * @see			https://www.php.net/manual/en/migration70.new-features.php#migration70.new-features.null-coalesce-op
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
 	private function addMethod(): void
-	{		
-		if (
-			!isset($this->url[1]) || 
-			!method_exists($this->obj, $this->url[1])
-		)
-			return ; /* if the method doesn't exist, return */
+	{
+		$methodName = $this->url[1] ?? null;
 		
-		$this->setMethod($this->url[1]);
-		
-		call_user_func_array(
-			[
-				$this->obj,
-				$this->getMethod()
-			],
-			$this->getParameters()
-		);
+		$this->setMethod(method: $methodName);
 	}
 
 	/**
