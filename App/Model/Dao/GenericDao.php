@@ -235,6 +235,35 @@ class GenericDao extends Sql
 		}
 	}
 
+	/**
+	 * This method returns an array with the values
+	 * of $dict where the keys are elements of one
+	 * of the arrays passed as argument in $lists.
+	 * 
+	 * @param		array	$dict	array of type key-value - or dictionary
+	 * @param		array	$lists	variable length argument list
+	 * 
+	 * @return		array	@example array('fooID' => 'foo', 'fooBAR' => 'bar')
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		private
+	 * @see			https://www.php.net/manual/en/function.array-merge.php
+	 * @see			https://www.php.net/manual/en/function.array-filter.php
+	 * @see			https://www.php.net/manual/en/function.in-array.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	private static function array_key_diff(array $dict, array ...$lists): array
+	{
+		$list = array_merge(...$lists);
+
+		return array_filter($dict, function(string $key) use ($list) {
+				return in_array($key, $list);
+			}, ARRAY_FILTER_USE_KEY);
+	}
+
 	public function getPrimaryKeys(): array
 	{
 		return $this->primaryKeys;
@@ -313,7 +342,16 @@ class GenericDao extends Sql
 		// $query gets a sql query to CREATE a
 		// new register in the database.
 
-		$stmt				= $this->query($query, $register);
+		$cleanRegister	= self::array_key_diff($register, $required);
+
+		// only the fields that were passed in to
+		// generate the query should be passed to
+		// Sql::query(string $query, array $parameters = array()): \PDOStatement
+		// $cleanRegister contains all values of
+		// $register that are in $required, i.e.
+		// $cleanRegister = $register ∩ $required
+
+		$stmt			= $this->query($query, $cleanRegister);
 		
 		return $stmt !== false && $stmt->rowCount() > 0;
 	}
@@ -368,7 +406,12 @@ class GenericDao extends Sql
 		// $query gets a sql query to READ a register
 		// in the database.
 
-		$stmt			= $this->query($query, $register);
+		$cleanRegister	= self::array_key_diff($register, $identifiers);
+
+		// see GenericDao::c(array $register): bool
+		// to understand the above statement.
+
+		$stmt			= $this->query($query, $cleanRegister);
 
 		return $stmt === false || $stmt->rowCount() < 1 ?
 			false :
@@ -438,7 +481,13 @@ class GenericDao extends Sql
 		// $query gets a sql query to UPDATE a register
 		// in the database.
 
-		$stmt			= $this->query($query, $register);
+		$cleanRegister	= self::array_key_diff($register, $identifiers, $required);
+
+		// see GenericDao::c(array $register): bool
+		// to understand the above statement.
+		// $cleanRegister = $register ∩ ($identifiers ∪ $required)
+
+		$stmt			= $this->query($query, $cleanRegister);
 
 		return $stmt !== false && $stmt->rowCount() > 0;
 	}
@@ -486,7 +535,12 @@ class GenericDao extends Sql
 		// $query gets a sql query to DELETE a register
 		// in the database.
 
-		$stmt			= $this->query($query, $register);
+		$cleanRegister	= self::array_key_diff($register, $identifiers);
+
+		// see GenericDao::c(array $register): bool
+		// to understand the above statement.
+
+		$stmt			= $this->query($query, $cleanRegister);
 
 		return $stmt !== false && $stmt->rowCount() > 0;
 	}
