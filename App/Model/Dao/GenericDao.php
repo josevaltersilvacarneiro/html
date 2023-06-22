@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /**
- * This package is responsible for accessing
- * the database.
+ * This package is responsible for handling
+ * the database tables.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
