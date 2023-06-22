@@ -267,7 +267,10 @@ class GenericDao extends Sql
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.1
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.array-slice.php
+	 * @see			https://www.php.net/manual/en/function.array-keys.php
+	 * @see			https://www.php.net/manual/en/function.array-diff-assoc.php
+	 * @see			https://www.php.net/manual/en/function.array-diff.php
+	 * @see			https://www.php.net/manual/en/function.empty.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
@@ -327,7 +330,9 @@ class GenericDao extends Sql
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.1
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.array-slice.php
+	 * @see			https://www.php.net/manual/en/function.array-keys.php
+	 * @see			https://www.php.net/manual/en/function.array-intersect.php
+	 * @see			https://www.php.net/manual/en/function.empty.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
@@ -382,7 +387,10 @@ class GenericDao extends Sql
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.1
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.array-slice.php
+	 * @see			https://www.php.net/manual/en/function.array-keys.php
+	 * @see			https://www.php.net/manual/en/function.array-intersect.php
+	 * @see			https://www.php.net/manual/en/function.array-diff-assoc.php
+	 * @see			https://www.php.net/manual/en/function.empty.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
@@ -447,7 +455,9 @@ class GenericDao extends Sql
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.1
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.array-slice.php
+	 * @see			https://www.php.net/manual/en/function.array-keys.php
+	 * @see			https://www.php.net/manual/en/function.array-intersect.php
+	 * @see			https://www.php.net/manual/en/function.empty.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
