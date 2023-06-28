@@ -91,10 +91,7 @@ class GenericDao extends Sql
 
 	private function addPrimaryKeys(): void
 	{
-		$query = "SELECT COLUMN_NAME
-			FROM	INFORMATION_SCHEMA.COLUMNS
-			WHERE	TABLE_NAME	= :tb
-			AND		COLUMN_KEY	= 'PRI';";
+		$query = DatabaseStandard::generatePrimaryKeysStandard(table: 'tb');
 
 		$stmt = $this->query($query,
 			array('tb' => $this->_TABLE));
@@ -146,11 +143,7 @@ class GenericDao extends Sql
 
 	private function addPrimaryKeysIncremented(): void
 	{
-		$query = "SELECT COLUMN_NAME
-			FROM	INFORMATION_SCHEMA.COLUMNS
-			WHERE	TABLE_NAME	= :tb
-			AND		COLUMN_KEY	= 'PRI'
-			AND		EXTRA		= 'AUTO_INCREMENT';";
+		$query = DatabaseStandard::generatePrimaryKeysIncremented(table: 'tb');
 
 		$stmt = $this->query($query,
 			array('tb' => $this->_TABLE));
@@ -181,11 +174,7 @@ class GenericDao extends Sql
 
 	private function addUniqueIdentifiers(): void
 	{
-		$query = "SELECT COLUMN_NAME
-			FROM	INFORMATION_SCHEMA.COLUMNS
-			WHERE	TABLE_NAME	= :tb
-			AND		(COLUMN_KEY	= 'PRI'
-				OR	COLUMN_KEY	= 'UNI');";
+		$query = DatabaseStandard::generateUniqueIdentifiers(table: 'tb');
 
 		$stmt = $this->query($query,
 			array('tb' => $this->_TABLE));
@@ -216,14 +205,10 @@ class GenericDao extends Sql
 
 	private function addRequiredColumns(): void
 	{
-		$query	=	"SELECT COLUMN_NAME 
-			FROM INFORMATION_SCHEMA.COLUMNS 
-			WHERE TABLE_NAME = :tb 
-			AND IS_NULLABLE = 'NO'
-			AND COLUMN_DEFAULT IS NULL
-			AND EXTRA != 'AUTO_INCREMENT';";
+		$query = DatabaseStandard::generateRequiredColumns(table: 'tb');
 
-		$stmt = $this->query($query, array('tb' => $this->_TABLE));
+		$stmt = $this->query($query,
+			array('tb' => $this->_TABLE));
 
 		if ($stmt !== false) {
 
