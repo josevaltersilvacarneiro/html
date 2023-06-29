@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This comprehensive PHP package is designed to simplify the
  * process of setting up and managing global variables. It
@@ -25,14 +27,6 @@
  * @package	Settings
  */
 
-date_default_timezone_set("America/Bahia");		// sets up timezone
-
-include_once 'Server.php';	// are available through the HTTP protocol
-include_once 'Host.php';	// hosting machine
-include_once 'MVC.php';		// var for the app
-include_once 'Public.php';	// pub accessible
-
-define('__VERSION__',	'v1');						// current code version
-define('__AUTHOR__',	'José V S Carneiro');		// who wrote this code
-
-define('__ACCESS__',	date(DATE_RSS, time()));	// date of access
+define('__IP__',	$_SERVER['REMOTE_ADDR']);					// the user's IP address
+define('__PORT__',	$_SERVER['REMOTE_PORT']);					// the user's port
+define('__URL__',	'http://' . $_SERVER['HTTP_HOST'] . '/');	// public url

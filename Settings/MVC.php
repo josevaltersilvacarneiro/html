@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This comprehensive PHP package is designed to simplify the
  * process of setting up and managing global variables. It
@@ -25,14 +27,23 @@
  * @package	Settings
  */
 
-date_default_timezone_set("America/Bahia");		// sets up timezone
+/*
+ * MVC (Model-View-Controller) is a widely adopted architectural
+ * pattern used in software development to organize and structure
+ * the components of a project. It provides a clear separation of
+ * concerns between the data (Model), the user interface (View),
+ * and the application logic (Controller). This separation
+ * promotes modularity, code reusability, and maintainability.
+ * 
+ * to learn more, @see https://fuelphp.com/docs/general/mvc.html
+ */
 
-include_once 'Server.php';	// are available through the HTTP protocol
-include_once 'Host.php';	// hosting machine
-include_once 'MVC.php';		// var for the app
-include_once 'Public.php';	// pub accessible
+define('__VIEW__',
+    __ROOT__    .   'App'   .   DIRECTORY_SEPARATOR .
+    'View'      .   DIRECTORY_SEPARATOR
+);
 
-define('__VERSION__',	'v1');						// current code version
-define('__AUTHOR__',	'José V S Carneiro');		// who wrote this code
-
-define('__ACCESS__',	date(DATE_RSS, time()));	// date of access
+define('__CONTROLLER__',
+    __ROOT__        .   'App'   .   DIRECTORY_SEPARATOR .
+    'Controller'    . DIRECTORY_SEPARATOR
+);

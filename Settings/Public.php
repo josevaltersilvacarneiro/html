@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This comprehensive PHP package is designed to simplify the
  * process of setting up and managing global variables. It
@@ -25,14 +27,19 @@
  * @package	Settings
  */
 
-date_default_timezone_set("America/Bahia");		// sets up timezone
+/*
+ * if you are going to use CDN, replace the directory path
+ * with the CDN URL
+ */
 
-include_once 'Server.php';	// are available through the HTTP protocol
-include_once 'Host.php';	// hosting machine
-include_once 'MVC.php';		// var for the app
-include_once 'Public.php';	// pub accessible
+define('__IMG__',
+    __URL__     .  'Public'   .  DIRECTORY_SEPARATOR .
+    'Images'    .  DIRECTORY_SEPARATOR);                // image files
 
-define('__VERSION__',	'v1');						// current code version
-define('__AUTHOR__',	'José V S Carneiro');		// who wrote this code
+define('__CSS__',
+    __URL__ .   'Public'    .   DIRECTORY_SEPARATOR .
+    'Css'   .   DIRECTORY_SEPARATOR);		            // css files
 
-define('__ACCESS__',	date(DATE_RSS, time()));	// date of access
+define('__JS__',
+    __URL__         .   'Public'    .   DIRECTORY_SEPARATOR .
+    'JavaScript'    .   DIRECTORY_SEPARATOR);	        // js files
