@@ -26,6 +26,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
 
 require_once '_DSN.php';
 
+use Josevaltersilvacarneiro\Html\Src\Classes\Log\PDOLog;
 use \PDO;
 use \PDOException;
 
@@ -55,7 +56,11 @@ abstract class Connect
 			$this->conn = new PDO(_DSN, _USER, _PASS);
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
-			return false;
+			$log = new PDOLog();
+			$log->setFile(__FILE__);
+			$log->setLine(__LINE__);
+			$log->store("It wasn't possible access the database");
+			die(2);
 		}
 	}
 }

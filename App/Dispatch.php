@@ -28,7 +28,7 @@ namespace Josevaltersilvacarneiro\Html\App;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
-use Josevaltersilvacarneiro\Html\Src\Classes\Log\Log;
+use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
 
 /**
  * This class creates the controller object,
@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\Log;
  * @method void addParameters()	sets up the params in $method
  *
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
+ * @version		0.4
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -98,11 +98,13 @@ final class Dispatch extends Route
 			// the application user made a terrible
 			// request. IT COULD BE A HACKER ATTACK
 			
-			$log = new Log();
+			$log = new RequestLog();
+			$log->setFile(__FILE__);
+			$log->setLine(__LINE__);
 
 			$user = $this->obj->getSession()->getSessionuser();
 
-			$log->store("The user ${user} made a bad request: " . $e->getMessage());
+			$log->store("The user ${user} made a bad request # " . $e->getMessage());
 		}
 
 		$this->obj->renderLayout();
