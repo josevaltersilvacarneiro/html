@@ -43,37 +43,35 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
 /**
- * The Session class is responsible for providing services to
- * create, manage, and destroy sessions within the application.
- * It offers functionalities to handle session data, ensuring
- * its security by encrypting and decrypting the session
- * information.
+ * The SessionService class is responsible for providing services
+ * to create, manage, and destroy sessions within the application.
+ * It offers functionalities to handle session data, ensuring its
+ * security by encrypting and decrypting the session information.
  * 
- * Session Creation and Destruction: The Session class facilitates
+ * SessionService Creation and Destruction: This class facilitates
  * the creation of new sessions when a user initiates a session
- * with the application. It generates a unique session ID for each
- * user and initializes the session data. Additionally, it
- * provides methods to destroy sessions and remove session data
- * when a user logs out.
+ * with the application. It generates a unique $sessionID for each
+ * user and initializes the session data. Additionally, it provides
+ * methods to destroy sessions and remove session data when a user
+ * logs out.
  * 
- * Session Data Management: The class offers services for managing
+ * SessionService Data Management: This offers services for managing
  * session data throughout the user's interaction with your application.
  * It allows you to store and retrieve information specific to each
  * user's session, such as user preferences, authentication details, or
  * temporary data required during the session's lifespan.
  * 
- * Session Encryption: The Session class ensures the security and privacy
+ * SessionService Encryption: This class ensures the security and privacy
  * of session data by providing encryption services. It encrypts the
  * session information, such as user identifiers or sensitive data, before
  * storing it in the session storage. This encryption prevents unauthorized
  * access or tampering with the session data, enhancing the overall security
  * of the application.
  * 
- * Cross-Site Request Forgery (CSRF) Protection: The Session class helps
- * protect against CSRF attacks by generating and validating CSRF tokens.
- * These tokens are used to verify the authenticity of requests originating
- * from your application, preventing unauthorized actions by malicious
- * actors.
+ * Cross-Site Request Forgery (CSRF) Protection: This class helps protect
+ * against CSRF attacks by generating and validating CSRF tokens. These
+ * tokens are used to verify the authenticity of requests originating from
+ * the application, preventing unauthorized actions by malicious actors.
  *
  * @var int			LENGTH		ID compliance
  * @var string		KEYWORD		cookie key
@@ -95,7 +93,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
 class SessionService extends Service
 {
-	private const 	LENGTH 		= 60;				# generates 120 characters
+	private const 	LENGTH 		= 60;				# number of random bytes
 	private const	KEYWORD		= "key";			# cookie key
 	private const	ALGOCRYPT	= "AES-256-CBC";	# encryption algorithm
 	private const	PASSCRYPT	= "odpjosjsaldiorowenokwnfdkfweke";	# this passphrase
@@ -343,11 +341,11 @@ class SessionService extends Service
 	}
 
 	/**
-	 * This method is responsible for restarting an existing
-	 * session for a specified user. It takes a Session
-	 * object and a User object as input and performs necessary
-	 * actions to restart the session, ensuring continuity and
-	 * maintaining session-related data and variables.
+	 * This method is responsible for restarting an existing session
+	 * for a specified user. It takes a Session object and a User
+	 * object as input and performs necessary actions to restart the
+	 * session, ensuring continuity and maintaining session-related
+	 * data and variables.
 	 * 
 	 * @param 	Session		$session
 	 * @param 	User		$user
