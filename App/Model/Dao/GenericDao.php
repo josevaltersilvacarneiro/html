@@ -3,8 +3,11 @@
 declare(strict_types=1);
 
 /**
- * This package is responsible for handling
- * the database tables.
+ * The Dao (Data Access Object) package is a crucial component of the
+ * application responsible for handling the interaction between the
+ * application and the underlying database. It provides a set of classes
+ * that encapsulate database operations, such as data retrieval, insertion,
+ * update, and deletion, for various entities or tables in the system.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
