@@ -79,6 +79,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
  * @version		0.1
  * @see			Josevaltersilvacarneiro\Html\App\Controller\Controller
+ * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
