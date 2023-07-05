@@ -28,14 +28,14 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * This trait offers functions that handles
  * the required files.
  *
- * @method	bool fexists(string $filename)					returns true if file exists
- * @method	bool import(string $filename) 					includes the file
+ * @method	bool fexists(string $filename)									returns true if file exists
+ * @method	bool import(string $filename) 									includes the file
  * @method	void importPage(string $path, string $dir, string $filename)	tries to include a file
  *
- * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.3
+ * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version		0.3
  * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license	GPLv3
+ * @license		GPLv3
  */
 
 trait TraitImport
@@ -61,21 +61,21 @@ trait TraitImport
 	}
 
 	/**
-         * This function includes the file $filename
+     * This function includes the file $filename
 	 * and returns true if it was successful;
 	 * otherwise returns false.
-         *
-         * @param       string  $filename path of the file to be included
-         * @return      bool
-         *
-         * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
-         * @version     0.3.1
-         * @access      protected
-         */
+	 *
+	 * @param       string  $filename path of the file to be included
+	 * @return      bool
+	 *
+	 * @author      José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version     0.3.1
+	 * @access      protected
+	 */
 
 	protected function import(string $filename): bool
-        {
-                if ($this->fexists($filename)) {
+    {
+		if ($this->fexists($filename)) {
 			require_once $filename;
 			return true;
 		}
