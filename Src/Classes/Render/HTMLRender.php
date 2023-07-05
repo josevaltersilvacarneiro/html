@@ -31,29 +31,30 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  *
  * @var		string	$headerTitle		page title
  * @var		string	$headerDescription	page description
- * @var		string	$keywords		page keywords
- * @var		string	$robots			page robots [ All, Index, Follow, NoIndex, NoFollow, None, NoArchive [
+ * @var		string	$keywords			page keywords
+ * @var		string	$robots				page robots [ All, Index, Follow, NoIndex, NoFollow, None, NoArchive [
  *
- * @method	void	setTitle(string $title)				sets up the head title
+ * @method	void	setTitle(string $title)						sets up the head title
  * @method	void	setDescription(string $headerDescription)	sets up the head title
- * @method	void	setKeywords(string $keywords)			sets up the head keywords
- * @method	void	setRobots(string $robots)			sets up the head robots
- * @method	string	getTitle()					returns the head title
- * @method	string	getDescription()				returns the head description
- * @method	string	getKeywords()					returns the head keywords
- * @method	string	getRobots()					returns the head robots
+ * @method	void	setKeywords(string $keywords)				sets up the head keywords
+ * @method	void	setRobots(string $robots)					sets up the head robots
+ * 
+ * @method	string	getTitle()				returns the head title
+ * @method	string	getDescription()		returns the head description
+ * @method	string	getKeywords()			returns the head keywords
+ * @method	string	getRobots()				returns the head robots
  *
  * @method	void	addHeader()					renders the page header
  * @method	void	addMain()					renders the page main
  * @method	void	addFooter()					renders the page footer
- * @method      void    renderLayout()          			renders the layout
+ * @method  void    renderLayout()          	renders the layout
  *
- * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.6
+ * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+ * @version		0.6
  * @abstract
- * @see		Josevaltersilvacarneiro\Html\App\Controller\HTMLController
+ * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license	GPLv3
+ * @license		GPLv3
  */
 
 abstract class HTMLRender extends Render
@@ -119,7 +120,7 @@ abstract class HTMLRender extends Render
 	}
 
 	public function renderLayout(): void   
-        {
-                $this->import(self::PATH . 'HTMLLayout.php');
-        }
+    {
+        $this->import(self::PATH . 'HTMLLayout.php');
+	}
 }
