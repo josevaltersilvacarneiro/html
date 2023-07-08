@@ -37,8 +37,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session, Visitor, User};
-use Josevaltersilvacarneiro\Html\App\Model\Service\{Service, UserService};
+use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
+use Josevaltersilvacarneiro\Html\App\Model\Service\{Service,	UserService};
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
@@ -80,7 +80,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  *
  * @method Session|false	startSession()	initializes the session
  * @method bool				restartSession(Session $session, User $user)	updates session's user
- * @method string|false		createSession(User|Visitor $user)	creates a new session and stores it in the database
+ * @method string|false		createSession(?User $user)	creates a new session and stores it in the database
  * @method bool				destroySession(Session $session)	updates sessionON field to false
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
@@ -272,7 +272,7 @@ class SessionService extends Service
 		$cookie			= $_COOKIE[self::KEYWORD];
 		$sessionID		= $cookie ? self::decryptSessionID($cookie) :
 			self::createSession(
-				new Visitor()
+				null
 			);
 
 		// $sessionID is false if couldn't create a
@@ -281,7 +281,7 @@ class SessionService extends Service
 		
 		if ($sessionID === false)
 		{
-			$sessionID = self::createSession(new Visitor);
+			$sessionID = self::createSession(null);
 
 			// try again to create a session
 
@@ -300,7 +300,7 @@ class SessionService extends Service
 
 		if ($codition)
 		{
-			$sessionID = self::createSession(new Visitor());
+			$sessionID = self::createSession(null);
 
 			// $session is false if the record cannot be found in
 			// the database
@@ -385,7 +385,7 @@ class SessionService extends Service
 	 * necessary actions to initiate a new session, generating
 	 * a $sessionID and returning it.
 	 * 
-	 * @param 	User|Visitor $user
+	 * @param 	?User $user
 	 * 
 	 * @return	string|false $sessioID on success; false otherwise
 	 * 
@@ -397,10 +397,10 @@ class SessionService extends Service
  	 * @license		GPLv3
 	 */
 
-	public static function createSession(User|Visitor $user): string|false
+	public static function createSession(?User $user): string|false
 	{
 		$sessionID		= self::generateSessionID();
-		$sessionUSER	= $user instanceof User ? $user->getUserid() : null;
+		$sessionUSER	= is_null($user) ? null : $user->getUserid();
 
 		$dao			= new SessionDao();
 
