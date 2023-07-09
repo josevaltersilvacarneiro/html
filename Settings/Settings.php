@@ -27,6 +27,9 @@
 
 date_default_timezone_set("America/Bahia");		// sets up timezone
 
+include_once 'DSN.php';     // variables responsible for accessing the database
+include_once 'Dao.php';     // required tables and fields in the database
+
 include_once 'Server.php';	// are available through the HTTP protocol
 include_once 'Host.php';	// hosting machine
 include_once 'MVC.php';		// var for the app
