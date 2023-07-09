@@ -10,12 +10,11 @@ declare(strict_types=1);
  * database, offering services for data retrieval, manipulation,
  * and entity management.
  * 
- * The package offers services for managing relationships between
- * entities in the database. It provides utilities for defining
- * and enforcing relationships such as one-to-one, one-to-many,
- * or many-to-many associations. It simplifies the handling of
- * entity relationships and supports efficient data retrieval
- * across related entities.
+ * It offers services for managing relationships between entities
+ * in the database. It provides utilities for defining and enforcing
+ * relationships such as one-to-one, one-to-many, or many-to-many
+ * associations. It simplifies the handling of entity relationships
+ * and supports efficient data retrieval across related entities.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
