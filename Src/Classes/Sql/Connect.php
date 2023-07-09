@@ -24,8 +24,6 @@
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
 
-require_once '_DSN.php';
-
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\PDOLog;
 use \PDO;
 use \PDOException;
