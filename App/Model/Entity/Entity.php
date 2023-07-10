@@ -33,4 +33,9 @@ use Josevaltersilvacarneiro\Html\Src\Traits\TraitProperty;
 abstract class Entity
 {
 	use TraitProperty;
+
+	public function __construct()
+	{}
+
+	public abstract static function getIDNAME(): string;
 }
