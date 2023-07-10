@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -52,6 +52,9 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 
 final class Session extends Entity
 {
+	# name of the property that stores the primary key
+	public const IDNAME = 'sessionID';
+
 	/**
 	 * This constructor is responsible for initializing a Session object
 	 * with the provided values, while also performing various
@@ -112,6 +115,11 @@ final class Session extends Entity
 		if ($sessionDATE > new \DateTimeImmutable())
 			throw new \DomainException($sessionDATE->format("Y-m-d H:i:s") .
 				" is in the future", 1);
+	}
+
+	public static function getIDNAME(): string
+	{
+		return self::IDNAME;
 	}
 
 	/**
@@ -292,7 +300,7 @@ final class Session extends Entity
 
 	public function getSessionid(): string
 	{
-		return $this->sessionID;
+		return $this->{$this->getIDNAME()};
 	}
 
 	public function getSessionuser(): ?User
