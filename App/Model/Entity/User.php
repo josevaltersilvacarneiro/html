@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
+use Attribute;
+use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 
 /**
@@ -43,7 +45,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -51,6 +53,9 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 
 class User extends Entity
 {
+	# name of the property that stores the primary key
+	public const IDNAME = 'userID';
+
 	/**
 	 * The constructor is responsible for initializing a User object with
 	 * the provided values, while also performing validation checks.
@@ -86,6 +91,7 @@ class User extends Entity
 	 * @see			https://www.php.net/manual/en/function.ucfirst.php
 	 * @see			https://www.php.net/manual/en/function.filter-var.php
 	 * @see			https://www.php.net/manual/en/filter.filters.validate.php
+	 * @see			https://www.php.net/manual/en/function.password-get-info.php
 	 * @see			https://www.php.net/manual/en/class.domainexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
@@ -102,13 +108,20 @@ class User extends Entity
 		if (filter_var($userEMAIL, FILTER_VALIDATE_EMAIL) === false)
 			throw new \DomainException("${userEMAIL} isn't a valid email", 1);
 
-		if (strlen($userSALT) < 8 || !preg_match("/^[a-f0-9]{64}$/", $userHASH))
+		$passInfo = password_get_info($userHASH);
+
+		if (strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
 			throw new \DomainException("This password isn't valid", 1);
 	}
 
 	public function __toString(): string
 	{
 		return $this->getUserid() . " => " . $this->getUsername();
+	}
+
+	public static function getIDNAME(): string
+	{
+		return self::IDNAME;
 	}
 
 	/**
@@ -237,7 +250,7 @@ class User extends Entity
 
 	public function getUserid(): int
 	{
-		return $this->userID;
+		return $this->{$this->getIDNAME()};
 	}
 
 	public function getUsername(): string
