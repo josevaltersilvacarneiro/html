@@ -124,6 +124,13 @@ class User extends Entity
 		return self::IDNAME;
 	}
 
+	public static function getUNIQUE(mixed $uID): string
+	{
+		$field = gettype($uID) === 'string' ? 'userEMAIL' : self::getIDNAME();
+
+		return $field;
+	}
+
 	/**
 	 * This method is responsible for setting the userNAME property with
 	 * the provided name, while also validating its format.

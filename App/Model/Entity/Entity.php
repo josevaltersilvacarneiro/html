@@ -38,4 +38,35 @@ abstract class Entity
 	{}
 
 	public abstract static function getIDNAME(): string;
+
+	/**
+	 * This method is responsible for returning the name of the field that
+	 * represents a unique constraint in the entity, based on the provided
+	 * $uID parameter.
+	 * 
+	 * Within the method, there is logic to determine the field's name that
+	 * represents the unique constraint in the entity. The specific
+	 * implementation of this logic depends on the structure and design of
+	 * the entity class.
+	 * 
+	 * The $uID parameter serves as a reference or identifier to identify
+	 * the specific unique constraint in the entity. Its value may vary
+	 * depending on the context or specific requirements of the project.
+	 * 
+	 * The method returns a string representing the name of the field that
+	 * represents the unique constraint in the entity, based on the
+	 * provided $uID parameter.
+	 * 
+	 * @param mixed $uID Possible value for this field @example git@josevaltersilvacarneiro.net
+	 * 
+	 * @return string The field @example tbEmail
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		public
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public abstract static function getUNIQUE(mixed $uID): string;
 }

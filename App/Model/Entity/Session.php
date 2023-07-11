@@ -124,6 +124,11 @@ final class Session extends Entity
 		return self::IDNAME;
 	}
 
+	public static function getUNIQUE(mixed $uID): string
+	{
+		return self::getIDNAME();
+	}
+
 	/**
 	 * This method is responsible for setting the sessionUSER property
 	 * with the provided User object, while also validating the user's
