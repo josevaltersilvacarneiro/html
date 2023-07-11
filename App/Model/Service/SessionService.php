@@ -37,7 +37,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
-use Josevaltersilvacarneiro\Html\App\Model\Service\{Service,	UserService};
+use Josevaltersilvacarneiro\Html\App\Model\Service\{ServiceDatabase};
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
@@ -83,14 +83,14 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  * @method bool				destroySession(Session $session)	updates sessionON field to false
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
  * @see			https://www.php.net/manual/en/function.openssl-get-cipher-methods.php
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
-class SessionService extends Service
+class SessionService extends ServiceDatabase
 {
 	private const 	LENGTH 		= 60;				# number of random bytes
 	private const	KEYWORD		= "key";			# cookie key
@@ -258,10 +258,10 @@ class SessionService extends Service
 	 * @return Session|false $session on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/reserved.variables.cookies.php
-	 * @see			https://www.php.net/manual/en/class.datetimeimmutable.php
+	 * @see			https://www.php.net/manual/en/function.is-a.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
@@ -289,15 +289,9 @@ class SessionService extends Service
 			// it's not possible to create new sessions
 		}
 
-		$dao			= new SessionDao();
+		$session = self::start(Session::class, $sessionID);
 
-		$session		= $dao->r(
-			array('sessionID' => $sessionID)
-		);
-
-		$codition = $session === false || (bool) $session['sessionON'] === false;
-
-		if ($codition)
+		if (!is_a($session, Session::class))
 		{
 			$sessionID = self::createSession(null);
 
@@ -306,37 +300,16 @@ class SessionService extends Service
 			// WARNING: if the used session is no longer active,
 			// create a new
 
-			$session		= $dao->r(
-				array('sessionID' => $sessionID)
-			);
+			$session		= self::start(Session::class, $sessionID);
 
 			// try again to read a session
 
-			if ($session === false) return false;
+			if (!is_a($session, Session::class)) return false;
 		
 			// it's not possible to read sessions from the database
 		}
-		
-		$user			= $session['sessionUSER'] ?
-			UserService::startUser((int) $session['sessionUSER']) : null;
 
-		$sessionID		= (string) $session['sessionID'];
-		$sessionUSER	= $user;
-		$sessionIP		= (string) $session['sessionIP'];
-		$sessionPORT	= (string) $session['sessionPORT'];
-		$sessionDATE	= new \DateTimeImmutable($session['sessionDATE']);
-		$sessionON		= (bool) $session['sessionON'];
-		
-		return new Session(
-			sessionID:		$sessionID,
-			sessionUSER:	$sessionUSER,
-
-			sessionIP:		$sessionIP,
-			sessionPORT:	$sessionPORT,
-
-			sessionDATE:	$sessionDATE,
-			sessionON:		$sessionON
-		);
+		return $session;
 	}
 
 	/**
