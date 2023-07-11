@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
+use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 
 /**
  * The Session Entity represents a session. It contains properties
@@ -44,12 +45,13 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
+#[SessionDao()]
 final class Session extends Entity
 {
 	# name of the property that stores the primary key
@@ -89,9 +91,9 @@ final class Session extends Entity
 	 */
 
 	public function __construct(
-		private string $sessionID, private ?User $sessionUSER,
+		private string $sessionID, #[User] private ?User $sessionUSER,
 		private string $sessionIP, private string $sessionPORT,
-		private \DateTimeImmutable $sessionDATE, private bool $sessionON
+		#[\DateTimeImmutable] private \DateTimeImmutable $sessionDATE, private bool $sessionON
 	)
 	{
 		if (!preg_match("/^([a-f0-9]{64})$/", $sessionID))
