@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDate;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 
@@ -39,20 +41,20 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
  * @var ?User				$sessionUSER	foreign key
  * @var string				$sessionIP		ip @example {192.168.1.56, ::1}
  * @var string				$sessionPORT	port @example {5632}
- * @var \DateTimeImmutable	$sessionDATE	date object of last access
+ * @var EntityDate			$sessionDATE	date object of last access
  * @var bool				$sessionON		true if session is valid; false otherwise
  *
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
+ * @version		0.4
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
 #[SessionDao()]
-final class Session extends Entity
+final class Session extends EntityDatabase
 {
 	# name of the property that stores the primary key
 	public const IDNAME = 'sessionID';
@@ -73,7 +75,7 @@ final class Session extends Entity
 	 * @param ?User		$sessionUSER
 	 * @param string	$sessionIP
 	 * @param string	$sessionPORT
-	 * @param \DateTimeImmutable $sessionDATE
+	 * @param EntityDate $sessionDATE
 	 * @param bool		$sessionON
 	 * 
 	 * @return void
@@ -93,7 +95,7 @@ final class Session extends Entity
 	public function __construct(
 		private string $sessionID, #[User] private ?User $sessionUSER,
 		private string $sessionIP, private string $sessionPORT,
-		#[\DateTimeImmutable] private \DateTimeImmutable $sessionDATE, private bool $sessionON
+		#[EntityDate] private EntityDate $sessionDATE, private bool $sessionON
 	)
 	{
 		if (!preg_match("/^([a-f0-9]{64})$/", $sessionID))
@@ -114,8 +116,8 @@ final class Session extends Entity
 		if (!preg_match("/^[0-9]{1,5}$/", $sessionPORT))
 			throw new \DomainException("${sessionPORT} isn't a valid port", 1);
 
-		if ($sessionDATE > new \DateTimeImmutable())
-			throw new \DomainException($sessionDATE->format("Y-m-d H:i:s") .
+		if ($sessionDATE > new EntityDate())
+			throw new \DomainException($sessionDATE->getDatabaseRepresentation() .
 				" is in the future", 1);
 	}
 
@@ -250,7 +252,7 @@ final class Session extends Entity
 	 * date, an \InvalidArgumentException is thrown with a custom error
 	 * message indicating that the date isn't valid.
 	 * 
-	 * @param \DateTimeImmutable $sessionDATE
+	 * @param EntityDate $sessionDATE
 	 * 
 	 * @return void
 	 * @throws \InvalidArgumentException
@@ -263,10 +265,10 @@ final class Session extends Entity
  	 * @license		GPLv3
 	 */
 
-	public function setSessiondate(\DateTimeImmutable $sessionDATE): void
+	public function setSessiondate(EntityDate $sessionDATE): void
 	{
 		if ($sessionDATE < $this->getSessiondate())
-			throw new \InvalidArgumentException($sessionDATE->format("Y-m-d H:i:s") .
+			throw new \InvalidArgumentException($sessionDATE->getDatabaseRepresentation() .
 				" isn't valid", 1);
 		
 		// If the provided session date is less than the
@@ -325,7 +327,7 @@ final class Session extends Entity
 		return $this->sessionPORT;
 	}
 
-	public function getSessiondate(): \DateTimeImmutable
+	public function getSessiondate(): EntityDate
 	{
 		return $this->sessionDATE;
 	}
