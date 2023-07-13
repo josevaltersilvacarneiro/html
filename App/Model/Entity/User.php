@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
 
 /**
  * The User Entity represents a user. It encapsulates the user's
@@ -44,14 +44,14 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
+ * @version		0.4
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
 #[UserDao]
-class User extends Entity
+class User extends EntityDatabase
 {
 	# name of the property that stores the primary key
 	public const IDNAME = 'userID';
