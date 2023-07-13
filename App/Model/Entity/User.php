@@ -36,7 +36,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
  * attributes and provides methods for setting and retrieving
  * the user's data.
  *
- * @var int			$userID		primary key
+ * @var ?int		$userID		primary key
  * @var string		$userNAME	full name @example José Carneiro
  * @var string		$userEMAIL	email @example git@josevaltersilvacarneiro.net
  * @var string		$userHASH	user's password hash
@@ -73,7 +73,7 @@ class User extends EntityDatabase
 	 * with a specific error message corresponding to the validation
 	 * failure.
 	 * 
-	 * @param int		$userID		primary key
+	 * @param ?int		$userID		primary key
 	 * @param string	$userNAME	name of the user @example José Carneiro
 	 * @param string	$userEMAIL	@example git@josevaltersilvacarneiro.net
 	 * @param string	$userHASH	a SHA256 hash
@@ -84,7 +84,7 @@ class User extends EntityDatabase
 	 * @throws \DomainException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
@@ -98,7 +98,7 @@ class User extends EntityDatabase
 	 */
 
 	public function __construct(
-		private int $userID, private string $userNAME, private string $userEMAIL,
+		private ?int $userID, private string $userNAME, private string $userEMAIL,
 		private string $userHASH, private string $userSALT, private bool $userON
 	)
 	{
@@ -129,6 +129,44 @@ class User extends EntityDatabase
 		$field = gettype($uID) === 'string' ? 'userEMAIL' : self::getIDNAME();
 
 		return $field;
+	}
+
+	/**
+	 * This method is responsible for setting the $userID property with
+	 * the provided value, while also performing a validation check.
+	 * 
+	 * If the validation check passes, the value of the $userID property is
+	 * set to the provided $userID value using dynamic property access. The
+	 * property name is determined using the getIDNAME() method, which provides
+	 * flexibility in accessing the correct property based on the entity
+	 * implementation.
+	 * 
+	 * Within the method, there is a validation check to ensure that the entity
+	 * is in the TRANSIENT state. If the entity isn't in the TRANSIENT state,
+	 * an \InvalidArgumentException is thrown with a custom error message
+	 * indicating that it's not possible to update the user ID in the current
+	 * state.
+	 * 
+	 * @param string $userID Database primary key @example 5
+	 * 
+	 * @return void
+	 * @throws \InvalidArgumentException
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		public
+	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public function setUserid(int $userID): void
+	{
+		if ($this->getSTATE() !== EntityState::TRANSIENT)
+			throw new \InvalidArgumentException("It's not possible to update the " .
+			$this->getIDNAME() . " in the state " . $this->getSTATE(), 1);
+		
+		$this->{$this->getIDNAME()} = $userID;
 	}
 
 	/**
@@ -255,7 +293,7 @@ class User extends EntityDatabase
 		$this->userSALT = $userSALT;
 	}
 
-	public function getUserid(): int
+	public function getUserid(): ?int
 	{
 		return $this->{$this->getIDNAME()};
 	}
