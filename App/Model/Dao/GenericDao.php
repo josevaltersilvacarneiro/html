@@ -532,4 +532,28 @@ class GenericDao extends Sql
 
 		return $stmt !== false && $stmt->rowCount() > 0;
 	}
+
+	/**************************************************************/
+	/**************************************************************/
+	// IMPROVED                                              CRUD //
+
+	/**
+	 * This method is responsible for inserting a record into the database
+	 * and returning the last inserted ID if the insertion is successful.
+	 * 
+	 * @param		array $record @example array('fooID' => 'bar', 'foo' => 'bar')
+	 * 
+	 * @return		string|false ID inserted on success; false otherwise
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		public
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public function ic(array $record): string|false
+	{
+		return $this->c($record) ? $this->getLastInsertedId() : false;
+	}
 }
