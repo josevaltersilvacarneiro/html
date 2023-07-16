@@ -212,7 +212,7 @@ class User extends EntityDatabase
 				$newUsername[$key] = ucfirst($nm);
 		}
 
-		$this->userNAME = implode(' ', $newUsername);
+		$this->set($this->userNAME, implode(' ', $newUsername));
 	}
 
 	/**
@@ -248,7 +248,7 @@ class User extends EntityDatabase
 		if (filter_var($userEMAIL, FILTER_VALIDATE_EMAIL) === false)
 			throw new \InvalidArgumentException("${userEMAIL} isn't a valid email", 1);
 
-		$this->userEMAIL = $userEMAIL;
+		$this->set($this->userEMAIL, $userEMAIL);
 	}
 
 	/**
@@ -289,8 +289,8 @@ class User extends EntityDatabase
 		if (strlen($userSALT) < 8 || !preg_match("/^[a-f0-9]{64}$/", $userHASH))
 			throw new \InvalidArgumentException("This password isn't valid", 1);
 
-		$this->userHASH = $userHASH;
-		$this->userSALT = $userSALT;
+		$this->set($this->userHASH, $userHASH);
+		$this->set($this->userSALT, $userSALT);
 	}
 
 	public function getUserid(): ?int
