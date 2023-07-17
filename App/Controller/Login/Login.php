@@ -64,7 +64,8 @@ namespace Josevaltersilvacarneiro\Html\App\Controller\Login;
 
 use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
 
-use Josevaltersilvacarneiro\Html\App\Model\Service\{SessionService,	UserService};
+use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
+use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
 use Josevaltersilvacarneiro\Html\Src\Traits\{TraitIO,	TraitRedirect};
 use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateEmail;
@@ -85,7 +86,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateSalt;
  * @method	void	signout()				logs the user out - it's a route
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -139,7 +140,7 @@ final class Login extends HTMLController
 	 * @return	void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -176,21 +177,20 @@ final class Login extends HTMLController
 			if ($newHash === false)
 				return ; // could not find a secure hash
 			
-			$user		= UserService::startUser(uniqueIdentifier: $email);
+			$user		= User::newInstance(UID: $email);
 
-			if ($user === false)
+			if (is_null($user))
 				return ; // unregistered user - possible hacker attack
 
-			if (!password_verify($hash, $user->getUserhash))
+			if (!password_verify($hash, $user->getUserhash()))
 				return ; // the password typed is wrong
 
-			SessionService::restartSession( // change the session user for
-				session: $this->getSession(), user: $user);
+			$this->getSession()->setSessionuser($user); // change the session user for
+			$this->getSession()->flush(); // update in the database
 
-			$ok = UserService::hashUpdate( // hash update
-				uniqueIdentifier: $user->getUserid(), hash: $newHash, salt: $newSalt);
-
-			if ($ok) $user->setPassword(userHASH: $newHash, userSALT: $newSalt);
+			$this->getSession()->getSessionuser() // hash update
+				->setPassword(userHASH: $newHash, userSALT: $newSalt);
+			$this->getSession()->getSessionuser()->flush(); // update in the DB
 
 			// if the hash hasn't been replaced by the new hash
 			// the user will have no major security problems
