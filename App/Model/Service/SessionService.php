@@ -270,14 +270,12 @@ class SessionService extends Service
 	{
 		$cookie			= $_COOKIE[self::KEYWORD];
 		$sessionID		= $cookie ? self::decryptSessionID($cookie) :
-			self::createSession(
-				null
-			);
+			self::createSession(null);
 
 		// $sessionID is false if couldn't create a
 		// session or couldn't decrypt the COOKIE
 		// WARNING: could be a hacker attack
-		
+
 		if ($sessionID === false)
 		{
 			$sessionID = self::createSession(null);
