@@ -37,7 +37,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
-use Josevaltersilvacarneiro\Html\App\Model\Service\{ServiceDatabase};
+use Josevaltersilvacarneiro\Html\App\Model\Service\Service;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
@@ -90,7 +90,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  * @license		GPLv3
  */
 
-class SessionService extends ServiceDatabase
+class SessionService extends Service
 {
 	private const 	LENGTH 		= 60;				# number of random bytes
 	private const	KEYWORD		= "key";			# cookie key
@@ -289,7 +289,7 @@ class SessionService extends ServiceDatabase
 			// it's not possible to create new sessions
 		}
 
-		$session = self::start(Session::class, $sessionID);
+		$session = Session::newInstance($sessionID);
 
 		if (!is_a($session, Session::class))
 		{
@@ -300,7 +300,7 @@ class SessionService extends ServiceDatabase
 			// WARNING: if the used session is no longer active,
 			// create a new
 
-			$session		= self::start(Session::class, $sessionID);
+			$session		= Session::newInstance($sessionID);
 
 			// try again to read a session
 
