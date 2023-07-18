@@ -77,7 +77,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
  * interface.
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\App\Controller\Controller
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -90,7 +90,15 @@ abstract class HTMLController extends HTMLRender implements Controller
 
 	public function __construct()
 	{
-		$this->setSession(SessionService::startSession());
+		$session = SessionService::startSession();
+
+		if ($session === false)
+			die();
+		
+		// it's not possible to use this application without
+		// first creating a session
+
+		$this->setSession($session);
 	}
 
 	protected function setSession(Session $session): void
