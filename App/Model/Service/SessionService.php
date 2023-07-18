@@ -83,7 +83,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  * @method bool				destroySession(Session $session)	updates sessionON field to false
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
  * @see			https://www.php.net/manual/en/function.openssl-get-cipher-methods.php
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -258,7 +258,7 @@ class SessionService extends Service
 	 * @return Session|false $session on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/reserved.variables.cookies.php
 	 * @see			https://www.php.net/manual/en/function.is-a.php
@@ -289,7 +289,7 @@ class SessionService extends Service
 
 		$session = Session::newInstance($sessionID);
 
-		if (!is_a($session, Session::class))
+		if (is_null($session))
 		{
 			$sessionID = self::createSession(null);
 
@@ -302,7 +302,7 @@ class SessionService extends Service
 
 			// try again to read a session
 
-			if (!is_a($session, Session::class)) return false;
+			if (is_null($session)) return false;
 		
 			// it's not possible to read sessions from the database
 		}
