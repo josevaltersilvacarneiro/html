@@ -114,11 +114,6 @@ class User extends EntityDatabase
 			throw new \InvalidArgumentException("This password isn't valid", 1);
 	}
 
-	public function __toString(): string
-	{
-		return $this->getUserid() . " => " . $this->getUsername();
-	}
-
 	public static function getIDNAME(): string
 	{
 		return self::IDNAME;
