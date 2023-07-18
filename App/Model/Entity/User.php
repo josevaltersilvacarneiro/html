@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.4
+ * @version		0.5
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -84,7 +84,7 @@ class User extends EntityDatabase
 	 * @throws \DomainException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
@@ -92,7 +92,7 @@ class User extends EntityDatabase
 	 * @see			https://www.php.net/manual/en/function.filter-var.php
 	 * @see			https://www.php.net/manual/en/filter.filters.validate.php
 	 * @see			https://www.php.net/manual/en/function.password-get-info.php
-	 * @see			https://www.php.net/manual/en/class.domainexception.php
+	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
@@ -103,15 +103,15 @@ class User extends EntityDatabase
 	)
 	{
 		if (strlen($userNAME) > 80 || !preg_match("/^.{3,} .*.{3,}$/", $userNAME))
-			throw new \DomainException("${userNAME} isn't a valid name", 1);
+			throw new \InvalidArgumentException("${userNAME} isn't a valid name", 1);
 
 		if (filter_var($userEMAIL, FILTER_VALIDATE_EMAIL) === false)
-			throw new \DomainException("${userEMAIL} isn't a valid email", 1);
+			throw new \InvalidArgumentException("${userEMAIL} isn't a valid email", 1);
 
 		$passInfo = password_get_info($userHASH);
 
 		if (strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
-			throw new \DomainException("This password isn't valid", 1);
+			throw new \InvalidArgumentException("This password isn't valid", 1);
 	}
 
 	public function __toString(): string
