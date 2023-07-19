@@ -102,7 +102,7 @@ final class Dispatch extends Route
 			$log->setFile(__FILE__);
 			$log->setLine(__LINE__);
 
-			$user = $this->obj->getSession()->getSessionuser();
+			$user = $this->obj->getSession()->getSessionuser()->getUsername();
 
 			$log->store("The user ${user} made a bad request # " . $e->getMessage());
 		}
