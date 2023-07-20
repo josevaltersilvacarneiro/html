@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.5
+ * @version		0.6
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -316,5 +316,33 @@ class User extends EntityDatabase
 	public function isUserActive(): bool
 	{
 		return $this->userON;
+	}
+
+	/**
+	 * This method is responsible for safely deactivating the current user by
+	 * setting the $this->userON property to false. It ensures that any changes
+	 * to the user entity are synchronized with the database before deactivation.
+	 * 
+	 * @return bool true on success; false otherwise
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		public
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public function killme(): bool
+	{
+		$this->userON = false;
+
+		if ($this->flush()) return true;
+
+		$this->userON = true;
+
+		// if the flush operation returns false, the method sets $this->userON
+		// back to true, indicating that the user remains active, and returns false
+
+		return false;
 	}
 }
