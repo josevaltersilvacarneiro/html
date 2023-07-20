@@ -47,7 +47,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.4
+ * @version		0.5
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -340,5 +340,36 @@ final class Session extends EntityDatabase
 	public function isUserLogged(): bool
 	{
 		return !is_null($this->getSessionuser());
+	}
+
+	/**
+	 * This method is responsible for safely ending the current session and
+	 * ensuring that the entity is synchronized with the database before
+	 * terminating the session. It returns true on successful session termination
+	 * and synchronization, and false if there is an error during the process.
+	 * 
+	 * @return bool true on success; false otherwise
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		public
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public function killme(): bool
+	{
+		$this->sessionON = false;
+
+		if ($this->flush()) return true;
+
+		$this->sessionON = true;
+
+		// the method sets $this->sessionON back to true to keep the session
+		// active and returns false, indicating that the session termination
+		// process encountered an error or synchronization with the database
+		// failed
+
+		return false;
 	}
 }
