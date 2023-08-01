@@ -1,0 +1,9 @@
+# .gitignore
+#
+# Author: José V S Carneiro <git@josevaltersilvacarneiro.net>
+# GPLv3
+
+# testing programs
+Tests/
+
+Log/
