@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDate;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 
@@ -41,7 +41,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
  * @var ?User				$sessionUSER	foreign key
  * @var string				$sessionIP		ip @example {192.168.1.56, ::1}
  * @var string				$sessionPORT	port @example {5632}
- * @var EntityDate			$sessionDATE	date object of last access
+ * @var EntityDateTime			$sessionDATE	date object of last access
  * @var bool				$sessionON		true if session is valid; false otherwise
  *
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
@@ -75,7 +75,7 @@ final class Session extends EntityDatabase
 	 * @param ?User		$sessionUSER
 	 * @param string	$sessionIP
 	 * @param string	$sessionPORT
-	 * @param EntityDate $sessionDATE
+	 * @param EntityDateTime $sessionDATE
 	 * @param bool		$sessionON
 	 * 
 	 * @return void
@@ -95,7 +95,7 @@ final class Session extends EntityDatabase
 	public function __construct(
 		private string $sessionID, #[User] private ?User $sessionUSER,
 		private string $sessionIP, private string $sessionPORT,
-		#[EntityDate] private EntityDate $sessionDATE, private bool $sessionON
+		#[EntityDateTime] private EntityDateTime $sessionDATE, private bool $sessionON
 	)
 	{
 		if (!preg_match("/^([a-f0-9]{64})$/", $sessionID))
@@ -116,7 +116,7 @@ final class Session extends EntityDatabase
 		if (!preg_match("/^[0-9]{1,5}$/", $sessionPORT))
 			throw new \DomainException("${sessionPORT} isn't a valid port", 1);
 
-		if ($sessionDATE > new EntityDate())
+		if ($sessionDATE > new EntityDateTime())
 			throw new \DomainException($sessionDATE->getDatabaseRepresentation() .
 				" is in the future", 1);
 	}
@@ -252,7 +252,7 @@ final class Session extends EntityDatabase
 	 * date, an \InvalidArgumentException is thrown with a custom error
 	 * message indicating that the date isn't valid.
 	 * 
-	 * @param EntityDate $sessionDATE
+	 * @param EntityDateTime $sessionDATE
 	 * 
 	 * @return void
 	 * @throws \InvalidArgumentException
@@ -265,7 +265,7 @@ final class Session extends EntityDatabase
  	 * @license		GPLv3
 	 */
 
-	public function setSessiondate(EntityDate $sessionDATE): void
+	public function setSessiondate(EntityDateTime $sessionDATE): void
 	{
 		if ($sessionDATE < $this->getSessiondate())
 			throw new \InvalidArgumentException($sessionDATE->getDatabaseRepresentation() .
@@ -327,7 +327,7 @@ final class Session extends EntityDatabase
 		return $this->sessionPORT;
 	}
 
-	public function getSessiondate(): EntityDate
+	public function getSessiondate(): EntityDateTime
 	{
 		return $this->sessionDATE;
 	}
