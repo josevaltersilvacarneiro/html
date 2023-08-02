@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDate;
 use Josevaltersilvacarneiro\Html\App\Model\Service\Service;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
@@ -83,7 +84,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  * @method bool				destroySession(Session $session)	updates sessionON field to false
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
+ * @version		0.4
  * @see			https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
  * @see			https://www.php.net/manual/en/function.openssl-get-cipher-methods.php
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -360,7 +361,7 @@ class SessionService extends Service
 	 * @return	string|false $sessioID on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.setcookie.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -372,17 +373,16 @@ class SessionService extends Service
 		$sessionID		= self::generateSessionID();
 		$sessionUSER	= is_null($user) ? null : $user->getUserid();
 
-		$dao			= new SessionDao();
+		$session		= new Session(
+			sessionID:		$sessionID,
+			sessionUSER:	$sessionUSER,
+			sessionIP:		__IP__,
+			sessionPORT:	__PORT__,
+			sessionDATE:	new EntityDate(),
+			sessionON:		true
+		);
 
-		$success		= $dao->c(array(
-				'sessionID' 	=> $sessionID,
-				'sessionUSER'	=> $sessionUSER,
-
-				'sessionIP'		=> __IP__,
-				'sessionPORT'	=> __PORT__,
-		));
-		
-		if ($success) {
+		if ($session->flush()) {
 			$sessionIDEncrypted = self::encryptSessionID($sessionID);
 			setcookie(SessionService::KEYWORD, $sessionIDEncrypted);
 			return $sessionID;
