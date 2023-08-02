@@ -37,7 +37,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDate;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
 use Josevaltersilvacarneiro\Html\App\Model\Service\Service;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
@@ -378,7 +378,7 @@ class SessionService extends Service
 			sessionUSER:	$sessionUSER,
 			sessionIP:		__IP__,
 			sessionPORT:	__PORT__,
-			sessionDATE:	new EntityDate(),
+			sessionDATE:	new EntityDateTime(),
 			sessionON:		true
 		);
 
