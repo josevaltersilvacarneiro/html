@@ -39,7 +39,7 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
  * @license		GPLv3
  */
 
-final class EntityDate extends \DateTimeImmutable implements Entity
+final class EntityDateTime extends \DateTimeImmutable implements Entity
 {
 	public function getDatabaseRepresentation(): mixed
     {
