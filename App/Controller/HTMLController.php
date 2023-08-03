@@ -65,7 +65,7 @@ namespace Josevaltersilvacarneiro\Html\App\Controller;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\Session;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\Session;
 use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
 /**

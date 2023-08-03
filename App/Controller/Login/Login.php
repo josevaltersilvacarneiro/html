@@ -64,7 +64,7 @@ namespace Josevaltersilvacarneiro\Html\App\Controller\Login;
 
 use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\User;
 use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
 use Josevaltersilvacarneiro\Html\Src\Traits\{TraitIO,	TraitRedirect};

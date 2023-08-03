@@ -62,7 +62,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Controller;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\Session;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\Session;
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
 
 /**
