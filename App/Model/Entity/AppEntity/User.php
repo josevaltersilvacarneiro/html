@@ -28,7 +28,6 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
 
 /**
  * The User Entity represents a user. It encapsulates the user's
@@ -43,7 +42,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.6
+ * @version		0.7
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -123,44 +122,6 @@ class User extends EntityDatabase
 		$field = gettype($uID) === 'string' ? 'userEMAIL' : self::getIDNAME();
 
 		return $field;
-	}
-
-	/**
-	 * This method is responsible for setting the $userID property with
-	 * the provided value, while also performing a validation check.
-	 * 
-	 * If the validation check passes, the value of the $userID property is
-	 * set to the provided $userID value using dynamic property access. The
-	 * property name is determined using the getIDNAME() method, which provides
-	 * flexibility in accessing the correct property based on the entity
-	 * implementation.
-	 * 
-	 * Within the method, there is a validation check to ensure that the entity
-	 * is in the TRANSIENT state. If the entity isn't in the TRANSIENT state,
-	 * an \InvalidArgumentException is thrown with a custom error message
-	 * indicating that it's not possible to update the user ID in the current
-	 * state.
-	 * 
-	 * @param string $userID Database primary key @example 5
-	 * 
-	 * @return void
-	 * @throws \InvalidArgumentException
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function setUserid(int $userID): void
-	{
-		if ($this->getSTATE() !== EntityState::TRANSIENT)
-			throw new \InvalidArgumentException("It's not possible to update the " .
-			$this->getIDNAME() . " in the state " . $this->getSTATE(), 1);
-		
-		$this->{$this->getIDNAME()} = $userID;
 	}
 
 	/**
