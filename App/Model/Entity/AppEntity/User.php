@@ -28,6 +28,7 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
 
 /**
  * The User Entity represents a user. It encapsulates the user's
