@@ -36,7 +36,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\{Session,		User};
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\{Session, User};
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
 use Josevaltersilvacarneiro\Html\App\Model\Service\Service;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
