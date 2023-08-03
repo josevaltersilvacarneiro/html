@@ -3,10 +3,8 @@
 declare(strict_types=1);
 
 /**
- * The Entity package contains classes that represent the database
- * tables as entities. These entity classes encapsulate the structure
- * and behavior of specific tables, providing a convenient way to
- * interact with the corresponding database records.
+ * This package is a sub-package within the Entity package and focuses on
+ * handling entities that represent tables in the database.
  * 
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -26,7 +24,7 @@ declare(strict_types=1);
  * @package     Josevaltersilvacarneiro\Html\App\Model\Entity
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
+namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
