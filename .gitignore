@@ -7,3 +7,9 @@
 Tests/
 
 Log/
+
+# vendor
+Src/vendor/
+
+# generated automatically by composer
+Src/composer.lock
