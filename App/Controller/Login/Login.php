@@ -185,12 +185,12 @@ final class Login extends HTMLController
 			if (!password_verify($hash, $user->getUserhash()))
 				return ; // the password typed is wrong
 
-			$this->getSession()->setSessionuser($user); // change the session user for
+			$this->getSession()->setUserSessionuser($user); // change the session user for
 			$this->getSession()->flush(); // update in the database
 
-			$this->getSession()->getSessionuser() // hash update
+			$this->getSession()->getUserSessionuser() // hash update
 				->setPassword(userHASH: $newHash, userSALT: $newSalt);
-			$this->getSession()->getSessionuser()->flush(); // update in the DB
+			$this->getSession()->getUserSessionuser()->flush(); // update in the DB
 
 			// if the hash hasn't been replaced by the new hash
 			// the user will have no major security problems
@@ -227,7 +227,8 @@ final class Login extends HTMLController
 
 		// if the user isn't logged in, couldn't logout
 
-		SessionService::destroySession(session: $this->getSession());
+		$userSession = $this->getSession();
+		SessionService::destroySession(userSession: $userSession);
 
 		TraitRedirect::redirect(url: self::MYSELF);
 	}

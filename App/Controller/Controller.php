@@ -62,7 +62,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Controller;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\Session;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession;
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
 
 /**
@@ -72,10 +72,10 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
  * belong to every type of controller for handling page-specific
  * logic and generating the appropriate content.
  *
- * @method  Session getSession()	returns the active session
+ * @method  UserSession getSession()	returns the active session
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -83,5 +83,5 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
 
 interface Controller extends RenderInterface
 {
-    public function getSession(): Session;
+    public function getSession(): UserSession;
 }
