@@ -238,7 +238,7 @@ abstract class EntityDatabase implements Entity
 	 * @return mixed ID field value
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
@@ -246,7 +246,7 @@ abstract class EntityDatabase implements Entity
 
     public function getDatabaseRepresentation(): mixed
     {
-        return $this->{self::getIDNAME()};
+        return $this->getID();
     }
 
 	/********************************************************/
