@@ -32,10 +32,11 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Dao;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao;
 
 /**
- * The SessionDao is responsible for managing session-related data in
- * the database. It provides methods to store, retrieve, update, and
- * delete session entities, ensuring efficient session management and
- * persistence.
+ * The RequestDao class is a specialized DAO within the Dao package, dedicated
+ * to managing user requests in the application. It leverages the generic
+ * database operations from the GenericDao class and provides a well-organized
+ * way to handle user request data in the database, making it easier to maintain
+ * and interact with request entities throughout the application.
  *
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
  * @version		0.1
@@ -44,10 +45,10 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao;
  * @license		GPLv3
  */
 
-final class SessionDao extends GenericDao
+final class RequestDao extends GenericDao
 {
-    public function __construct()
-    {
-        parent::__construct(_TB_SESSIONNAME);
-    }
+	public function __construct()
+	{
+		parent::__construct(_TB_REQUESTNAME);
+	}
 }

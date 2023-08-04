@@ -36,10 +36,10 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Service;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\{Session, User};
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\{UserSession, User, Request};
+
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
 use Josevaltersilvacarneiro\Html\App\Model\Service\Service;
-use Josevaltersilvacarneiro\Html\App\Model\Dao\SessionDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
 
 /**
@@ -77,14 +77,14 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\ServiceLog;
  * @var string		KEYWORD		cookie key
  * @var string		ALGOCRYPT	name of the algorithm used for encrypting the session
  * @var	string		PASSCRYPT	passphrase to encrypt the session
- *
- * @method Session|false	startSession()	initializes the session
- * @method bool				restartSession(Session $session, User $user)	updates session's user
- * @method string|false		createSession(?User $user)	creates a new session and stores it in the database
- * @method bool				destroySession(Session $session)	updates sessionON field to false
+ * 
+ * @method UserSession|false	startSession()	initializes the session
+ * @method bool					restartSession(UserSession & $userSession, User $user)	updates session's user
+ * @method string|false			createSession(?User $user)	creates a new session and stores it in the database
+ * @method bool					destroySession(UserSession & $userSession)	updates sessionON field to false
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.4
+ * @version		0.5
  * @see			https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
  * @see			https://www.php.net/manual/en/function.openssl-get-cipher-methods.php
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -251,15 +251,15 @@ class SessionService extends Service
 	}
 
 	/**
-	 * This method is responsible for initiating a new session for
-	 * a user within the application. It performs necessary actions
-	 * to start a session, such as creating a $sessionID, setting
-	 * session variables, and initializing session-specific data.
+	 * This method is responsible for initiating a new session for a user
+	 * within the application. It performs necessary actions to start a session,
+	 * such as creating a $sessionID, setting userSession variables, and
+	 * initializing userSession-specific data.
 	 * 
-	 * @return Session|false $session on success; false otherwise
+	 * @return UserSession|false $userSession on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
+	 * @version		0.4
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/reserved.variables.cookies.php
 	 * @see			https://www.php.net/manual/en/function.is-a.php
@@ -267,98 +267,130 @@ class SessionService extends Service
  	 * @license		GPLv3
 	 */
 
-	public static function startSession(): Session|false
+	public static function startSession(): UserSession|false
 	{
 		$cookie			= $_COOKIE[self::KEYWORD];
-		$sessionID		= $cookie ? self::decryptSessionID($cookie) :
+		$userSessionID	= $cookie ? self::decryptSessionID($cookie) :
 			self::createSession(null);
 
-		// $sessionID is false if couldn't create a
-		// session or couldn't decrypt the COOKIE
+		// $userSessionID is false if couldn't create a
+		// userSession or couldn't decrypt the COOKIE
 		// WARNING: could be a hacker attack
 
-		if ($sessionID === false)
+		if ($userSessionID === false)
 		{
-			$sessionID = self::createSession(null);
+			$userSessionID = self::createSession(null);
 
-			// try again to create a session
+			// try again to create a userSession
 
-			if ($sessionID === false) return false;
+			if ($userSessionID === false) return false;
 
-			// it's not possible to create new sessions
+			// it's not possible to create new userSessions
 		}
 
-		$session = Session::newInstance($sessionID);
+		$userSession = UserSession::newInstance($userSessionID);
 
-		if (is_null($session))
+		if (is_null($userSession))
 		{
-			$sessionID = self::createSession(null);
+			$userSessionID	= self::createSession(null);
 
-			// $session is false if the record cannot be found in
+			// $userSession is false if the record cannot be found in
 			// the database
-			// WARNING: if the used session is no longer active,
+			// WARNING: if the used userSession is no longer active,
 			// create a new
 
-			$session		= Session::newInstance($sessionID);
+			$userSession	= UserSession::newInstance($userSessionID);
 
 			// try again to read a session
 
-			if (is_null($session)) return false;
+			if (is_null($userSession)) return false;
 		
-			// it's not possible to read sessions from the database
+			// it's not possible to read userSessions from the database
 		}
 
-		return $session;
+		return $userSession;
 	}
 
 	/**
-	 * This method is responsible for restarting an existing session
-	 * for a specified user. It takes a Session object and a User
-	 * object as input and performs necessary actions to restart the
-	 * session, ensuring continuity and maintaining session-related
-	 * data and variables.
+	 * This method is responsible for restarting an existing userSession for a
+	 * specified user. It takes a UserSession object and a User object as input
+	 * and performs necessary actions to restart the userSession, ensuring
+	 * continuity and maintaining userSession-related data and variables.
 	 * 
-	 * @param 	Session		$session
-	 * @param 	User		$user
+	 * @param 	UserSession	&$userSession Any userSession
+	 * @param 	User		$user New user
 	 * 
 	 * @return	bool true on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
-	public static function restartSession(Session $session, User $user): bool
+	public static function restartSession(UserSession & $userSession, User $user): bool
 	{
-		$dao = new SessionDao();
+		$userSession->setUserSessionuser($user);
 
-		$newSession = array(
-			'sessionID'		=>	$session->getSessionid(),
-			'sessionUSER'	=>	$user->getUserid(),
-		);
-
-		if (!$dao->u($newSession)) return false;
-
-		// if the record couldn't be updated in the
-		// database, return false
-
-		$session->setSessionuser($user);
-
-		return true;
+		return $userSession->flush();
 	}
 
 	/**
-	 * This method is responsible for creating a new session
-	 * for either a User or a Visitor within the application.
-	 * It takes a User or Visitor object as input and performs
-	 * necessary actions to initiate a new session, generating
-	 * a $sessionID and returning it.
+	 * This method is responsible for creating a new session for either a User
+	 * within the application. It takes a User object as input and performs
+	 * necessary actions to initiate a new session, generating a $userSessionID
+	 * and returning it.
 	 * 
 	 * @param 	?User $user
 	 * 
 	 * @return	string|false $sessioID on success; false otherwise
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.3
+	 * @access		public
+	 * @see			https://www.php.net/manual/en/function.setcookie.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	public static function createSession(?User $user): string|false
+	{
+		$userSessionID		= self::generateSessionID();
+		$userSessionUSER	= is_null($user) ? null : $user->getUserid();
+
+		$userSessionREQUEST	= new Request(
+			requestID:		null,
+			requestIP:		__IP__,
+			requestPORT:	__PORT__,
+			requestACCESS:	new EntityDateTime()
+		);
+
+		$userSession		= new UserSession(
+			userSessionID:		$userSessionID,
+			userSessionUSER:	$userSessionUSER,
+			userSessionREQUEST:	$userSessionREQUEST,
+			userSessionON:		true
+		);
+
+		if ($userSession->flush()) {
+			$sessionIDEncrypted = self::encryptSessionID($userSessionID);
+			setcookie(SessionService::KEYWORD, $sessionIDEncrypted);
+			return $userSessionID;
+		}
+
+		return false;
+	}
+
+	/**
+	 * This method is responsible for destroying or terminating an existing
+	 * userSession within the application. It takes a UserSession object as
+	 * input and performs necessary actions to invalidate and remove the
+	 * userSession, clearing any associated userSession data and variables.
+	 * 
+	 * @param 	UserSession &$userSession Any userSession
+	 * 
+	 * @return	bool true on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @version		0.2
@@ -368,57 +400,8 @@ class SessionService extends Service
  	 * @license		GPLv3
 	 */
 
-	public static function createSession(?User $user): string|false
+	public static function destroySession(UserSession & $userSession): bool
 	{
-		$sessionID		= self::generateSessionID();
-		$sessionUSER	= is_null($user) ? null : $user->getUserid();
-
-		$session		= new Session(
-			sessionID:		$sessionID,
-			sessionUSER:	$sessionUSER,
-			sessionIP:		__IP__,
-			sessionPORT:	__PORT__,
-			sessionDATE:	new EntityDateTime(),
-			sessionON:		true
-		);
-
-		if ($session->flush()) {
-			$sessionIDEncrypted = self::encryptSessionID($sessionID);
-			setcookie(SessionService::KEYWORD, $sessionIDEncrypted);
-			return $sessionID;
-		}
-
-		return false;
-	}
-
-	/**
-	 * This method is responsible for destroying or terminating
-	 * an existing session within the application. It takes a
-	 * Session object as input and performs necessary actions to
-	 * invalidate and remove the session, clearing any associated
-	 * session data and variables.
-	 * 
-	 * @param 	Session $session
-	 * 
-	 * @return	bool true on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.setcookie.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public static function destroySession(Session $session): bool
-	{
-		$dao = new SessionDao();
-
-		$session = array(
-			'sessionID'	=>	$session->getSessionid(),
-			'sessionON'	=>	false
-		);
-
-		return $dao->u($session) && setcookie(SessionService::KEYWORD);
+		return $userSession->killme() && setcookie(SessionService::KEYWORD);
 	}
 }
