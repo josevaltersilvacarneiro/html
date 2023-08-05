@@ -140,7 +140,7 @@ final class Login extends HTMLController
 	 * @return	void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -153,8 +153,6 @@ final class Login extends HTMLController
 			return ;
 
 		// if the user already logged in, couldn't login
-
-		$url		= filter_var($url, FILTER_SANITIZE_URL);
 
 		$method		= 'POST';
 
@@ -197,6 +195,10 @@ final class Login extends HTMLController
 			// and his hash will be replaced the next time he
 			// logs in
 
+			if (is_null($url))
+				TraitRedirect::redirect(__URL__);
+
+			$url		= filter_var($url, FILTER_SANITIZE_URL);
 			TraitRedirect::redirect(url: $url === false ? __URL__ : $url);
 		}
 
