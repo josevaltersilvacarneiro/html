@@ -230,7 +230,7 @@ class User extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
@@ -241,7 +241,9 @@ class User extends EntityDatabase
 
 	public function setPassword(string $userHASH, string $userSALT): void
 	{
-		if (strlen($userSALT) < 8 || !preg_match("/^[a-f0-9]{64}$/", $userHASH))
+		$passInfo = password_get_info($userHASH);
+
+		if (strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
 			throw new \InvalidArgumentException("This password isn't valid", 1);
 
 		$this->set($this->userHASH, $userHASH);
