@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Dao\UserSessionDao;
  * @method bool isUserLogged()	true if the user is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.6
+ * @version		0.7
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -129,7 +129,7 @@ final class UserSession extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -141,7 +141,7 @@ final class UserSession extends EntityDatabase
 		if (!(is_null($userSessionUSER) || $userSessionUSER->isUserActive()))
 			throw new \InvalidArgumentException("User isn't active", 1);
 		
-		$this->userSessionUSER = $userSessionUSER;
+		$this->set($this->userSessionUSER, $userSessionUSER);
 	}
 
 	/**
@@ -159,7 +159,7 @@ final class UserSession extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -172,7 +172,7 @@ final class UserSession extends EntityDatabase
 			$userSessionREQUEST->getRequestaccess())
 			throw new \InvalidArgumentException("The request is old", 1);
 
-		$this->userSessionREQUEST = $userSessionREQUEST;
+		$this->set($this->userSessionREQUEST, $userSessionREQUEST);
 	}
 
 	/**
@@ -192,7 +192,7 @@ final class UserSession extends EntityDatabase
 	 * @return void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://en.wikipedia.org/wiki/Boolean_algebra
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -201,7 +201,7 @@ final class UserSession extends EntityDatabase
 
 	public function setUserSessionon(bool $userSessionON): void
 	{
-		$this->userSessionON = $this->$userSessionON && $userSessionON;
+		$this->set($this->userSessionON, $this->$userSessionON && $userSessionON);
 	}
 
 	public function getUserSessionid(): string
