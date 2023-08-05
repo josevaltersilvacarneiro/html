@@ -13,3 +13,6 @@ Src/vendor/
 
 # generated automatically by composer
 Src/composer.lock
+
+# JavaScript will not compile
+Public/JavaScript
