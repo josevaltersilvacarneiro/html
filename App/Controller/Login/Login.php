@@ -173,7 +173,7 @@ final class Login extends HTMLController
 			// logs on to the platform
 
 			$newHash	= password_hash($newHash, PASSWORD_DEFAULT);
-			
+
 			if ($newHash === false)
 				return ; // could not find a secure hash
 			
