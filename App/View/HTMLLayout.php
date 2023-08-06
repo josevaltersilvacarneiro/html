@@ -75,7 +75,10 @@ header('Content-Type: text/html;charset=UTF-8');
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
-		
+
+		<!-- BEGIN bootstrap -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+		<!-- ENDOF bootstrap -->
 		<link rel=stylesheet href="<?=__CSS__ . 'Reset.css'?>">
 		<link rel=stylesheet
 			href="<?=__CSS__ . $this->dir . 'Style-' . __VERSION__ .'.css?id=' . time()?>">
@@ -87,5 +90,8 @@ header('Content-Type: text/html;charset=UTF-8');
 		<?php $this->addMain() ?>
 		<?php $this->addFooter() ?>
 	</body>
+	<!-- BEGIN bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+	<!-- ENDOF bootstrap -->
 	<script type="module" src="<?=__JS__ . 'Public/app.js'?>"></script>
 </html>
