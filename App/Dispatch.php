@@ -62,7 +62,7 @@ final class Dispatch extends Route
      * @return void
      * 
      * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.2
+     * @version   0.3
      * @access    public
      * @see       https://www.php.net/manual/en/function.is-null.php
      * @see       https://www.php.net/manual/en/function.method-exists.php
@@ -84,7 +84,7 @@ final class Dispatch extends Route
 
                 // if the method isn't null and exists
                 // in the controller, call it
-                
+
                 call_user_func_array(
                     [
                     $this->obj,
@@ -103,7 +103,7 @@ final class Dispatch extends Route
             $log->setFile(__FILE__);
             $log->setLine(__LINE__);
 
-            $user = $this->obj->getSession()->getSessionuser()->getUsername();
+            $user = $this->obj->getSession()->getUserSessionuser()->getUsername();
 
             $log->store("The user ${user} made a bad request # " . $e->getMessage());
         }
