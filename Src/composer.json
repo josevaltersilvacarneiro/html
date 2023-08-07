@@ -5,7 +5,6 @@
     "license": "GPLv3",
     "autoload": {
         "psr-4": {
-            "Josevaltersilvacarneiro\\Html\\": "../",
             "Josevaltersilvacarneiro\\Html\\": "../"
         }
     },
