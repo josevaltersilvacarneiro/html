@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "Josevaltersilvacarneiro\\Html\\": "../"
-        }
+        },
+	"files": ["../Settings/Settings.php"]
     },
     "authors": [
         {
