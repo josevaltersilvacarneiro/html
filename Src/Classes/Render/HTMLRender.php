@@ -25,15 +25,17 @@
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
+use Twig\Environment;
+use \Twig\Loader\FilesystemLoader;
 
 /**
  * This class is specific to render HTML pages.
- *
+ * 
  * @var		string	$headerTitle		page title
  * @var		string	$headerDescription	page description
  * @var		string	$keywords			page keywords
  * @var		string	$robots				page robots [ All, Index, Follow, NoIndex, NoFollow, None, NoArchive [
- *
+ * 
  * @method	void	setTitle(string $title)						sets up the head title
  * @method	void	setDescription(string $headerDescription)	sets up the head title
  * @method	void	setKeywords(string $keywords)				sets up the head keywords
@@ -43,14 +45,11 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
  * @method	string	getDescription()		returns the head description
  * @method	string	getKeywords()			returns the head keywords
  * @method	string	getRobots()				returns the head robots
- *
- * @method	void	addHeader()					renders the page header
- * @method	void	addMain()					renders the page main
- * @method	void	addFooter()					renders the page footer
- * @method  void    renderLayout()          	renders the layout
- *
+ * 
+ * @method  void    renderLayout()          renders the layout
+ * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.6
+ * @version		0.7
  * @abstract
  * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -104,23 +103,76 @@ abstract class HTMLRender extends Render
 		return $this->robots;
 	}
 
-	protected function addHeader(): void
+	private function addHeader(): array
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Header-" . __VERSION__ . ".php");
+		$header = $this->getDir() . "Header-" . __VERSION__ . ".html.twig";
+		$headerFile = self::PATH . $header;
+
+		if (!$this->fexists($headerFile))
+			return array();
+
+		return array(
+			// its variables
+			'HEADER_'	=> $header
+		);
 	}
 
-	protected function addMain(): void
+	private function addMain(): array
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Main-"   . __VERSION__ . ".php");
+		$main = $this->getDir() . "Main-" . __VERSION__ . ".html.twig";
+		$mainFile = self::PATH . $main;
+
+		if (!$this->fexists($mainFile))
+			return array();
+
+		return array(
+			// its variables
+			'MAIN_'		=> $main
+		);
 	}
 
-	protected function addFooter(): void
+	private function addFooter(): array
 	{
-		$this->importPage(self::PATH, $this->getDir(), "Footer-" . __VERSION__ . ".php");
+		$footer = $this->getDir() . "Footer-" . __VERSION__ . ".html.twig";
+		$footerFile = self::PATH . $footer;
+
+		if (!$this->fexists($footerFile))
+			return array();
+
+		return array(
+			// its variables
+			'FOOTER_'	=> $footer
+		);
 	}
 
 	public function renderLayout(): void   
     {
-        $this->import(self::PATH . 'HTMLLayout.php');
+		$loader = new FilesystemLoader(self::PATH);
+		$twig	= new Environment($loader);
+
+		$glbs = array(
+			'TITLE_'		=> $this->getTitle(),
+			'DESCRIPTION_'	=> $this->getDescription(),
+			'KEYWORDS_'		=> $this->getKeywords(),
+			'AUTHOR_'		=> __AUTHOR__,
+			'URL_'			=> __URL__,
+			'ROBOTS_'		=> $this->getRobots(),
+			'CSS_'			=> __CSS__,
+			'DIR_'			=> $this->getDir(),
+			'VERSION_'		=> __VERSION__,
+			'JS_'			=> __JS__,
+			'IMG_'			=> __IMG__
+		);
+
+		$vars = array_merge(
+			$glbs,
+			$this->addHeader(),
+			$this->addMain(),
+			$this->addFooter()
+		);
+
+		header('Content-Type: text/html;charset=UTF-8');
+
+		echo $twig->render('HTMLLayout.html.twig', $vars);
 	}
 }
