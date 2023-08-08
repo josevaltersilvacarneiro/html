@@ -1,26 +1,25 @@
 <!--
- * This package is responsible for displaying
- * the layout.
- *
+ * This package is responsible for displaying the layout.
+ * 
  * Copyright (C) 2023, José V S Carneiro
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,    
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * @package     Josevaltersilvacarneiro\Html\App\View
 -->
 
-<!--
+{#
  * DOCUMENTATION
  * 
  * What is available for use and can be used:
@@ -30,7 +29,7 @@
  * KEYWORDS_		- PAGE'S KEYWORDS
  * ROBOTS_			- PAGE'S ROBOTS, i.e. the indexing level for the page
  * DIR_				- PAGE'S DIRECTORY, i.e. the dir according to the served page (for example, Login/)
- *
+ * 
  * HEADER_			- PATH TO THE FILE CONTAINING THE PAGE'S HEADER
  * MAIN_			- PATH TO THE FILE CONTAINING THE PAGE'S MAIN BODY
  * FOOTER_			- PATH TO THE FILE CONTAINING THE PAGE'S FOOTNOTE
@@ -38,10 +37,10 @@
  * In addition, all global variables are available here.
  * 
  * @author		José V S Carneiro
- * @version		0.5
+ * @version		0.6
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
--->
+#}
 
 {% set CURRENT_YEAR_	= "now"|date("Y") %}
 {% set LOGO_			= IMG_ ~ 'Code.png' %}
