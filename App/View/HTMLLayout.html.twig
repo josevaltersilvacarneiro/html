@@ -43,6 +43,9 @@
  * @license		GPLv3
 -->
 
+{% set CURRENT_YEAR_	= "now"|date("Y") %}
+{% set LOGO_			= IMG_ ~ 'Code.png' %}
+
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
@@ -53,7 +56,7 @@
 		<meta name=description content="{{ DESCRIPTION_ }}">
 		<meta name=keywords content="{{ KEYWORDS_ }}">
 		<meta name=author content="{{ AUTHOR_ }}">
-		<meta name=copyright content="Copyright (C) {{ "now"|date("Y") }}, {{ AUTHOR_ }}">
+		<meta name=copyright content="Copyright (C) {{ CURRENT_YEAR_ ~ ", " ~ AUTHOR_ }}">
 		<meta name=generator content="Vim">
 		<meta name=rating content="14 years">
 		<meta http-equiv=cache-control name=no-cache>
