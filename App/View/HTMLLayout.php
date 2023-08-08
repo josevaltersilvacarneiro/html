@@ -44,7 +44,7 @@ header('Content-Type: text/html;charset=UTF-8');
  * to find out which.
  *
  * @author		José V S Carneiro
- * @version		0.3
+ * @version		0.4
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
@@ -80,6 +80,7 @@ header('Content-Type: text/html;charset=UTF-8');
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 		<!-- ENDOF bootstrap -->
 		<link rel=stylesheet href="<?=__CSS__ . 'Reset.css'?>">
+		<link rel=stylesheet href="<?=__CSS__ . 'Style.css?id=' . time()?>">
 		<link rel=stylesheet
 			href="<?=__CSS__ . $this->dir . 'Style-' . __VERSION__ .'.css?id=' . time()?>">
 		
