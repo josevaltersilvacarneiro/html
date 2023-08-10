@@ -37,7 +37,7 @@ use \PDOException;
  * @method void connectDB() sets up the database connection
  * 
  * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version 0.2
+ * @version 0.3
  * @abstract
  * @see https://www.php.net/manual/en/book.pdo.php
  * @copyright Copyright (C) 2023, José V S Carneiro
@@ -56,9 +56,10 @@ abstract class Connect
 		} catch (PDOException $e) {
 			$log = new PDOLog();
 			$log->setFile(__FILE__);
-			$log->setLine(__LINE__);
+			$log->setLine($e->getLine());
 			$log->store("It wasn't possible access the database");
-			die(2);
+
+			throw new ConnectException($e);
 		}
 	}
 }
