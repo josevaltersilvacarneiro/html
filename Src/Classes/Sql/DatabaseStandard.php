@@ -44,7 +44,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
  * @method string generateDeleteStandard(string $table, array $uniqueIdentifiers)
  *
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			https://en.wikipedia.org/wiki/SQL
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -78,44 +78,52 @@ class DatabaseStandard
 
 	public static function generatePrimaryKeysStandard(string $table): string
 	{
-		$query = "SELECT COLUMN_NAME
+		$query = <<<QUERY
+			SELECT	COLUMN_NAME
 			FROM	INFORMATION_SCHEMA.COLUMNS
 			WHERE	TABLE_NAME	= :$table
-			AND		COLUMN_KEY	= 'PRI';";
+			AND		COLUMN_KEY	= 'PRI';"
+		QUERY;
 
 		return $query;
 	}
 
 	public static function generatePrimaryKeysIncremented(string $table): string
 	{
-		$query = "SELECT COLUMN_NAME
+		$query = <<<QUERY
+			SELECT	COLUMN_NAME
 			FROM	INFORMATION_SCHEMA.COLUMNS
 			WHERE	TABLE_NAME	= :$table
 			AND		COLUMN_KEY	= 'PRI'
-			AND		EXTRA		= 'AUTO_INCREMENT';";
+			AND		EXTRA		= 'AUTO_INCREMENT';
+		QUERY;
 
 		return $query;
 	}
 
 	public static function generateUniqueIdentifiers(string $table): string
 	{
-		$query = "SELECT COLUMN_NAME
+		$query = <<<QUERY
+			SELECT	COLUMN_NAME
 			FROM	INFORMATION_SCHEMA.COLUMNS
 			WHERE	TABLE_NAME	= :$table
 			AND		(COLUMN_KEY	= 'PRI'
-				OR	COLUMN_KEY	= 'UNI');";
+				OR	COLUMN_KEY	= 'UNI');"
+		QUERY;
 
 		return $query;
 	}
 
 	public static function generateRequiredColumns(string $table): string
 	{
-		$query = "SELECT COLUMN_NAME 
+		$query = <<<QUERY
+			SELECT	COLUMN_NAME 
 			FROM	INFORMATION_SCHEMA.COLUMNS 
 			WHERE	TABLE_NAME = :$table
 			AND		IS_NULLABLE = 'NO'
 			AND		COLUMN_DEFAULT IS NULL
-			AND		EXTRA != 'AUTO_INCREMENT';";
+			AND		EXTRA != 'AUTO_INCREMENT';
+		QUERY;
 
 		return $query;
 	}
