@@ -54,7 +54,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
  * @method bool			d(array $register)	deletes $register
  *
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -252,6 +252,38 @@ class GenericDao extends Sql
 			}, ARRAY_FILTER_USE_KEY);
 	}
 
+	/**
+	 * This method returns a boolean value indicating whether the values
+	 * inside of the record are compatible with database data types.
+	 * 
+	 * @return bool true on success; false otherwise
+	 * 
+	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
+	 * @version		0.1
+	 * @access		private
+	 * @see			https://www.php.net/manual/en/function.gettype.php
+	 * @copyright	Copyright (C) 2023, José V S Carneiro
+ 	 * @license		GPLv3
+	 */
+
+	private function areTypesValid(array $record): bool
+	{
+		foreach ($record as $value) {
+			$valueType = gettype($value);
+
+			switch ($valueType) {
+				case 'array':
+				case 'object':
+				case 'resource':
+				case 'resource (closed)':
+				case 'unknown type':
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 	public function getPrimaryKeys(): array
 	{
 		return $this->primaryKeys;
@@ -282,7 +314,7 @@ class GenericDao extends Sql
 	 * @return		bool
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.array-keys.php
 	 * @see			https://www.php.net/manual/en/function.array-diff-assoc.php
@@ -294,6 +326,9 @@ class GenericDao extends Sql
 	
 	public function c(array $register): bool
 	{
+		if (!$this->areTypesValid($register))
+			return false;
+
 		// each key in the $register represents
 		// a column in the database table; each
 		// value represents the corresponding
@@ -354,7 +389,7 @@ class GenericDao extends Sql
 	 * @return		array|false
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.array-keys.php
 	 * @see			https://www.php.net/manual/en/function.array-intersect.php
@@ -365,6 +400,9 @@ class GenericDao extends Sql
 
 	public function r(array $register): array|false
 	{
+		if (!$this->areTypesValid($register))
+			return false;
+
 		// $register must have at least one field
 		// with UNIQUE CONSTRAINT.
 		// for example, if $this->_TABLE is equal
@@ -416,7 +454,7 @@ class GenericDao extends Sql
 	 * @return		bool
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.array-keys.php
 	 * @see			https://www.php.net/manual/en/function.array-intersect.php
@@ -428,6 +466,9 @@ class GenericDao extends Sql
 
 	public function u(array $register): bool
 	{
+		if (!$this->areTypesValid($register))
+			return false;
+
 		// $register must have at least one field with
 		// UNIQUE CONSTRAINT and must have at least
 		// one field that can be updated.
@@ -490,7 +531,7 @@ class GenericDao extends Sql
 	 * @return		bool
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.array-keys.php
 	 * @see			https://www.php.net/manual/en/function.array-intersect.php
@@ -501,6 +542,9 @@ class GenericDao extends Sql
 
 	public function d(array $register): bool
 	{
+		if (!$this->areTypesValid($register))
+			return false;
+
 		$columns		= array_keys($register);
 
 		// see GenericDao::c(array $register): bool
