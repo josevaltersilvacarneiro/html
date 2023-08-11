@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabaseInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
 
 /**
@@ -55,12 +55,12 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
  * @method bool killme() Deletes this Entity
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
-abstract class EntityDatabase implements Entity
+abstract class EntityDatabase implements EntityDatabaseInterface
 {
     private EntityState $state = EntityState::TRANSIENT; # used for stored purposes
 
