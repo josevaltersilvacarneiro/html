@@ -86,7 +86,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateSalt;
  * @method	void	signout()				logs the user out - it's a route
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -140,7 +140,7 @@ final class Login extends HTMLController
 	 * @return	void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.4
+	 * @version		0.5
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -180,15 +180,14 @@ final class Login extends HTMLController
 			if (is_null($user))
 				return ; // unregistered user - possible hacker attack
 
-			if (!password_verify($hash, $user->getUserhash()))
+			if (!password_verify($hash, $user->getHash()))
 				return ; // the password typed is wrong
 
-			$this->getSession()->setUserSessionuser($user); // change the session user for
-			$this->getSession()->flush(); // update in the database
+			SessionService::restartSession($this->getSession(), $user);
 
-			$this->getSession()->getUserSessionuser() // hash update
-				->setPassword(userHASH: $newHash, userSALT: $newSalt);
-			$this->getSession()->getUserSessionuser()->flush(); // update in the DB
+			$this->getSession()->getUser() // hash update
+				->setPassword(hash: $newHash, salt: $newSalt);
+			$this->getSession()->getUser()->flush(); // update in the DB
 
 			// if the hash hasn't been replaced by the new hash
 			// the user will have no major security problems
@@ -212,7 +211,7 @@ final class Login extends HTMLController
 	 * @return	void
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -226,8 +225,7 @@ final class Login extends HTMLController
 
 		// if the user isn't logged in, couldn't logout
 
-		$userSession = $this->getSession();
-		SessionService::destroySession(userSession: $userSession);
+		SessionService::destroySession($this->getSession());
 
 		TraitRedirect::redirect(url: self::MYSELF);
 	}

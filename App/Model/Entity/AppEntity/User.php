@@ -28,6 +28,7 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityUserInterface;
 
 /**
  * The User Entity represents a user. It encapsulates the user's
@@ -35,25 +36,21 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
  * the user's data.
  *
  * @var ?int		$userID		primary key
- * @var string		$userNAME	full name @example José Carneiro
+ * @var string		$userNAME	fullname @example José Carneiro
  * @var string		$userEMAIL	email @example git@josevaltersilvacarneiro.net
  * @var string		$userHASH	user's password hash
  * @var string		$userSALT	password salt
  * @var bool		$userON		true if the used is logged in; false otherwise
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.7
- * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
+ * @version		0.8
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
 #[UserDao]
-class User extends EntityDatabase
+class User extends EntityDatabase implements EntityUserInterface
 {
-	# name of the property that stores the primary key
-	public const IDNAME = 'userID';
-
 	/**
 	 * The constructor is responsible for initializing a User object with
 	 * the provided values, while also performing validation checks.
@@ -67,8 +64,8 @@ class User extends EntityDatabase
 	 * Password Validation: checks if the length of the $userSALT is less
 	 * than 8 characters or if the $userHASH isn't a SHA256.
 	 * 
-	 * If any of the validation checks fail, a \DomainException is thrown
-	 * with a specific error message corresponding to the validation
+	 * If any of the validation checks fail, a \InvalidArgumentException is
+	 * thrown with a specific error message corresponding to the validation
 	 * failure.
 	 * 
 	 * @param ?int		$userID		primary key
@@ -79,14 +76,13 @@ class User extends EntityDatabase
 	 * @param bool		$userON		true if the user is active; false otherwise
 	 * 
 	 * @return void
-	 * @throws \DomainException
+	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
+	 * @version		0.4
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.strlen.php
+	 * @see			https://www.php.net/manual/en/function.mb-strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
-	 * @see			https://www.php.net/manual/en/function.ucfirst.php
 	 * @see			https://www.php.net/manual/en/function.filter-var.php
 	 * @see			https://www.php.net/manual/en/filter.filters.validate.php
 	 * @see			https://www.php.net/manual/en/function.password-get-info.php
@@ -100,7 +96,7 @@ class User extends EntityDatabase
 		private string $userHASH, private string $userSALT, private bool $userON
 	)
 	{
-		if (strlen($userNAME) > 80 || !preg_match("/^.{3,} .*.{3,}$/", $userNAME))
+		if (mb_strlen($userNAME) > 80 || !preg_match("/^.{3,} .*.{3,}$/", $userNAME))
 			throw new \InvalidArgumentException("${userNAME} isn't a valid name", 1);
 
 		if (filter_var($userEMAIL, FILTER_VALIDATE_EMAIL) === false)
@@ -108,13 +104,13 @@ class User extends EntityDatabase
 
 		$passInfo = password_get_info($userHASH);
 
-		if (strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
+		if (mb_strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
 			throw new \InvalidArgumentException("This password isn't valid", 1);
 	}
 
 	public static function getIDNAME(): string
 	{
-		return self::IDNAME;
+		return 'userID';
 	}
 
 	public static function getUNIQUE(mixed $uID): string
@@ -143,11 +139,11 @@ class User extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.strlen.php
+	 * @see			https://www.php.net/manual/en/function.mb-strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
-	 * @see			https://www.php.net/manual/en/function.ucfirst.php
+	 * @see			https://www.php.net/manual/en/function.mb-convert-case.php
 	 * @see			https://www.php.net/manual/en/function.explode.php
 	 * @see			https://www.php.net/manual/en/function.implode.php
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
@@ -155,16 +151,20 @@ class User extends EntityDatabase
  	 * @license		GPLv3
 	 */
 
-	public function setUsername(string $userNAME): void
+	public function setFullname(string $fullname): void
 	{
-		if (strlen($userNAME) > 80 || !preg_match("/^.{3,}. *.{3,}$/", $userNAME))
-			throw new \InvalidArgumentException("${userNAME} isn't a valid name", 1);
+		$errorMessage = <<<MESSAGE
+			$fullname isn't a valid name
+		MESSAGE;
 
-		$newUsername = explode(' ', $userNAME);
+		if (mb_strlen($fullname) > 80 || !preg_match("/^.{3,}. *.{3,}$/", $fullname))
+			throw new \InvalidArgumentException($errorMessage, 1);
+
+		$newUsername = explode(' ', $fullname);
 
 		foreach ($newUsername as $key => $nm) {
-			if (strlen($nm) > 2)
-				$newUsername[$key] = ucfirst($nm);
+			$case = mb_strlen($nm) > 2 ? MB_CASE_UPPER : MB_CASE_LOWER;
+			$newUsername[$key] = mb_convert_case($nm, $case);
 		}
 
 		$this->set($this->userNAME, implode(' ', $newUsername));
@@ -189,7 +189,7 @@ class User extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.filter-var.php
 	 * @see			https://www.php.net/manual/en/filter.filters.validate.php
@@ -198,12 +198,16 @@ class User extends EntityDatabase
  	 * @license		GPLv3
 	 */
 
-	public function setUseremail(string $userEMAIL): void
+	public function setEmail(string $email): void
 	{
-		if (filter_var($userEMAIL, FILTER_VALIDATE_EMAIL) === false)
-			throw new \InvalidArgumentException("${userEMAIL} isn't a valid email", 1);
+		$errorMessage = <<<MESSAGE
+			$email isn't a valid email
+		MESSAGE;
 
-		$this->set($this->userEMAIL, $userEMAIL);
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+			throw new \InvalidArgumentException($errorMessage, 1);
+
+		$this->set($this->userEMAIL, $email);
 	}
 
 	/**
@@ -230,52 +234,47 @@ class User extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.strlen.php
-	 * @see			https://www.php.net/manual/en/function.preg-match.php
+	 * @see			https://www.php.net/manual/en/function.mb-strlen.php
+	 * @see			https://www.php.net/manual/en/function.password-get-info.php
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
-	public function setPassword(string $userHASH, string $userSALT): void
+	public function setPassword(string $hash, string $salt): void
 	{
-		$passInfo = password_get_info($userHASH);
+		$passInfo = password_get_info($hash);
 
-		if (strlen($userSALT) < 8 || $passInfo["algoName"] === "unknown")
+		if (mb_strlen($salt) < 8 || $passInfo["algoName"] === "unknown")
 			throw new \InvalidArgumentException("This password isn't valid", 1);
 
-		$this->set($this->userHASH, $userHASH);
-		$this->set($this->userSALT, $userSALT);
+		$this->set($this->userHASH, $hash);
+		$this->set($this->userSALT, $salt);
 	}
 
-	public function getUserid(): ?int
-	{
-		return $this->{$this->getIDNAME()};
-	}
-
-	public function getUsername(): string
+	public function getFullname(): string
 	{
 		return $this->userNAME;
 	}
 
-	public function getUseremail(): string
+	public function getEmail(): string
 	{
 		return $this->userEMAIL;
 	}
 
-	public function getUserhash(): string
+	public function getHash(): string
 	{
 		return $this->userHASH;
 	}
 
-	public function getUsersalt(): string
+	public function getSalt(): string
 	{
 		return $this->userSALT;
 	}
 
-	public function isUserActive(): bool
+	public function isActive(): bool
 	{
 		return $this->userON;
 	}

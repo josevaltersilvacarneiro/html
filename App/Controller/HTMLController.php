@@ -65,7 +65,7 @@ namespace Josevaltersilvacarneiro\Html\App\Controller;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender;
 
-use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntitySessionInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
 /**
@@ -77,7 +77,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
  * interface.
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			Josevaltersilvacarneiro\Html\App\Controller\Controller
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender
  * @copyright	Copyright (C) 2023, José V S Carneiro
@@ -86,7 +86,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
 abstract class HTMLController extends HTMLRender implements Controller
 {
-	private UserSession $session;
+	private EntitySessionInterface $session;
 
 	public function __construct()
 	{
@@ -101,12 +101,12 @@ abstract class HTMLController extends HTMLRender implements Controller
 		$this->setSession($session);
 	}
 
-	protected function setSession(UserSession $session): void
+	protected function setSession(EntitySessionInterface $session): void
 	{
 		$this->session = $session;
 	}
 
-	public function getSession(): UserSession
+	public function getSession(): EntitySessionInterface
 	{
 		return $this->session;
 	}

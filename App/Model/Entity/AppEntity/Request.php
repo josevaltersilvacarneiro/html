@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\RequestDao;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityRequestInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
 
@@ -40,18 +41,15 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
  * @var EntityDateTime  $requestACCESS  date object of last access
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
 #[RequestDao]
-final class Request extends EntityDatabase
+final class Request extends EntityDatabase implements EntityRequestInterface
 {
-	# name of the property that stores the primary key
-	public const IDNAME = 'requestID';
-
 	/**
 	 * This constructor is responsible for initializing a Request object
 	 * with the provided values, while also performing various validation
@@ -102,7 +100,7 @@ final class Request extends EntityDatabase
 
 	public static function getIDNAME(): string
 	{
-		return self::IDNAME;
+		return 'requestID';
 	}
 
 	public static function getUNIQUE(mixed $uID): string
@@ -110,133 +108,17 @@ final class Request extends EntityDatabase
 		return self::getIDNAME();
 	}
 
-	/**
-	 * This method is responsible for setting the requestIP property with
-	 * the provided IP address, while also validating its format.
-	 * 
-	 * It ensures that the provided IP address value adheres to either the
-	 * IPv4 or IPv6 format by performing regular expression pattern matches.
-	 * This validation helps maintain data integrity and ensures that only
-	 * valid IP addresses are assigned to the requestIP property.
-	 * 
-	 * If the provided IP address doesn't match either of the regular
-	 * expression patterns, an \InvalidArgumentException is thrown with a
-	 * custom error message indicating that the IP address isn't valid.
-	 * 
-	 * @param string $requestIP A human readable IPv4 or IPv6 address
-	 * 
-	 * @return void
-	 * @throws \InvalidArgumentException
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.inet-pton.php
-	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function setRequestip(string $requestIP): void
-	{
-		if (inet_pton($requestIP) === false)
-			throw new \InvalidArgumentException("${requestIP} isn't a IP valid", 1);
-
-		$this->requestIP = $requestIP;
-	}
-
-	/**
-	 * This method is responsible for setting the requestPORT property
-	 * with the provided port number, while also validating its format.
-	 * 
-	 * It ensures that the provided port number value meets the specified
-	 * format requirements. It validates the length of the port number
-	 * and checks if it consists only of digits. This validation helps
-	 * maintain data integrity and ensures that only valid port numbers
-	 * are assigned to the requestPORT property.
-	 * 
-	 * If the provided port number doesn't meet both validation conditions,
-	 * an \InvalidArgumentException is thrown with a custom error message
-	 * indicating that the port number isn't valid.
-	 * 
-	 * @param string $requestPORT
-	 * 
-	 * @return void
-	 * @throws \InvalidArgumentException
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.preg-match.php
-	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function setRequestport(string $requestPORT): void
-	{
-		if (!preg_match("/^[0-9]{1,5}$/", $requestPORT))
-			throw new \InvalidArgumentException("${requestPORT} isn't a valid port", 1);
-		
-		$this->requestPORT = $requestPORT;
-	}
-
-	/**
-	 * This method is responsible for setting the requestACCESS property
-	 * with the provided DateTimeImmutable object, while also
-	 * validating its value.
-	 * 
-	 * It ensures that the provided request date value is valid by
-	 * comparing it with the current request date. This validation
-	 * helps maintain data integrity and ensures that only valid
-	 * request dates are assigned to the requestACCESS property.
-	 * 
-	 * If the provided request date is less than the current request
-	 * date, an \InvalidArgumentException is thrown with a custom error
-	 * message indicating that the date isn't valid.
-	 * 
-	 * @param EntityDateTime $requestACCESS
-	 * 
-	 * @return void
-	 * @throws \InvalidArgumentException
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function setRequestaccess(EntityDateTime $requestACCESS): void
-	{
-		if ($requestACCESS < $this->getRequestaccess())
-			throw new \InvalidArgumentException($requestACCESS->getDatabaseRepresentation() .
-				" isn't valid", 1);
-		
-		// if the provided request date is less than the
-		// current request date, it indicates that the
-		// date is invalid
-
-		$this->requestACCESS = $requestACCESS;
-	}
-
-	public function getRequestid(): string
-	{
-		return $this->{$this->getIDNAME()};
-	}
-
-	public function getRequestip(): string
+	public function getIP(): string
 	{
 		return $this->requestIP;
 	}
 
-	public function getRequestport(): string
+	public function getPort(): string
 	{
 		return $this->requestPORT;
 	}
 
-	public function getRequestaccess(): EntityDateTime
+	public function getAccessDate(): EntityDateTime
 	{
 		return $this->requestACCESS;
 	}
@@ -251,7 +133,7 @@ final class Request extends EntityDatabase
 	 * @return bool true on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
+	 * @version		0.2
 	 * @access		public
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
@@ -262,7 +144,7 @@ final class Request extends EntityDatabase
         $todayDate  = new EntityDateTime();
         $interval   = \DateInterval::createFromDateString("1 year");
 
-        if ($this->getRequestaccess()->add($interval) > $todayDate)
+        if ($this->getAccessDate()->add($interval) > $todayDate)
             return false;
 
         // if, when adding one year to the date of the request,

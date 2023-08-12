@@ -27,32 +27,34 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity;
 
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\{User, Request};
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserSessionDao;
+
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDateTime;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntitySessionInterface;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityUserInterface;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityRequestInterface;
+
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\Request;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\User;
 
 /**
  * The UserSession Entity represents a session. It contains properties
  * and methods to manage userSession-related data and operations.
  * 
- * @var string	$userSessionID		primary key
- * @var ?User	$userSessionUSER	foreign key
- * @var Request	$userSessionREQUEST	foreign key
- * @var bool	$userSessionON		true if session is active; false otherwise
- * 
- * @method bool isUserLogged()	true if the user is logged in; false otherwise
+ * @var string					$userSessionID		primary key
+ * @var ?EntityUserInterface	$userSessionUSER	foreign key
+ * @var EntityRequestInterface	$userSessionREQUEST	foreign key
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.7
- * @see			Josevaltersilvacarneiro\Html\App\Model\Entity\Entity
+ * @version		0.8
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
 
 #[UserSessionDao]
-final class UserSession extends EntityDatabase
+final class UserSession extends EntityDatabase implements EntitySessionInterface
 {
-	# name of the property that stores the primary key
-	public const IDNAME = 'userSessionID';
+	private const numberOfDaysToExpire = 1;
 
 	/**
 	 * This constructor is responsible for initializing a UserSession object
@@ -62,27 +64,26 @@ final class UserSession extends EntityDatabase
 	 * If any of the validation checks fail, a \InvalidArgumentException is thrown
 	 * with a specific error message corresponding to the validation failure.
 	 * 
-	 * @param string	$userSessionID
-	 * @param ?User		$userSessionUSER
-	 * @param Request	$userSessionREQUEST
-	 * @param bool		$userSessionON
+	 * @param string				$userSessionID
+	 * @param ?EntityUserInterface	$userSessionUSER
+	 * @param EntityRequestInterface $userSessionREQUEST
 	 * 
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
-	 * @see			https://www.php.net/manual/en/function.is-null.php
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
 	public function __construct(
-		private string $userSessionID, #[User] private ?User $userSessionUSER,
-		#[Request] private Request $userSessionREQUEST, private bool $userSessionON
+		private string $userSessionID,
+		#[User] private ?EntityUserInterface $userSessionUSER,
+		#[Request] private EntityRequestInterface $userSessionREQUEST
 	)
 	{
 		if (!preg_match("/^([a-f0-9]{64})$/", $userSessionID))
@@ -91,8 +92,8 @@ final class UserSession extends EntityDatabase
 		// \InvalidArgumentException is thrown indicating that the sessionID
 		// isn't a valid SHA256 value
 
-		if (!(is_null($userSessionUSER) || $userSessionUSER->isUserActive()))
-			throw new \InvalidArgumentException($userSessionUSER->getUserid() . " isn't active", 1);
+		if (!(is_null($userSessionUSER) || $userSessionUSER->isActive()))
+			throw new \InvalidArgumentException($userSessionUSER->getID() . " isn't active", 1);
 
 		// if the user isn't active, a \InvalidArgumentException is thrown
 		// indicating that the user isn't active
@@ -100,7 +101,7 @@ final class UserSession extends EntityDatabase
 
 	public static function getIDNAME(): string
 	{
-		return self::IDNAME;
+		return 'userSessionID';
 	}
 
 	public static function getUNIQUE(mixed $uID): string
@@ -113,35 +114,35 @@ final class UserSession extends EntityDatabase
 	 * with the provided User object, while also validating the user's
 	 * activity status.
 	 * 
-	 * It ensures that the provided user object is either null or represents
-	 * an active user by invoking the isUserActive method. This validation
-	 * helps maintain data integrity and ensures that only valid user objects
-	 * are assigned to the userSessionUSER property.
+	 * It ensures that the provided user object represents an active user by
+	 * invoking the isActive method. This validation helps maintain data
+	 * integrity and ensures that only valid user objects are assigned to the
+	 * userSessionUSER property.
 	 * 
-	 * It uses the isUserActive method on the User object to determine if the
-	 * user is active. If the user isn't active, an \InvalidArgumentException
-	 * is thrown with a custom error message indicating that the user isn't
-	 * active.
-	 * 
-	 * @param ?User $userSessionUSER
+	 * @param EntityUserInterface $userSessionUSER
 	 * 
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
+	 * @version		0.4
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
-	public function setUserSessionuser(?User $userSessionUSER): void
+	public function setUser(EntityUserInterface $user): void
 	{
-		if (!(is_null($userSessionUSER) || $userSessionUSER->isUserActive()))
-			throw new \InvalidArgumentException("User isn't active", 1);
-		
-		$this->set($this->userSessionUSER, $userSessionUSER);
+		$errorMessage = <<<MESSAGE
+			This session belongs to another user
+			or ${$user->getFullname()} isn't active.
+		MESSAGE;
+
+		if ($this->isUserLogged() || !$user->isActive())
+			throw new \InvalidArgumentException($errorMessage, 1);
+
+		$this->set($this->userSessionUSER, $user);
 	}
 
 	/**
@@ -159,103 +160,39 @@ final class UserSession extends EntityDatabase
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
 
-	public function setUserSessionrequest(Request $userSessionREQUEST): void
+	public function setRequest(EntityRequestInterface $request): void
 	{
-		if ($this->getUserSessionrequest()->getRequestaccess() >
-			$userSessionREQUEST->getRequestaccess())
+		if ($this->getRequest()->getAccessDate() > $request->getAccessDate())
 			throw new \InvalidArgumentException("The request is old", 1);
 
-		$this->set($this->userSessionREQUEST, $userSessionREQUEST);
+		$this->set($this->userSessionREQUEST, $request);
 	}
 
-	/**
-	 * The method is responsible for setting the userSessionON property with
-	 * the provided boolean value.
-	 * 
-	 * It updates the userSessionON status property based on the provided
-	 * boolean value and the existing value of the userSessionON property.
-	 * The logical AND operation ensures that the userSessionON status is
-	 * only set to true if both the existing value and the provided
-	 * value are true.
-	 * 
-	 * Once destroyed, the userSession can never be activated.
-	 * 
-	 * @param bool $userSessionON
-	 * 
-	 * @return void
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
-	 * @access		public
-	 * @see			https://en.wikipedia.org/wiki/Boolean_algebra
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function setUserSessionon(bool $userSessionON): void
-	{
-		$this->set($this->userSessionON, $this->$userSessionON && $userSessionON);
-	}
-
-	public function getUserSessionid(): string
-	{
-		return $this->{$this->getIDNAME()};
-	}
-
-	public function getUserSessionuser(): ?User
+	public function getUser(): ?EntityUserInterface
 	{
 		return $this->userSessionUSER;
 	}
 
-	public function getUserSessionrequest(): Request
+	public function getRequest(): EntityRequestInterface
 	{
 		return $this->userSessionREQUEST;
 	}
 
-	public function getUserSessionon(): bool
+	public function isExpired(): bool
 	{
-		return $this->userSessionON;
+		return $this->getRequest()->getAccessDate()
+			->diff(new EntityDateTime, true)->days > self::numberOfDaysToExpire;
 	}
 
 	public function isUserLogged(): bool
 	{
-		return !is_null($this->getUserSessionuser());
-	}
-
-	/**
-	 * This method is responsible for safely ending the current userSession
-	 * and ensuring that the entity is synchronized with the database before
-	 * terminating it.
-	 * 
-	 * @return bool true on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
-	 */
-
-	public function killme(): bool
-	{
-		$this->userSessionON = false;
-
-		if ($this->flush()) return true;
-
-		$this->userSessionON = true;
-
-		// the method sets $this->userSessionON back to true to keep the
-		// userSession active and returns false, indicating that the userSession
-		// termination process encountered an error or synchronization with the
-		// database failed
-
-		return false;
+		return !is_null($this->getUser());
 	}
 }
