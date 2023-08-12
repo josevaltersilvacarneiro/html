@@ -44,13 +44,13 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
  * @method void addParameters()    sets up the params in $method
  *
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.4
+ * @version   0.5
  * @see       Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
  */
 
-final class Dispatch extends Route
+final class App extends Route
 {
     private Controller    $obj;
     private ?string        $method;
