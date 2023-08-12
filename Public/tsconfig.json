@@ -5,6 +5,7 @@
         "noEmitOnError": true,
 	    "noImplicitAny": true,
         "removeComments": true,
+        "strictNullChecks": true,
 	    "strict": true
     },
     "include": ["TypeScript/**/*"]
