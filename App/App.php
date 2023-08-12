@@ -38,13 +38,15 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
  * @var Controller    $obj        the controller - for example, Home
  * @var string        $method        method that belongs to the $obj
  * @var string        $parameters    parameters of the $method
- *
+ * 
  * @method void addController()    sets up the controller object
  * @method void addMethod()        sets up a method in $obj
  * @method void addParameters()    sets up the params in $method
- *
+ * 
+ * @method void processTheRequest() processes the request
+ * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.5
+ * @version   0.6
  * @see       Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
@@ -62,7 +64,26 @@ final class App extends Route
      * @return void
      * 
      * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.3
+     * @version   0.4
+     * @access    public
+     * @copyright Copyright (C) 2023, José V S Carneiro
+     * @license   GPLv3
+     */
+    public function __construct()
+    {
+        $this->addController();
+        $this->addMethod();
+        $this->addParameters();
+    }
+
+    /**
+     * This method processes the user's request, calling the
+     * appropriate route.
+     * 
+     * @return void
+     * 
+     * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
+     * @version   0.1
      * @access    public
      * @see       https://www.php.net/manual/en/function.is-null.php
      * @see       https://www.php.net/manual/en/function.method-exists.php
@@ -70,13 +91,8 @@ final class App extends Route
      * @copyright Copyright (C) 2023, José V S Carneiro
      * @license   GPLv3
      */
-
-    public function __construct()
+    public function processTheRequest(): void
     {
-        $this->addController();
-        $this->addMethod();
-        $this->addParameters();
-        
         try {
             if (!is_null($this->getMethod()) 
                 && method_exists($this->obj, $this->getMethod())
