@@ -103,7 +103,7 @@ final class App extends Route
             $log->setFile(__FILE__);
             $log->setLine(__LINE__);
 
-            $user = $this->obj->getSession()->getUserSessionuser()->getUsername();
+            $user = $this->obj->getSession()->getUser()->getFullname();
 
             $log->store("The user ${user} made a bad request # " . $e->getMessage());
         }
