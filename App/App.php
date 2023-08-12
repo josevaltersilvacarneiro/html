@@ -25,8 +25,10 @@ declare(strict_types=1,encoding="UTF-8");
 
 namespace Josevaltersilvacarneiro\Html\App;
 
+use Josevaltersilvacarneiro\Html\App\AppException;
 use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
+use Josevaltersilvacarneiro\Html\App\Controller\ControllerException;
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
 
 /**
@@ -44,7 +46,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
  * @method void processTheRequest() processes the request
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.7
+ * @version   0.8
  * @see       Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
@@ -130,9 +132,10 @@ final class App extends Route
      * service that the user requested.
      * 
      * @return void
+     * @throws AppException
      * 
      * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.2
+     * @version   0.3
      * @access    private
      * @see       https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
      * @copyright Copyright (C) 2023, José V S Carneiro
@@ -140,10 +143,19 @@ final class App extends Route
      */
     private function instantiateController(): void
     {
-        $className = 'Josevaltersilvacarneiro\\Html\\App\\Controller\\' .
-            $this->route . '\\' . $this->route;
+        try {
+            $className = 'Josevaltersilvacarneiro\\Html\\App\\Controller\\' .
+                $this->route . '\\' . $this->route;
 
-        $this->obj = new $className;
+            $this->obj = new $className;
+        } catch (ControllerException $e) {
+            $errorMessage = <<<MESSAGE
+                There was an error when trying to instantiate
+                the controller # "$className"
+            MESSAGE;
+
+            throw new AppException($errorMessage, 500, $e);
+        }
     }
 
     public function setMethod(?string $method): void
