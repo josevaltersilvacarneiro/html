@@ -38,14 +38,13 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Log\RequestLog;
  * @var string        $method        method that belongs to the $obj
  * @var string        $parameters    parameters of the $method
  * 
- * @method void addController()    sets up the controller object
  * @method void addMethod()        sets up a method in $obj
  * @method void addParameters()    sets up the params in $method
  * 
  * @method void processTheRequest() processes the request
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.6
+ * @version   0.7
  * @see       Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
@@ -63,14 +62,14 @@ final class App extends Route
      * @return void
      * 
      * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.4
+     * @version   0.5
      * @access    public
      * @copyright Copyright (C) 2023, José V S Carneiro
      * @license   GPLv3
      */
     public function __construct()
     {
-        $this->addController();
+        $this->instantiateController();
         $this->addMethod();
         $this->addParameters();
     }
@@ -126,6 +125,27 @@ final class App extends Route
         $this->obj->renderLayout();
     }
 
+    /**
+     * This method instantiates the CONTROLLER dynamically according to the
+     * service that the user requested.
+     * 
+     * @return void
+     * 
+     * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
+     * @version   0.2
+     * @access    private
+     * @see       https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
+     * @copyright Copyright (C) 2023, José V S Carneiro
+     * @license   GPLv3
+     */
+    private function instantiateController(): void
+    {
+        $className = 'Josevaltersilvacarneiro\\Html\\App\\Controller\\' .
+            $this->route . '\\' . $this->route;
+
+        $this->obj = new $className;
+    }
+
     public function setMethod(?string $method): void
     {
         $this->method = $method;
@@ -144,29 +164,6 @@ final class App extends Route
     public function getParameters(): array
     {
         return $this->parameters;
-    }
-
-    /**
-     * This method instantiates the CONTROLLER dynamically
-     * according to the service that the user requested.
-     * The route property returns this service.
-     * 
-     * @return void
-     * 
-     * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.1
-     * @access    private
-     * @see       https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
-     * @copyright Copyright (C) 2023, José V S Carneiro
-     * @license   GPLv3
-     */
-
-    private function addController(): void
-    {
-        $className = 'Josevaltersilvacarneiro\\Html\\App\\Controller\\' .
-        $this->route . '\\' . $this->route;
-        
-        $this->obj = new $className;
     }
 
     /**
