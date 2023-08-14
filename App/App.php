@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1,encoding="UTF-8");
+declare(strict_types=1);
 
 /**
  * This package is responsible for initializing the service.
