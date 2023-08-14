@@ -273,7 +273,7 @@ abstract class EntityDatabase implements EntityDatabaseInterface
 	public static function newInstance(string|int $UID): ?static
 	{
 		try { return EntityManager::init(static::class, $UID); }
-		catch (EntityManagerException) { return null; }
+		catch (EntityManagerException $e) { echo "test"; echo var_dump($e); exit();return null; }
 	}
 
 	/**
