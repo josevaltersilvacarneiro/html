@@ -258,7 +258,7 @@ class SessionService extends Service
 	 * @return EntitySessionInterface|false Session on success; false otherwise
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.6
+	 * @version		0.7
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/reserved.variables.cookies.php
 	 * @see			https://www.php.net/manual/en/function.is-null.php
@@ -268,7 +268,7 @@ class SessionService extends Service
 
 	public static function startSession(): EntitySessionInterface|false
 	{
-		$cookie = $_COOKIE[self::KEYWORD];
+		$cookie = $_COOKIE[self::KEYWORD] ?? null;
 
 		if (is_null($cookie) || ($sessionId = self::decryptSessionID($cookie)) === false) {
 			return self::createSession(null) ?? false;
