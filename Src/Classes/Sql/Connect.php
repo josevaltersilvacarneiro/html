@@ -52,7 +52,6 @@ abstract class Connect
 	{
 		try {
 			$this->conn = new PDO(_DSN, _USER, _PASS);
-			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (PDOException $e) {
 			$log = new PDOLog();
 			$log->setFile(__FILE__);
