@@ -124,12 +124,6 @@ class User extends EntityDatabase implements EntityUserInterface
 	 * This method is responsible for setting the userNAME property with
 	 * the provided name, while also validating its format.
 	 * 
-	 * It validates the provided name, ensuring that it meets the required
-	 * format criteria. It also applies capitalization to each word within
-	 * the name that has a length greater than 2 characters. This validation
-	 * and formatting help maintain data integrity and ensure that only
-	 * valid names are assigned to the userNAME property.
-	 * 
 	 * Within the method, there are two validation conditions to ensure
 	 * that the name is valid.
 	 * 
@@ -139,18 +133,15 @@ class User extends EntityDatabase implements EntityUserInterface
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
+	 * @version		0.3
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/function.mb-strlen.php
 	 * @see			https://www.php.net/manual/en/function.preg-match.php
 	 * @see			https://www.php.net/manual/en/function.mb-convert-case.php
-	 * @see			https://www.php.net/manual/en/function.explode.php
-	 * @see			https://www.php.net/manual/en/function.implode.php
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
-
 	public function setFullname(string $fullname): void
 	{
 		$errorMessage = <<<MESSAGE
@@ -160,14 +151,7 @@ class User extends EntityDatabase implements EntityUserInterface
 		if (mb_strlen($fullname) > 80 || !preg_match("/^.{3,}. *.{3,}$/", $fullname))
 			throw new \InvalidArgumentException($errorMessage, 1);
 
-		$newUsername = explode(' ', $fullname);
-
-		foreach ($newUsername as $key => $nm) {
-			$case = mb_strlen($nm) > 2 ? MB_CASE_UPPER : MB_CASE_LOWER;
-			$newUsername[$key] = mb_convert_case($nm, $case);
-		}
-
-		$this->set($this->userNAME, implode(' ', $newUsername));
+		$this->set($this->userNAME, mb_convert_case($fullname, MB_CASE_LOWER));
 	}
 
 	/**
@@ -256,7 +240,14 @@ class User extends EntityDatabase implements EntityUserInterface
 
 	public function getFullname(): string
 	{
-		return $this->userNAME;
+		$username = explode(' ', $this->userNAME);
+
+		foreach ($username as $key => $nm) {
+			$case = mb_strlen($nm) > 2 ? MB_CASE_UPPER : MB_CASE_LOWER;
+			$username[$key] = mb_convert_case($nm, $case);
+		}
+
+		return implode(' ', $username);
 	}
 
 	public function getEmail(): string
