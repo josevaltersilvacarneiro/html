@@ -125,18 +125,17 @@ final class UserSession extends EntityDatabase implements EntitySessionInterface
 	 * @throws \InvalidArgumentException
 	 * 
 	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.4
+	 * @version		0.5
 	 * @access		public
 	 * @see			https://www.php.net/manual/en/class.invalidargumentexception.php
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
-
 	public function setUser(EntityUserInterface $user): void
 	{
 		$errorMessage = <<<MESSAGE
 			This session belongs to another user
-			or ${$user->getFullname()} isn't active.
+			or {$user->getFullname()} isn't active.
 		MESSAGE;
 
 		if ($this->isUserLogged() || !$user->isActive())
