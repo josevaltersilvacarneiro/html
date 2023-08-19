@@ -67,10 +67,14 @@ use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\User;
 use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
 
-use Josevaltersilvacarneiro\Html\Src\Traits\{TraitIO,	TraitRedirect};
+use Josevaltersilvacarneiro\Html\Src\Traits\TraitIO;
 use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateEmail;
 use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateHash;
 use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateSalt;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Nyholm\Psr7\Response;
 
 /**
  * The Login Controller is responsible for handling both the login and
@@ -86,21 +90,18 @@ use Josevaltersilvacarneiro\Html\Src\Traits\TraitValidateSalt;
  * @method	void	signout()				logs the user out - it's a route
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
- * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
+ * @version		0.4
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
-
 final class Login extends HTMLController
 {
-	use TraitRedirect;
 
 	public const MYSELF = __URL__ . "login";
 
-	public function __construct()
+	public function __construct(string|false $service, array $parameters)
 	{
-		parent::__construct();
+		parent::__construct($service, $parameters);
 
 		$this->setDir("Login");
 		$this->setTitle("Login");
@@ -113,14 +114,19 @@ final class Login extends HTMLController
 		$this->setKeywords("MVC SOLID josevaltersilvacarneiro login");
 	}
 
-	public function renderLayout(): void
+	public function handle(ServerRequestInterface $request): ResponseInterface
 	{
-		if ($this->getSession()->isUserLogged())
-			TraitRedirect::redirect(__URL__);
+		if ($this->getSession()->isUserLogged()) {
+			return new Response(302, [
+				'Location' => __URL__
+			]);
+		}
 
 		// protecting logged-in users from viewing the page
 
-		parent::renderLayout();
+		return new Response(200, [
+			'Content-Type'	=> 'text/html;charset=UTF-8'
+		], parent::renderLayout());
 	}
 
 	/**
@@ -146,7 +152,6 @@ final class Login extends HTMLController
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
-	
 	public function signin(string $url = __URL__): void
 	{
 		if ($this->getSession()->isUserLogged())
@@ -165,8 +170,8 @@ final class Login extends HTMLController
 			TraitValidateEmail::isEmailValid(email: $email)	&&
 			TraitValidateHash::isHashValid(hash: $hash)		&&
 			TraitValidateHash::isHashValid(hash: $newHash)	&&
-			TraitValidateSalt::isSaltValid(salt: $newSalt))
-		{
+			TraitValidateSalt::isSaltValid(salt: $newSalt)
+		) {
 			// "THE PASSWORD CHANGES" every time the user
 			// logs on to the platform
 
@@ -193,12 +198,7 @@ final class Login extends HTMLController
 			// the user will have no major security problems
 			// and his hash will be replaced the next time he
 			// logs in
-
-			$url		= filter_var($url, FILTER_SANITIZE_URL);
-			TraitRedirect::redirect(url: $url);
 		}
-
-		TraitRedirect::redirect(url: self::MYSELF);
 	}
 
 	/**
@@ -217,7 +217,6 @@ final class Login extends HTMLController
 	 * @copyright	Copyright (C) 2023, José V S Carneiro
  	 * @license		GPLv3
 	 */
-	
 	public function signout(): void
 	{
 		if (!$this->getSession()->isUserLogged())
@@ -226,7 +225,5 @@ final class Login extends HTMLController
 		// if the user isn't logged in, couldn't logout
 
 		SessionService::destroySession($this->getSession());
-
-		TraitRedirect::redirect(url: self::MYSELF);
 	}
 }

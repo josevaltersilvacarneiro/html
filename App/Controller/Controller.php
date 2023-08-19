@@ -65,6 +65,10 @@ namespace Josevaltersilvacarneiro\Html\App\Controller;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntitySessionInterface;
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
 /**
  * This interface, extending the RenderInterface, defines the
  * contract for controllers responsible for rendering pages in
@@ -75,13 +79,14 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface;
  * @method  EntitySessionInterface getSession()	returns the active session
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
+ * @version		0.3
  * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\RenderInterface
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
-
-interface Controller extends RenderInterface
+interface Controller extends RenderInterface, RequestHandlerInterface
 {
+    public function __construct(string|false $service, array $parameters);
     public function getSession(): EntitySessionInterface;
+    public function handle(ServerRequestInterface $request): ResponseInterface;
 }

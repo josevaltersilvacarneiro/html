@@ -77,18 +77,15 @@ use Josevaltersilvacarneiro\Html\App\Model\Service\SessionService;
  * interface.
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
- * @see			Josevaltersilvacarneiro\Html\App\Controller\Controller
- * @see			Josevaltersilvacarneiro\Html\Src\Classes\Render\HTMLRender
+ * @version		0.4
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
-
 abstract class HTMLController extends HTMLRender implements Controller
 {
 	private EntitySessionInterface $session;
 
-	public function __construct()
+	public function __construct(string|false $service, array $parameters)
 	{
 		$session = SessionService::startSession();
 
@@ -99,6 +96,13 @@ abstract class HTMLController extends HTMLRender implements Controller
 		// first creating a session
 
 		$this->setSession($session);
+
+		if ($service !== false && method_exists($this, $service)) {
+			call_user_func_array([
+				$this,
+				$service
+			], $parameters);
+		}
 	}
 
 	protected function setSession(EntitySessionInterface $session): void

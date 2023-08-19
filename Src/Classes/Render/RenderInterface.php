@@ -1,8 +1,7 @@
 <?php
 
 /**
- * This package is responsible for rendering
- * pages that are in __VIEW__.
+ * This package is responsible for rendering pages.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -31,5 +30,5 @@ interface RenderInterface
 	public function setDir(string $dir): void;
 	public function getDir(): string;
 
-	public function renderLayout(): void;
+	public function renderLayout(): string;
 }

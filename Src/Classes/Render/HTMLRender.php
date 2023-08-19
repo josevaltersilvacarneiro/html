@@ -1,8 +1,7 @@
 <?php
 
 /**
- * This package is responsible for rendering
- * pages that are in __VIEW__.
+ * This package is responsible for rendering pages.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -25,6 +24,7 @@
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
+
 use Twig\Environment;
 use \Twig\Loader\FilesystemLoader;
 
@@ -46,16 +46,13 @@ use \Twig\Loader\FilesystemLoader;
  * @method	string	getKeywords()			returns the head keywords
  * @method	string	getRobots()				returns the head robots
  * 
- * @method  void    renderLayout()          renders the layout
- * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.7
+ * @version		0.8
  * @abstract
  * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
-
 abstract class HTMLRender extends Render
 {
 	private string $headerTitle;
@@ -145,7 +142,7 @@ abstract class HTMLRender extends Render
 		);
 	}
 
-	public function renderLayout(): void   
+	public function renderLayout(): string  
     {
 		$loader = new FilesystemLoader(self::PATH);
 		$twig	= new Environment($loader);
@@ -171,8 +168,6 @@ abstract class HTMLRender extends Render
 			$this->addFooter()
 		);
 
-		header('Content-Type: text/html;charset=UTF-8');
-
-		echo $twig->render('HTMLLayout.html.twig', $vars);
+		return $twig->render('HTMLLayout.html.twig', $vars);
 	}
 }

@@ -1,8 +1,7 @@
 <?php
 
 /**
- * This package is reponsible for providing
- * the route.
+ * This package is reponsible for providing the route.
  *
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -24,95 +23,84 @@
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Routes;
 
-use Josevaltersilvacarneiro\Html\Src\Traits\{TraitProperty, TraitUrlParser};
+use Josevaltersilvacarneiro\Html\Src\Traits\TraitUrlParser;
 use \DirectoryIterator;
 
-/**
- * This class handles the routes. However, it
- * must be extended by the Dispatch.
- *
- * @var	const	DEFAULT_ROUTE	sets up a route when the user doesn't specify
- * @var	const	ERROR_ROUTE	sets up an error route when the route specified doesn't exist
- *
- * @method	array	availableRoutes()	returns the available routes according to the controllers
- * @method	string	getRoute()		returns the route invoked by the user
- *
+/** 
+ * @var	string DEFAULT_ROUTE	sets up a route when the user doesn't specify
+ * 
  * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version	0.1
- * @abstract
- * @see		App\Dispatch
- * @copyright	Copyright (C) 2023, José V S Carneiro
+ * @version	0.2
+ * @copyright Copyright (C) 2023, José V S Carneiro
  * @license	GPLv3
  */
 
-abstract class Route
+class Route
 {
-	use TraitProperty;
 	use TraitUrlParser;
 
-	private const DEFAULT_ROUTE 	= 'Home';
-	private const ERROR_ROUTE 	= 'Error';
+	private const DEFAULT_PAGE 	= 'Home';
+	private static array $resources = array();
+
+	public function __construct()
+	{
+		self::$resources = $this->getUrl();
+	}
 
 	/**
 	 * This function finds all available routes in __CONTROLLER__
 	 * and returns them.
 	 *
-	 * @return	array	available routes
+	 * @return array<string> available routes
 	 *
 	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version	0.1
+	 * @version	0.2
 	 * @access	public
 	 * @see		https://www.php.net/manual/en/class.directoryiterator.php
 	 */
-
-	public static function availableRoutes(): array
+	public static function getAvailableRoutes(): array
 	{
-		$routes = array();
-
 		$dir = new DirectoryIterator(__CONTROLLER__);
 
-		foreach ($dir as $filename)
-
+		$routes = [];
+		foreach ($dir as $filename) {
 			if ($filename->isDir() && !$filename->isDot())
 				array_push($routes, $filename->getFilename());
+		}
 
 		return $routes;
 	}
 
 	/**
-	 * This function returns the route specified by the user
-	 * or self::ERROR_ROUTE if the invoked route doesn't exist.
-	 *
-	 * @return	string	the route, with the first letter capitalized
+	 * @return string Namespace of the page controller
 	 *
 	 * @author	José V S Carneiro <git@josevaltersilvacarneiro.net>
 	 * @author	0.1
 	 * @access	public
-	 * @see		https://www.php.net/manual/en/function.in-array.php
+	 * @see		https://www.php.net/manual/en/function.count.php
 	 */
-
-	public function getRoute(): string
+	public function getControllerNamespace(): string
 	{
-		/**
-		 * $service gets the route specified by the user.
-		 *
-		 * For example, if the user requests
-		 * __URL__/service/method/param1/param2, $service
-		 * gets Service.
-		 *
-		 * @see	Src\Traits\TraitUrlParser
-		 * @see	https://www.php.net/manual/en/function.ucfirst.php
-		 */
+		$page = count(self::$resources) === 0 || !in_array(mb_convert_case(self::$resources[0], MB_CASE_TITLE),
+			$this->getAvailableRoutes()) ? self::DEFAULT_PAGE : mb_convert_case(self::$resources[0], MB_CASE_TITLE);
 
-		$service = ucfirst(
-			$this->getUrl()[0]
-		);
+		return 'Josevaltersilvacarneiro\\Html\\App\\Controller\\' .
+			$page . '\\' . $page;
+	}
 
-		if (empty($service))
-			return self::DEFAULT_ROUTE; // the user didn't specify a route
+	/**
+	 * @return string Service name on success; false otherwise 
+	 */
+	public function getService(): string|false
+	{
+		return self::$resources[1] ?? false;
+	}
 
-		$routes = self::availableRoutes();
-
-		return in_array($service, $routes, true) ? $service : self::ERROR_ROUTE;
+	/**
+	 * @return array<string> on success; empty array otherwise
+	 */
+	public function getParameters(): array
+	{
+		return array_slice(self::$resources, 2);
 	}
 }

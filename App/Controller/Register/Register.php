@@ -72,6 +72,10 @@ use Josevaltersilvacarneiro\Html\Src\Traits\{TraitValidateHash,
 	TraitValidateName,	TraitValidateEmail,
 	TraitValidateSalt,	TraitValidateCode};
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Nyholm\Psr7\Response;
+
 /**
  * The register controller class is responsible for managing both
  * user registration and user removal functionalities within the
@@ -83,7 +87,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\{TraitValidateHash,
  * @method	void	remove()	removes the logged user		- it's a route
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
@@ -93,9 +97,9 @@ final class Register extends HTMLController
 
 	public const MYSELF = __URL__ . "register";
 
-	public function __construct()
+	public function __construct(string|false $service, array $parameters)
 	{
-		parent::__construct();
+		parent::__construct($service, $parameters);
 
 		$this->setDir("Register");
 		$this->setTitle("Register");
@@ -110,14 +114,17 @@ final class Register extends HTMLController
 		$this->setKeywords("MVC SOLID josevaltersilvacarneiro Register");
 	}
 
-	public function renderLayout(): void
+	public function handle(ServerRequestInterface $request): ResponseInterface
 	{
-		if ($this->getSession()->isUserLogged())
-			TraitRedirect::redirect(__URL__);
+		if ($this->getSession()->isUserLogged()) {
+			return new Response(302, [
+				'Location' => self::MYSELF
+			]);
+		}
 
-		// protecting logged-in users from viewing the page
-
-		parent::renderLayout();
+		return new Response(200, [
+			'Content-Type'	=> 'text/html;charset=UTF-8'
+		], parent::renderLayout());
 	}
 
 	/**
