@@ -28,17 +28,19 @@ namespace Josevaltersilvacarneiro\Html\App;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 /**
  * This class instantiates the controller object and instructs it to
  * process the request.
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.10
+ * @version   0.11
+ * @see       https://www.php-fig.org/psr/psr-15/
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
  */
-final class App
+final class App implements MiddlewareInterface
 {
     public function __construct()
     {}
