@@ -27,11 +27,11 @@ declare(strict_types=1);
  * @package Josevaltersilvacarneiro\Html\Src\Classes\Container
  */
 
-namespace Josevaltersilvacarneiro\Html\Src\Classes\Containeir;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Container;
 
 use Psr\Container\ContainerExceptionInterface;
 
-class NotFoundException extends \Exception implements ContainerExceptionInterface
+class ContainerException extends \Exception implements ContainerExceptionInterface
 {
     public function __construct(string $message = "", int $code = 0, \Throwable $previous = null)
     {

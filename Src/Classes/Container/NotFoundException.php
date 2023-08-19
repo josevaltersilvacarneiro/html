@@ -27,7 +27,7 @@ declare(strict_types=1);
  * @package Josevaltersilvacarneiro\Html\Src\Classes\Container
  */
 
-namespace Josevaltersilvacarneiro\Html\Src\Classes\Containeir;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Container;
 
 use Psr\Container\NotFoundExceptionInterface;
 

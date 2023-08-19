@@ -29,7 +29,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Container;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Containeir\NotFoundException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Container\ContainerException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Container\NotFoundException;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
 use Psr\Container\ContainerExceptionInterface;
@@ -46,12 +47,17 @@ class Container implements ContainerInterface
      * @param mixed $parameters Parameters to be passed to the class constructor
      * 
      * @return void
+     * @throws ContainerException
      */
     public function add(string $className, mixed ...$parameters): void
     {
-        $this->container[$className] = function ($container) use ($className, $parameters) {
-            return new $className(...$parameters);
-        };
+        try {
+            $this->container[$className] = function ($container) use ($className, $parameters) {
+                return new $className(...$parameters);
+            };
+        } catch (\Error $e) {
+            throw new ContainerException("Error while retrieving the entry {$className}", 10, $e);
+        }
     }
 
     /**
