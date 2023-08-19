@@ -25,11 +25,6 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App;
 
-use Josevaltersilvacarneiro\Html\App\AppException;
-use Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route;
-use Josevaltersilvacarneiro\Html\App\Controller\Controller;
-use Josevaltersilvacarneiro\Html\App\Controller\ControllerException;
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -39,7 +34,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  * process the request.
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.9
+ * @version   0.10
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
  */
@@ -63,34 +58,5 @@ final class App
         $response = $handler->handle($request);
 
         return $response;
-    }
-
-    /**
-     * This method instantiates the CONTROLLER dynamically according to the
-     * service that the user requested.
-     * 
-     * @return Controller
-     * @throws AppException
-     * 
-     * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.4
-     * @access    public
-     * @see       https://www.php.net/manual/en/language.oop5.basic.php#language.oop5.basic.new
-     * @copyright Copyright (C) 2023, José V S Carneiro
-     * @license   GPLv3
-     */
-    public function instantiateController(Route $route): Controller
-    {
-        try {
-            $controller = new \ReflectionClass($route->getControllerNamespace());
-            return $controller->newInstance($route->getService(), $route->getParameters());
-        } catch (ControllerException $e) {
-            $errorMessage = <<<MESSAGE
-                There was an error when trying to instantiate
-                the controller # "{$route->getControllerNamespace()}"
-            MESSAGE;
-
-            throw new AppException($errorMessage, 500, $e);
-        }
     }
 }
