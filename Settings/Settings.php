@@ -25,7 +25,9 @@
  * @package	Settings
  */
 
-date_default_timezone_set("America/Bahia");		// sets up timezone
+define('_TIMEZONE_', 'America/Bahia');
+
+date_default_timezone_set(_TIMEZONE_);
 
 include_once 'DSN.php';     // variables responsible for accessing the database
 include_once 'Dao.php';     // required tables and fields in the database
