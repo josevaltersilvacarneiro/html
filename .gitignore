@@ -6,7 +6,7 @@
 # testing programs
 Tests/
 
-Log/
+./Log/*
 
 # vendor
 Src/vendor/
