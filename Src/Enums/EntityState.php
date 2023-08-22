@@ -26,7 +26,7 @@ declare(strict_types=1);
  * @package     Josevaltersilvacarneiro\Html\App\Model\Entity
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
+namespace Josevaltersilvacarneiro\Html\Src\Enums;
 
 /**
  * The EntityState enum represents different states that an entity can have
