@@ -38,7 +38,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface AttributeInterface
@@ -60,5 +60,5 @@ interface AttributeInterface
      * 
      * @return static|null $this on success, null on failure
      */
-    public function newInstance(mixed $value): ?static;
+    public static function newInstance(mixed $value): ?static;
 }
