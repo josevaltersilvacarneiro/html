@@ -31,6 +31,8 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\AttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
+    AttributeExceptionInterface;
 
 /**
  * This interface represents a fullname.
@@ -40,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\AttributeInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface NameAttributeInterface extends AttributeInterface
@@ -51,6 +53,7 @@ interface NameAttributeInterface extends AttributeInterface
      * @param string $completeName The complete name @example José Carneiro
      * 
      * @return static
+     * @throws AttributeExceptionInterface If $completeName is invalid
      */
     public function setCompleteName(string $completeName): static;
 
