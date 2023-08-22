@@ -30,6 +30,9 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
+    AttributeExceptionInterface;
+
 /**
  * All attributes must implement this interface.
  * 
@@ -38,7 +41,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface AttributeInterface
@@ -59,6 +62,7 @@ interface AttributeInterface
      * @param mixed $value Types that can be converted to fields in a database
      * 
      * @return static|null $this on success, null on failure
+     * @throws AttributeExceptionInterface If $value is not valid
      */
     public static function newInstance(mixed $value): ?static;
 }
