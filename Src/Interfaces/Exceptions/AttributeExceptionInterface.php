@@ -36,11 +36,11 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\HtmlExceptionInterfac
  * This exception is thrown when occurs an error in attributes operations.
  * 
  * @category  AttributeExceptionInterface
- * @package   Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes
+ * @package   Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Exceptions
  */
 interface AttributeExceptionInterface extends HtmlExceptionInterface
