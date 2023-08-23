@@ -28,7 +28,7 @@ declare(strict_types=1);
  * @link     http://www.gnu.org/licenses/
  */
 
-namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Exceptions;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\SqlLog;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\ConnectExceptionInterface;
@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\ConnectExceptionInter
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://www.php.net/manual/en/class.runtimeexception.php
  */
 final class ConnectException extends \RuntimeException implements
