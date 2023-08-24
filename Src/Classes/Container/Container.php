@@ -8,6 +8,7 @@ declare(strict_types=1);
  * a central mechanism for maintaining and resolving dependencies, allowing
  * controllers to be created with the required services, repositories, or other
  * components.
+ * PHP VERSION 8.2.0
  * 
  * Copyright (C) 2023, José V S Carneiro
  * 
@@ -24,45 +25,94 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package Josevaltersilvacarneiro\Html\Src\Classes\Container
+ * @category Container
+ * @package  Josevaltersilvacarneiro\Html\Src\Classes\Container
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  https://www.gnu.org/licenses/quick-guide-gplv3.html GPLv3
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Container
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Container;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Container\ContainerException;
-use Josevaltersilvacarneiro\Html\Src\Classes\Container\NotFoundException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\ContainerException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\NotFoundException;
 use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * This class is defined in the PSR-11 standard.
+ * 
+ * @var array<string,Controller> $_container Array of namespaces for the controllers
+ * 
+ * @category  Container
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\Container
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.2.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Container
+ * @see       https://www.php-fig.org/psr/psr-11/
+ */
 class Container implements ContainerInterface
 {
-    /** @var array<string,Controller> Array of namespaces for the controllers */
-    private array $container = [];
+    private readonly array $_container = [];
 
     /**
-     * @param string $className Name of the class to be instantiated @example 'Josevaltersilvacarneiro\Html\App\Controller\Home'
-     * @param mixed $parameters Parameters to be passed to the class constructor
+     * This method adds a new entry to the container.
+     * 
+     * @param string        $className    Name of the class to be instantiated
+     * @param array<string> $dependencies Dependencies to be injected
      * 
      * @return void
-     * @throws ContainerException
+     * @throws ContainerException class doesn't exist or doesn't have a fork method
      */
-    public function add(string $className, mixed ...$parameters): void
+    public function add(string $className, array $dependencies = []): void
     {
+        $dependencies = array_map(
+            function ($dependency) {
+                if (! class_exists($dependency)) {
+                    throw new ContainerException(
+                        "Class {$dependency} not found",
+                        1000
+                    );
+                }
+
+                $reflectDependency = new \ReflectionClass($dependency);
+
+                if (!$reflectDependency->hasMethod('fork')) {
+                    throw new ContainerException(
+                        "Class {$dependency} hasn't a fork method",
+                        1000
+                    ); 
+                }
+
+                return $dependency::fork();
+            },
+            $dependencies
+        );
+
         try {
-            $this->container[$className] = function ($container) use ($className, $parameters) {
-                return new $className(...$parameters);
+            $this->_container[$className] = function ($container) use (
+                $className, $dependencies
+            ) {
+                return new $className(...$dependencies);
             };
         } catch (\Error $e) {
-            throw new ContainerException("Error while retrieving the entry {$className}", 10, $e);
+            throw new ContainerException(
+                "Error while retrieving the entry {$className}", 10, $e
+            );
         }
     }
 
     /**
+     * This method is defined in the PSR-11 standard.
+     * 
      * @param string $id Indentifier of the object to be instantiated
      * 
+     * @return mixed Entry
      * @throws NotFoundExceptionInterface No entry was found for this identifier
      * @throws ContainerExceptionInterface Error while retrieving the entry
      */
@@ -72,14 +122,18 @@ class Container implements ContainerInterface
             throw new NotFoundException("{$id} not found in container");
         }
 
-        return $this->container[$id]($this);
+        return $this->_container[$id]($this);
     }
 
     /**
-     * @return bool if the container can return an entry for the given identifier; false otherwise
+     * This method is defined in the PSR-11 standard.
+     * 
+     * @param string $id Indentifier of the object to be instantiated
+     * 
+     * @return bool true if can return an entry for the given id; false otherwise
      */
-    public function has($id): bool
+    public function has(string $id): bool
     {
-        return isset($this->container[$id]);
+        return isset($this->_container[$id]);
     }
 }
