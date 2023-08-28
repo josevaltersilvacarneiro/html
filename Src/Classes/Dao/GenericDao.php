@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 /**
- * The Dao (Data Access Object) package is a crucial component of the
- * application responsible for handling the interaction between the
- * application and the underlying database. It provides a set of classes
- * that encapsulate database operations, such as data retrieval, insertion,
- * update, and deletion, for various entities or tables in the system.
- *
+ * The Dao (Data Access Object) package is responsible for handling the interaction between the
+ * application and the underlying database. It provides a set of classes that encapsulate database
+ * operations, such as data retrieval, insertion, update, and deletion, for all entities or tables
+ * in the system.
+ * PHP VERSION >= 8.2.0
+ * 
  * Copyright (C) 2023, José V S Carneiro
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,33 +24,49 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\App\Model\Dao
+ * @category Dao
+ * @package  Josevaltersilvacarneiro\Html\Src\Interfaces\Dao
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Dao
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Model\Dao;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Dao;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Dao\DaoInterface;
 use Josevaltersilvacarneiro\Html\Src\Classes\Sql\SanitizeSql;
 
 /**
  * This class makes CRUD - creates, reads, updates and deletes.
  * 
- * @var string $_TABLE table's name where the operations will be performed
+ * @var string $table table's name where the operations will be performed
  * 
- * @method bool			c(array $register)	creates a new register
- * @method array|false	r(array $register)	reads a register
- * @method bool			u(array $register)	updates $register
- * @method bool			d(array $register)	deletes $register
+ * @method bool         c(array $register) creates a new register
+ * @method array|false  r(array $register) reads a register
+ * @method bool         u(array $register) updates a register
+ * @method bool         d(array $register) deletes a register
+ * @method string|false ic(array $register) creates a new register and returns the last inserted ID
  * 
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.3
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * @category  GenericDao
+ * @package   Josevaltersilvacarneiro\Html\Src\Interfaces\Dao
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.3.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Dao
+ * @see       https://www.php.net/manual/en/function.list
  */
-class GenericDao extends SanitizeSql
+class GenericDao extends SanitizeSql implements DaoInterface
 {
-	public function __construct(private string $_TABLE)
+	/**
+	 * Initializes the Dao.
+	 * 
+	 * @param \PDO   $conn  PDO instance
+	 * @param string $table Table name
+	 */
+	public function __construct(\PDO $conn, private readonly string $table)
 	{
-		parent::__construct();
+		parent::__construct($conn);
 	}
 
 	/**
@@ -60,17 +76,10 @@ class GenericDao extends SanitizeSql
 	 * @param array $register @example array('foo' => 'foobar', 'foobar' => 'foo')
 	 * 
 	 * @return bool true on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.list
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	public function c(array $register): bool
 	{
-		$record = parent::cleanCreate($this->_TABLE, $register);
+		$record = parent::cleanCreate($this->table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -87,17 +96,10 @@ class GenericDao extends SanitizeSql
 	 * @param array $register @example array('fooID' => 'foobar')
 	 * 
 	 * @return array|false $register on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.list
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	public function r(array $register): array|false
 	{
-		$record = parent::cleanRead($this->_TABLE, $register);
+		$record = parent::cleanRead($this->table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -116,17 +118,10 @@ class GenericDao extends SanitizeSql
 	 * @param array $register @example array('fooID' => 'bar', 'foobar' => 'foo')
 	 * 
 	 * @return bool true on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.list
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	public function u(array $register): bool
 	{
-		$record = parent::cleanUpdate($this->_TABLE, $register);
+		$record = parent::cleanUpdate($this->table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -143,17 +138,10 @@ class GenericDao extends SanitizeSql
 	 * @param array $register @example array('fooID' => 'bar')
 	 * 
 	 * @return bool true on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.3
-	 * @access		public
-	 * @see			https://www.php.net/manual/en/function.list
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	public function d(array $register): bool
 	{
-		$record = parent::cleanDelete($this->_TABLE, $register);
+		$record = parent::cleanDelete($this->table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -171,17 +159,10 @@ class GenericDao extends SanitizeSql
 	 * This method is responsible for inserting a record into the database
 	 * and returning the last inserted ID if the insertion is successful.
 	 * 
-	 * @param		array $record @example array('fooID' => 'bar', 'foo' => 'bar')
+	 * @param array $record @example array('fooID' => 'bar', 'foo' => 'bar')
 	 * 
-	 * @return		string|false ID inserted on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		public
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return string|false ID inserted on success; false otherwise
 	 */
-
 	public function ic(array $record): string|false
 	{
 		return $this->c($record) ? $this->getLastInsertedId() : false;
