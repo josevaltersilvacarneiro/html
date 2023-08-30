@@ -26,12 +26,13 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Sql\ConnectInterface;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\ConnectException;
 
 /**
  * Through specific methods, this class returns connections to different databases.
  * 
  * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version 0.4
+ * @version 0.5
  * @see https://www.php.net/manual/en/book.pdo.php
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license GPLv3
