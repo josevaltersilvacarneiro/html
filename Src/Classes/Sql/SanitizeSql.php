@@ -106,7 +106,7 @@ abstract class SanitizeSql extends Sql
 		// if the primary key was passed as parameter, but it isn't
 		// required, delete it
 
-		$record = self::array_key_diff($record, self::$_TABLES[$table]['columns']);
+		$record = self::_arrayKeyDiff($record, self::$_TABLES[$table]['columns']);
 		// keys that aren't part of the table's columns must be deleted
 
 		$query = DatabaseStandard::generateCreateStandard($table,
@@ -133,7 +133,7 @@ abstract class SanitizeSql extends Sql
 		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
-		$record = self::array_key_diff($record,
+		$record = self::_arrayKeyDiff($record,
 			self::$_TABLES[$table]['unique_constraints']);
 		// columns that aren't unique constraints must be deleted
 
@@ -164,7 +164,7 @@ abstract class SanitizeSql extends Sql
 		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
-		$record = self::array_key_diff($record, self::$_TABLES[$table]['columns']);
+		$record = self::_arrayKeyDiff($record, self::$_TABLES[$table]['columns']);
 		// columns that aren't part of the table must be deleted
 
 		$primaryKey = self::$_TABLES[$table]['primary_key'];
@@ -224,7 +224,7 @@ abstract class SanitizeSql extends Sql
 	 * 
 	 * @return array @example array('fooID' => 'foo', 'fooBAR' => 'bar')
 	 */
-	private static function array_key_diff(array $dict, array ...$lists): array
+	private static function _arrayKeyDiff(array $dict, array ...$lists): array
 	{
 		$list = array_merge(...$lists);
 
