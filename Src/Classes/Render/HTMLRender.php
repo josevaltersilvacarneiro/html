@@ -23,7 +23,7 @@
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Render;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Render\Render;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Render\RenderInterface;
 
 use Twig\Environment;
 use \Twig\Loader\FilesystemLoader;
@@ -46,19 +46,37 @@ use \Twig\Loader\FilesystemLoader;
  * @method	string	getKeywords()			returns the head keywords
  * @method	string	getRobots()				returns the head robots
  * 
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.8
- * @abstract
- * @see			Josevaltersilvacarneiro\Html\App\Controller\HTMLController
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * @category  HTMLRender
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\Render
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.9.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Render
  */
-abstract class HTMLRender extends Render
+abstract class HTMLRender implements RenderInterface
 {
+	private const PATH = __VIEW__;
+
+	private string $_dir;
 	private string $headerTitle;
 	private string $headerDescription;
 	private string $keywords;
 	private string $robots = "Index";
+
+	/**
+	 * Sets up the View directory.
+	 * 
+	 * @param string $dir directory in __VIEW__
+	 * 
+	 * @return static itself
+	 */
+	public function setDir(string $dir): static
+	{
+		$this->_dir = $dir . DIRECTORY_SEPARATOR;
+
+		return $this;
+	}
 
 	protected function setTitle(string $headerTitle): void
 	{
@@ -78,6 +96,16 @@ abstract class HTMLRender extends Render
 	protected function setRobots(string $robots): void
 	{
 		$this->robots = $robots;
+	}
+
+	/**
+	 * Returns the View directory.
+	 * 
+	 * @return string directory in __VIEW__
+	 */
+	public function getDir(): string
+    {
+        return $this->_dir;
 	}
 
 	protected function getTitle(): string
@@ -105,13 +133,14 @@ abstract class HTMLRender extends Render
 		$header = $this->getDir() . "Header-" . __VERSION__ . ".html.twig";
 		$headerFile = self::PATH . $header;
 
-		if (!$this->fexists($headerFile))
-			return array();
+		if (!file_exists($headerFile) || !is_readable($headerFile)) {
+			return [];
+		}
 
-		return array(
+		return [
 			// its variables
 			'HEADER_'	=> $header
-		);
+		];
 	}
 
 	private function addMain(): array
@@ -119,13 +148,14 @@ abstract class HTMLRender extends Render
 		$main = $this->getDir() . "Main-" . __VERSION__ . ".html.twig";
 		$mainFile = self::PATH . $main;
 
-		if (!$this->fexists($mainFile))
-			return array();
+		if (!file_exists($mainFile) || !is_readable($mainFile)) {
+			return [];
+		}
 
-		return array(
+		return [
 			// its variables
-			'MAIN_'		=> $main
-		);
+			'MAIN_' => $main
+		];
 	}
 
 	private function addFooter(): array
@@ -133,13 +163,14 @@ abstract class HTMLRender extends Render
 		$footer = $this->getDir() . "Footer-" . __VERSION__ . ".html.twig";
 		$footerFile = self::PATH . $footer;
 
-		if (!$this->fexists($footerFile))
-			return array();
+		if (!file_exists($footerFile) || !is_readable($footerFile)) {
+			return [];
+		}
 
-		return array(
+		return [
 			// its variables
-			'FOOTER_'	=> $footer
-		);
+			'FOOTER_' => $footer
+		];
 	}
 
 	public function renderLayout(): string  
