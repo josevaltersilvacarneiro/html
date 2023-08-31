@@ -52,7 +52,7 @@ use \Twig\Loader\FilesystemLoader;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.0
+ * @version   Release: 0.10.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Render
  */
 abstract class HTMLRender implements HtmlRenderInterface
@@ -161,46 +161,6 @@ abstract class HTMLRender implements HtmlRenderInterface
 	}
 
 	/**
-	 * Returns the head title.
-	 * 
-	 * @return string The title of the page
-	 */
-	protected function getTitle(): string
-	{
-		return $this->_title;
-	}
-
-	/**
-	 * Returns the head description.
-	 * 
-	 * @return string The description of the page
-	 */
-	protected function getDescription(): string
-	{
-		return $this->_description;
-	}
-
-	/**
-	 * Returns the head page theme keywords.
-	 * 
-	 * @return string Keywords
-	 */
-	protected function getKeywords(): string
-	{
-		return $this->_keywords;
-	}
-
-	/**
-	 * Returns the head robots.
-	 * 
-	 * @return string Robots
-	 */
-	protected function getRobots(): string
-	{
-		return $this->_robots;
-	}
-
-	/**
 	 * Returns the header.
 	 * 
 	 * @return array<string,mixed> header
@@ -271,14 +231,14 @@ abstract class HTMLRender implements HtmlRenderInterface
 		$twig   = new Environment($loader);
 
 		$glbs = [
-			'TITLE_'       => $this->getTitle(),
-			'DESCRIPTION_' => $this->getDescription(),
-			'KEYWORDS_'    => $this->getKeywords(),
+			'TITLE_'       => $this->_title,
+			'DESCRIPTION_' => $this->_description,
+			'KEYWORDS_'    => $this->_keywords,
 			'AUTHOR_'      => __AUTHOR__,
 			'URL_'         => __URL__,
-			'ROBOTS_'      => $this->getRobots(),
+			'ROBOTS_'      => $this->_robots,
 			'CSS_'         => __CSS__,
-			'DIR_'         => $this->getDir(),
+			'DIR_'         => $this->_dir,
 			'VERSION_'     => __VERSION__,
 			'JS_'          => __JS__,
 			'IMG_'         => __IMG__
