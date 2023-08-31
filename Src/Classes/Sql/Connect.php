@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /**
  * This package is responsible for accessing the database.
+ * PHP VERSION >= 8.2.0
  * 
  * Copyright (C) 2023, José V S Carneiro
  * 
@@ -20,7 +21,11 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @category Sql
+ * @package  Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
@@ -29,24 +34,32 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Sql\ConnectInterface;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\ConnectException;
 
 /**
- * Through specific methods, this class returns connections to different databases.
+ * This class is responsible for creating connections with all databases.
  * 
- * @author José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version 0.5
- * @see https://www.php.net/manual/en/book.pdo.php
- * @copyright Copyright (C) 2023, José V S Carneiro
- * @license GPLv3
+ * @category  Connect
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.5.1
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 class Connect implements ConnectInterface
 {
-	public static function newMysqlConnection(): \PDO
-	{
-		try {
-			return new \PDO(_DSN, _USER, _PASS);
-		} catch (\PDOException $e) {
-			$e = new ConnectException($e);
-			$e->storeLog();
-			throw $e;
-		}
-	}
+    /**
+     * Creates a mysql connection and returns it.
+     * 
+     * @return \PDO PDO instance
+     * @throws ConnectException If the connection fails
+     */
+    public static function newMysqlConnection(): \PDO
+    {
+        try {
+            return new \PDO(_DSN_MYSQL, _USER_MYSQL, _PASS_MYSQL);
+        } catch (\PDOException $e) {
+            $e = new ConnectException($e);
+            $e->storeLog();
+            throw $e;
+        }
+    }
 }
