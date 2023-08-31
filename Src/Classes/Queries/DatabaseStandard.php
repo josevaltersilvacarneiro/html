@@ -24,7 +24,7 @@ declare(strict_types=1);
  * @package     Josevaltersilvacarneiro\Html\Src\Classes\Sql
  */
 
-namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\Queries;
 
 /**
  * DatabaseStandard is a class for generating dynamic SQL queries in PHP.
@@ -43,7 +43,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
  * @method string generateDeleteStandard(string $table, array $uniqueIdentifiers)
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.4
+ * @version		0.5
  * @see			https://en.wikipedia.org/wiki/SQL
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
