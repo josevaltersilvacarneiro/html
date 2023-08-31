@@ -36,22 +36,25 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
 /**
  * This class sanitizes the CRUD.
  * 
- * @staticvar array $TABLES stores the most important information about the tables
+ * @staticvar array $_TABLES stores the most important information about the tables
  * 
  * @method array|false cleanCreate(array $record) to create
- * @method array|false cleanRead(array $record)	to read
+ * @method array|false cleanRead(array $record)   to read
  * @method array|false cleanUpdate(array $record) to update
  * @method array|false cleanDelete(array $record) to delete
  * 
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.2
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * @category  SanitizeSql
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.5.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 abstract class SanitizeSql extends Sql
 {
 	/**
-	 * TABLES = [
+	 * _TABLES = [
 	 * 	'example_table' => [
 	 * 		'primary_key' => 'example_key',
 	 * 		...
@@ -62,7 +65,7 @@ abstract class SanitizeSql extends Sql
 	 * 	]
 	 * ]
 	 */
-	private static array $TABLES = [];
+	private static array $_TABLES = [];
 
 	/**
 	 * Initializes the SanitizeSql.
@@ -78,39 +81,32 @@ abstract class SanitizeSql extends Sql
 	 * This method returns a tuple where the first element is a query to
 	 * create the second element that is a record.
 	 * 
-	 * @param string $table	table's name
-	 * @param array	$record	record to be created
+	 * @param string $table   table's name
+	 * @param array  $record  record to be created
 	 * 
 	 * @return array|false tuple on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		protected
-	 * @see			https://www.php.net/manual/en/function.empty
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	protected function cleanCreate(string $table, array $record): array|false
 	{
-		if (!$this->mapTable($table) || !$this->areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
 		if (!empty(array_diff(
-			self::$TABLES[$table]['required_columns'], array_keys($record))))
+			self::$_TABLES[$table]['required_columns'], array_keys($record))))
 			return false;
 
 		// the above statement returns false if
 		// the required fields to create a new
 		// record weren't passed in $record
 
-		$primaryKey = self::$TABLES[$table]['primary_key'];
-		if (!$this->isPrimaryKeyRequired($table) &&
+		$primaryKey = self::$_TABLES[$table]['primary_key'];
+		if (!$this->_isPrimaryKeyRequired($table) &&
 			array_key_exists($primaryKey, $record))
 			unset($record[$primaryKey]);
 		// if the primary key was passed as parameter, but it isn't
 		// required, delete it
 
-		$record = self::array_key_diff($record, self::$TABLES[$table]['columns']);
+		$record = self::array_key_diff($record, self::$_TABLES[$table]['columns']);
 		// keys that aren't part of the table's columns must be deleted
 
 		$query = DatabaseStandard::generateCreateStandard($table,
@@ -127,27 +123,18 @@ abstract class SanitizeSql extends Sql
 	 * This method returns a tuple where the first element is a query to
 	 * read the second element that is a record.
 	 * 
-	 * @param string $table	table's name
-	 * @param array	$record	record to be read
+	 * @param string $table  table's name
+	 * @param array	 $record record to be read
 	 * 
 	 * @return array|false tuple on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		protected
-	 * @see			https://www.php.net/manual/en/function.empty
-	 * @see			https://www.php.net/manual/en/function.array-key-first
-	 * @see			https://www.php.net/manual/en/function.array-slice
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	protected function cleanRead(string $table, array $record): array|false
 	{
-		if (!$this->mapTable($table) || !$this->areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
 		$record = self::array_key_diff($record,
-			self::$TABLES[$table]['unique_constraints']);
+			self::$_TABLES[$table]['unique_constraints']);
 		// columns that aren't unique constraints must be deleted
 
 		if (empty($record)) return false;
@@ -167,30 +154,20 @@ abstract class SanitizeSql extends Sql
 	 * This method returns a tuple where the first element is a query to
 	 * update the second element that is a record.
 	 * 
-	 * @param string $table	table's name
-	 * @param array	$record	record to be updated
+	 * @param string $table  table's name
+	 * @param array  $record record to be updated
 	 * 
 	 * @return array|false tuple on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		protected
-	 * @see			https://www.php.net/manual/en/function.empty
-	 * @see			https://www.php.net/manual/en/function.array-key-exists
-	 * @see			https://www.php.net/manual/en/function.unset
-	 * @see			https://www.php.net/manual/en/function.array-keys
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	protected function cleanUpdate(string $table, array $record): array|false
 	{
-		if (!$this->mapTable($table) || !$this->areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
-		$record = self::array_key_diff($record, self::$TABLES[$table]['columns']);
+		$record = self::array_key_diff($record, self::$_TABLES[$table]['columns']);
 		// columns that aren't part of the table must be deleted
 
-		$primaryKey = self::$TABLES[$table]['primary_key'];
+		$primaryKey = self::$_TABLES[$table]['primary_key'];
 		if (empty($primaryKey) || !array_key_exists($primaryKey, $record))
 			return false;
 		// unable to update a record that doesn't have a primary key
@@ -215,25 +192,17 @@ abstract class SanitizeSql extends Sql
 	 * This method returns a tuple where the first element is a query to
 	 * delete the second element that is a record.
 	 * 
-	 * @param string $table	table's name
-	 * @param array	$record	record to be deleted
+	 * @param string $table  table's name
+	 * @param array  $record record to be deleted
 	 * 
 	 * @return array|false tuple on success; false otherwise
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		protected
-	 * @see			https://www.php.net/manual/en/function.empty
-	 * @see			https://www.php.net/manual/en/function.array-key-exists
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
 	 */
 	protected function cleanDelete(string $table, array $record): array|false
 	{
-		if (!$this->mapTable($table) || !$this->areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
 			return false;
 
-		$primaryKey = self::$TABLES[$table]['primary_key'];
+		$primaryKey = self::$_TABLES[$table]['primary_key'];
 		if (empty($primaryKey) || !array_key_exists($primaryKey, $record))
 			return false;
 		// unable to delete a record that doesn't have a primary key
@@ -250,19 +219,10 @@ abstract class SanitizeSql extends Sql
 	 * This method returns an array with the values of $dict where the keys
 	 * are elements of one of the arrays passed as argument in $lists.
 	 * 
-	 * @param		array	$dict	array of type key-value - or dictionary
-	 * @param		array	$lists	variable length argument list
+	 * @param array $dict     array of type key-value - or dictionary
+	 * @param array	...$lists variable length argument list
 	 * 
-	 * @return		array	@example array('fooID' => 'foo', 'fooBAR' => 'bar')
-	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/function.array-merge.php
-	 * @see			https://www.php.net/manual/en/function.array-filter.php
-	 * @see			https://www.php.net/manual/en/function.in-array.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return array @example array('fooID' => 'foo', 'fooBAR' => 'bar')
 	 */
 	private static function array_key_diff(array $dict, array ...$lists): array
 	{
@@ -277,16 +237,11 @@ abstract class SanitizeSql extends Sql
 	 * This method returns a boolean value indicating whether the values
 	 * inside of the record are compatible with database data types.
 	 * 
-	 * @return bool true on success; false otherwise
+	 * @param array $record record to be checked
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.2
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/function.gettype.php
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return bool true on success; false otherwise
 	 */
-	private function areTypesValid(array $record): bool
+	private function _areTypesValid(array $record): bool
 	{
 		foreach ($record as $value) {
 			$valueType = gettype($value);
@@ -308,22 +263,19 @@ abstract class SanitizeSql extends Sql
 	 * This method is responsible for retrieving a list of column names for a
 	 * specified database table.
 	 * 
-	 * @return array|false array de columns on success; false otherwise
+	 * @param string $table table's name
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/pdostatement.fetchall
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return array|false array de columns on success; false otherwise
 	 */
-	private function getColumns(string $table): array|false
+	private function _getColumns(string $table): array|false
 	{
-		$query	= DatabaseStandard::generateColumns('tb', 'column_name');
-		$stmt	= $this->query($query, array('tb' => $table));
+		$query = DatabaseStandard::generateColumns('tb', 'column_name');
+		$stmt  = $this->query($query, array('tb' => $table));
 
-		if ($stmt === false) return false;
-		// there was an error
+		if ($stmt === false) {
+			// there was an error
+			return false;
+		}
 
 		$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -339,22 +291,19 @@ abstract class SanitizeSql extends Sql
 	 * This method is responsible for retrieving a list of column names that
 	 * are marked as required (not nullable) for a specified database table.
 	 * 
-	 * @return array|false array of columns on success; false otherwise
+	 * @param string $table table's name
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/pdostatement.fetchall
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return array|false array of columns on success; false otherwise
 	 */
-	private function getRequiredColumns(string $table): array|false
+	private function _getRequiredColumns(string $table): array|false
 	{
 		$query = DatabaseStandard::generateRequiredColumns('tb');
 
 		$stmt = $this->query($query, array('tb' => $table));
-		if ($stmt === false) return false;
-		// there was an error
+		if ($stmt === false) {
+			// there was an error
+			return false;
+		}
 
 		$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -370,22 +319,19 @@ abstract class SanitizeSql extends Sql
 	 * This method is responsible for retrieving a list of unique identifiers
 	 * (likely column names) for a specified database table.
 	 * 
-	 * @return array|false array of columns on success; false otherwise
+	 * @param string $table table's name
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/pdostatement.fetchall
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return array|false array of columns on success; false otherwise
 	 */
-	private function getUniqueIdentifiers(string $table): array|false
+	private function _getUniqueIdentifiers(string $table): array|false
 	{
 		$query = DatabaseStandard::generateUniqueIdentifiers('tb');
 
 		$stmt = $this->query($query, array('tb' => $table));
-		if ($stmt === false) return false;
-		// there was an error
+		if ($stmt === false) {
+			// there was an error
+			return false;
+		}
 
 		$result	= $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -401,16 +347,12 @@ abstract class SanitizeSql extends Sql
 	 * This method is responsible for retrieving the primary key information
 	 * for a specified database table.
 	 * 
-	 * @return array|false array with the name of the primary key and an indication if it's required on success; false otherwise
+	 * @param string $table table's name
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/pdostatement.fetch
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return array|false array with the name of the primary key and an indication
+	 * if it's required on success; false otherwise
 	 */
-	private function getPrimaryKeyName(string $table): array|false
+	private function _getPrimaryKeyName(string $table): array|false
 	{
 		$query = DatabaseStandard::generatePrimaryKeyStandard('tb',
 			'key_name', 'is_key_required');
@@ -423,43 +365,46 @@ abstract class SanitizeSql extends Sql
 	 * This method is responsible for mapping the structure and metadata of
 	 * a database table into an internal data structure.
 	 * 
-	 * @return bool true on success; false otherwise
+	 * @param string $table table's name
 	 * 
-	 * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
-	 * @version		0.1
-	 * @access		private
-	 * @see			https://www.php.net/manual/en/function.array-key-exists.php
-	 * @see			https://www.php.net/manual/en/function.empty
-	 * @copyright	Copyright (C) 2023, José V S Carneiro
- 	 * @license		GPLv3
+	 * @return bool true on success; false otherwise
 	 */
-	private function mapTable(string $table): bool
+	private function _mapTable(string $table): bool
 	{
-		if (array_key_exists($table, self::$TABLES))
+		if (array_key_exists($table, self::$_TABLES)) {
 			return true;
+		}
 
-		$key = $this->getPrimaryKeyName($table);
+		$key = $this->_getPrimaryKeyName($table);
 
-		if ($key === false) return false;
+		if ($key === false) {
+			return false;
+		}
 
 		if (empty($key)) {
 			$key['key_name'] = '';
 			$key['is_key_required'] = false;
 		}
 
-		$unique = $this->getUniqueIdentifiers($table);
+		$unique = $this->_getUniqueIdentifiers($table);
 
-		if ($unique === false) return false;
+		if ($unique === false) {
+			return false;
+		}
 
-		$requiredColumns = $this->getRequiredColumns($table);
+		$requiredColumns = $this->_getRequiredColumns($table);
 
-		if ($requiredColumns === false) return false;
+		if ($requiredColumns === false) {
+			return false;
+		}
 
-		$columns = $this->getColumns($table);
+		$columns = $this->_getColumns($table);
 
-		if ($columns === false) return false;
+		if ($columns === false) {
+			return false;
+		}
 
-		self::$TABLES[$table] = [
+		self::$_TABLES[$table] = [
 			'primary_key'			=>	$key['key_name'],
 			'is_key_required'		=>	$key['is_key_required'] === 1,
 			'unique_constraints'	=>	$unique,
@@ -470,8 +415,16 @@ abstract class SanitizeSql extends Sql
 		return true;
 	}
 
-	private function isPrimaryKeyRequired(string $table): bool
+	/**
+	 * This method informs if the primary key is required to create a new
+	 * record.
+	 * 
+	 * @param string $table table's name
+	 * 
+	 * @return bool true if the primary key is required; false otherwise
+	 */
+	private function _isPrimaryKeyRequired(string $table): bool
 	{
-		return self::$TABLES[$table]['is_key_required'];
+		return self::$_TABLES[$table]['is_key_required'];
 	}
 }
