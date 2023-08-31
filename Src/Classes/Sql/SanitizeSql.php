@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 /**
  * This package is responsible for accessing the database.
- *
+ * PHP VERSION >= 8.2.0
+ * 
  * Copyright (C) 2023, José V S Carneiro
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +21,11 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @category Sql
+ * @package  Josevaltersilvacarneiro\Html\Src\Classes\Sql
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
@@ -39,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
  * @method array|false cleanDelete(array $record) to delete
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
+ * @version		0.2
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
  */
@@ -59,9 +64,14 @@ abstract class SanitizeSql extends Sql
 	 */
 	private static array $TABLES = [];
 
-	public function __construct()
+	/**
+	 * Initializes the SanitizeSql.
+	 * 
+	 * @param \PDO $conn PDO instance
+	 */
+	public function __construct(\PDO $conn)
 	{
-		parent::__construct();
+		parent::__construct($conn);
 	}
 
 	/**
