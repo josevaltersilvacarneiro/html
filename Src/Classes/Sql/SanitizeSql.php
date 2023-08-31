@@ -48,7 +48,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.5.1
+ * @version   Release: 0.5.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 abstract class SanitizeSql extends Sql
@@ -88,8 +88,9 @@ abstract class SanitizeSql extends Sql
 	 */
 	protected function cleanCreate(string $table, array $record): array|false
 	{
-		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record)) {
 			return false;
+		}
 
 		if (!empty(array_diff(
 			self::$_TABLES[$table]['required_columns'], array_keys($record))))
@@ -130,19 +131,26 @@ abstract class SanitizeSql extends Sql
 	 */
 	protected function cleanRead(string $table, array $record): array|false
 	{
-		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record)) {
 			return false;
+		}
 
-		$record = self::_arrayKeyDiff($record,
-			self::$_TABLES[$table]['unique_constraints']);
 		// columns that aren't unique constraints must be deleted
+		$record = self::_arrayKeyDiff(
+			$record,
+			self::$_TABLES[$table]['unique_constraints']
+		);
 
-		if (empty($record)) return false;
-		// unable to read empty record
+		if (empty($record)) {
+			// unable to read empty record
+			return false;
+		}
 
-		$query = DatabaseStandard::generateReadStandard($table,
-			array_key_first($record));
 		// $query gets the sql query to READ a record
+		$query = DatabaseStandard::generateReadStandard(
+			$table,
+			array_key_first($record)
+		);
 
 		return [
 			$query,
@@ -161,26 +169,30 @@ abstract class SanitizeSql extends Sql
 	 */
 	protected function cleanUpdate(string $table, array $record): array|false
 	{
-		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record)) {
 			return false;
+		}
 
-		$record = self::_arrayKeyDiff($record, self::$_TABLES[$table]['columns']);
 		// columns that aren't part of the table must be deleted
+		$record = self::_arrayKeyDiff($record, self::$_TABLES[$table]['columns']);
 
-		$primaryKey = self::$_TABLES[$table]['primary_key'];
-		if (empty($primaryKey) || !array_key_exists($primaryKey, $record))
-			return false;
 		// unable to update a record that doesn't have a primary key
+		$primaryKey = self::$_TABLES[$table]['primary_key'];
+		if (empty($primaryKey) || !array_key_exists($primaryKey, $record)) {
+			return false;
+		}
 
+		// primary key cannot be changed
 		$primaryKeyValue = $record[$primaryKey];
 		unset($record[$primaryKey]);
-		// primary key cannot be changed
 
-		$query = DatabaseStandard::generateUpdateStandard($table,
-			$primaryKey, array_keys($record));
+		$query = DatabaseStandard::generateUpdateStandard(
+			$table,
+			$primaryKey, array_keys($record)
+		);
 
-		$record[$primaryKey] = $primaryKeyValue;
 		// the primary key must be part of the record
+		$record[$primaryKey] = $primaryKeyValue;
 
 		return [
 			$query,
@@ -199,13 +211,15 @@ abstract class SanitizeSql extends Sql
 	 */
 	protected function cleanDelete(string $table, array $record): array|false
 	{
-		if (!$this->_mapTable($table) || !$this->_areTypesValid($record))
+		if (!$this->_mapTable($table) || !$this->_areTypesValid($record)) {
 			return false;
+		}
 
-		$primaryKey = self::$_TABLES[$table]['primary_key'];
-		if (empty($primaryKey) || !array_key_exists($primaryKey, $record))
-			return false;
 		// unable to delete a record that doesn't have a primary key
+		$primaryKey = self::$_TABLES[$table]['primary_key'];
+		if (empty($primaryKey) || !array_key_exists($primaryKey, $record)) {
+			return false;
+		}
 
 		$query = DatabaseStandard::generateDeleteStandard($table, $primaryKey);
 
