@@ -22,10 +22,10 @@ declare(strict_types=1);
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * @category Sql
- * @package  Josevaltersilvacarneiro\Html\Src\Interfaces\Sql
+ * @package  Josevaltersilvacarneiro\Html\Src\Classes\Sql
  * @author   José Carneiro <git@josevaltersilvacarneiro.net>
  * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Sql
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
@@ -35,12 +35,12 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
  * in different databases.
  * 
  * @category  Sql
- * @package   Josevaltersilvacarneiro\Html\Src\Interfaces\Sql
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\Sql
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
- * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Sql
+ * @version   Release: 0.0.2
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 abstract class Sql
 {
