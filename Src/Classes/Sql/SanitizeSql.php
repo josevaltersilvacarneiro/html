@@ -30,7 +30,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Sql;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Sql\DatabaseStandard;
+use Josevaltersilvacarneiro\Html\Src\Classes\Queries\DatabaseStandard;
 use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
 
 /**
@@ -48,7 +48,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.5.0
+ * @version   Release: 0.5.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 abstract class SanitizeSql extends Sql
