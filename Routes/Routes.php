@@ -3,11 +3,8 @@
 declare(strict_types=1);
 
 /**
- * This comprehensive PHP package is designed to simplify the
- * process of setting up and managing global variables. It
- * provides a convenient and organized approach to define,
- * access, and share variables across different components
- * of the application.
+ * Where the routes are defined.
+ * PHP VERSION >= 8.2.0
  *
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -24,7 +21,11 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package	Settings
+ * @category Routes
+ * @package  Josevaltersilvacarneiro\Html\Routes
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Routes
  */
 
 return [
