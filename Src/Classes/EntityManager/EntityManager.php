@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 /**
- * The Entity package contains classes that represent the database
- * tables as entities. These entity classes encapsulate the structure
- * and behavior of specific tables, providing a convenient way to
- * interact with the corresponding database records.
+ * This package provides a ORM (Object-Relational Mapping), whose role
+ * is to map entities with tables in the database.
+ * PHP VERSION >= 8.2.0
  * 
  * Copyright (C) 2023, José V S Carneiro
  *
@@ -23,7 +22,11 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\App\Model\Entity
+ * @category EntityManager
+ * @package  Josevaltersilvacarneiro\Html\Src\Classes\EntityManager
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
