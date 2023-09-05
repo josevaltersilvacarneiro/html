@@ -34,7 +34,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
 use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityManagerException;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
+use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 
 /**
  * This class is a crucial part of the application's data access layer,
@@ -57,7 +57,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.1
+ * @version   Release: 0.2.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
