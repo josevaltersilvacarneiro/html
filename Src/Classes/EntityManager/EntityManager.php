@@ -42,23 +42,24 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
  * their corresponding DAO (Data Access Object) classes. It provides methods
  * for initializing, deleting, and synchronizing the state of EntityDatabase
  * objects with the database.
- *
+ * 
  * @staticvar   string  _METHOD_GET_UNIQUE_ID id
  * @staticvar   string  _METHOD_GET_REPRESENTATION representation of the class in DB
- *
+ * 
  * @method GenericDao|false getDaoEntity(\ReflectionClass &$reflect) returns the corresponding DAO object
  * @method array getProperties(\ReflectionObject &$reflect, EntityDatabase &$entity) returns the properties of the entity
  * @method EntityDatabase init(string $entityName, string|int $entityId) returns a new instance of $entityName
  * @method bool del(EntityDatabase &$entity) deletes this entity of the database
  * @method bool flush(EntityDatabase &$entity) adds or updates the record in the database
- *
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
- * @see			Josevaltersilvacarneiro\Html\Src\Classes\Routes\Route
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * 
+ * @category  EntityManager
+ * @package   Josevaltersilvacarneiro\Html\Src\Classes\EntityManager
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.2.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
-
 final class EntityManager
 {
     private const _METHOD_GET_UNIQUE_ID         = "getUNIQUE";
