@@ -26,7 +26,7 @@ declare(strict_types=1);
  * @package     Josevaltersilvacarneiro\Html\App\Model\Entity
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
+namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
 
 use Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
