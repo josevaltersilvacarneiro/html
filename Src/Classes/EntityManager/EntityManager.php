@@ -43,8 +43,8 @@ use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
  * for initializing, deleting, and synchronizing the state of EntityDatabase
  * objects with the database.
  * 
- * @staticvar   string  _METHOD_GET_UNIQUE_ID id
- * @staticvar   string  _METHOD_GET_REPRESENTATION representation of the class in DB
+ * @staticvar string _METHOD_GET_UNIQUE_ID      id
+ * @staticvar string _METHOD_GET_REPRESENTATION representation of the class in DB
  * 
  * @method GenericDao|false getDaoEntity(\ReflectionClass &$reflect) returns the corresponding DAO object
  * @method array getProperties(\ReflectionObject &$reflect, EntityDatabase &$entity) returns the properties of the entity
