@@ -31,7 +31,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
 
-use Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao;
+use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityManagerException;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityState;
