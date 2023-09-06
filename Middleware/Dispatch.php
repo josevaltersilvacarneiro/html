@@ -23,7 +23,7 @@ declare(strict_types=1);
  * @package Josevaltersilvacarneiro\Html\App
  */
 
-namespace Josevaltersilvacarneiro\Html\App;
+namespace Josevaltersilvacarneiro\Html\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,12 +35,12 @@ use Psr\Http\Server\MiddlewareInterface;
  * process the request.
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.11
+ * @version   0.12
  * @see       https://www.php-fig.org/psr/psr-15/
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
  */
-final class App implements MiddlewareInterface
+final class Dispatch implements MiddlewareInterface
 {
     public function __construct()
     {}
