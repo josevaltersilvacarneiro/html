@@ -28,8 +28,6 @@
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Mail;
 
-require_once 'AWSSes.php';
-
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\MailException;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Mail\MailInterface;
 
@@ -54,7 +52,7 @@ use PHPMailer\PHPMailer\SMTP;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.1
+ * @version   Release: 0.2.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Mail
  * @see       https://github.com/PHPMailer/PHPMailer/tree/master
  */
@@ -72,13 +70,13 @@ class Mail implements MailInterface
         //$this->mailman->SMTPDebug = SMTP::DEBUG_SERVER;
         $this->_mailman->SMTPDebug = SMTP::DEBUG_OFF;
 
-        $this->_mailman->Host = _HOSTMAIL;
-        $this->_mailman->Port = _HOST_PORT;
+        $this->_mailman->Host = _MAIL_SMTP;
+        $this->_mailman->Port = _PORT_SMTP;
         
         $this->_mailman->SMTPAuth = true;
 
-        $this->_mailman->Username = _USERNAME;
-        $this->_mailman->Password = _PASSWORD;
+        $this->_mailman->Username = _USER_SMTP;
+        $this->_mailman->Password = _PASS_SMTP;
     }
 
     /**
