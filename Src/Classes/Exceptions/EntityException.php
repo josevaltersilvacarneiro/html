@@ -30,11 +30,12 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Exceptions;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterface;
+use Josevaltersilvacarneiro\Html\Src\Classes\Log\EntityLog;
+
 /**
  * This class provides a way to handle and throw specific exceptions related to
  * entity-related errors.
- * 
- * @staticvar int ERROR_CODE  the error code
  * 
  * @category  EntityException
  * @package   Josevaltersilvacarneiro\Html\Src\Classes\Exceptions
@@ -44,13 +45,33 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Exceptions;
  * @version   Release: 0.2.0
  * @link      https://www.php.net/manual/en/class.runtimeexception.php
  */
-class EntityException extends \DomainException
+class EntityException extends \DomainException implements EntityExceptionInterface
 {
-    private const ERROR_CODE = 12;
-
-	public function __construct(string $message, \Exception $previous = NULL)
+    /**
+     * Initializes the exception.
+     * 
+     * @param string|null     $message  Error description
+     * @param \Exception|null $previous If this exceptions is a relaunch
+     */
+    public function __construct(string $message, \Exception $previous = null)
     {
-        parent::__construct("# Entity Exception -> " . $message, self::ERROR_CODE,
-            $previous);
+        parent::__construct(
+            "# Entity Exception -> " . $message,
+            EntityExceptionInterface::APP_WARNING_CODE, $previous
+        );
+    }
+
+    /**
+     * Stores the log.
+     * 
+     * @return void
+     */
+    public function storeLog(): void
+    {
+        $log = new EntityLog();
+        $log->setFilename($this->getFile());
+        $log->setLine($this->getLine());
+        $log->setMessage($this->getMessage());
+        $log->save();
     }
 }
