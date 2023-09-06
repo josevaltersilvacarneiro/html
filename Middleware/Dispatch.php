@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /**
  * This package is responsible for initializing the service.
+ * PHP VERSION >= 8.2.0
  * 
  * Copyright (C) 2023, José V S Carneiro
  * 
@@ -20,7 +21,11 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package Josevaltersilvacarneiro\Html\App
+ * @category Middleware
+ * @package  Josevaltersilvacarneiro\Html\Middleware
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  https://www.gnu.org/licenses/quick-guide-gplv3.html GPLv3
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Middleware
  */
 
 namespace Josevaltersilvacarneiro\Html\Middleware;
@@ -35,7 +40,7 @@ use Psr\Http\Server\MiddlewareInterface;
  * process the request.
  * 
  * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.12
+ * @version   0.13
  * @see       https://www.php-fig.org/psr/psr-15/
  * @copyright Copyright (C) 2023, José V S Carneiro
  * @license   GPLv3
