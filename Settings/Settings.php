@@ -29,13 +29,11 @@ define('_TIMEZONE_', 'America/Bahia');
 
 date_default_timezone_set(_TIMEZONE_);
 
-include_once 'DSN.php';     // variables responsible for accessing the database
-include_once 'Dao.php';     // required tables and fields in the database
+include_once 'Database.php'; // variables responsible for accessing the database
+include_once 'Dao.php';      // required tables and fields in the database
 
-include_once 'Server.php';	// are available through the HTTP protocol
-include_once 'Host.php';	// hosting machine
-include_once 'MVC.php';		// var for the app
-include_once 'Public.php';	// pub accessible
+include_once 'Host.php';     // hosting machine
+include_once 'MVC.php';      // var for the app
 
 define('__VERSION__',	'v1');						// current code version
 define('__AUTHOR__',	'José V S Carneiro');		// who wrote this code
