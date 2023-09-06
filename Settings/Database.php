@@ -24,7 +24,7 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @category Database
+ * @category Settings
  * @package  Josevaltersilvacarneiro\Html\Settings
  * @author   José Carneiro <git@josevaltersilvacarneiro.net>
  * @license  https://www.gnu.org/licenses/quick-guide-gplv3.html GPLv3
