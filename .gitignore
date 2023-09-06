@@ -3,6 +3,8 @@
 # Author: José V S Carneiro <git@josevaltersilvacarneiro.net>
 # GPLv3
 
+.env
+
 # testing programs
 Tests/
 
