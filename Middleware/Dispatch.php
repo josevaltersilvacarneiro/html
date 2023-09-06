@@ -39,29 +39,30 @@ use Psr\Http\Server\MiddlewareInterface;
  * This class instantiates the controller object and instructs it to
  * process the request.
  * 
- * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version   0.13
+ * @category  Dispatch
+ * @package   Josevaltersilvacarneiro\Html\Middleware
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.13.1
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Middleware
  * @see       https://www.php-fig.org/psr/psr-15/
- * @copyright Copyright (C) 2023, José V S Carneiro
- * @license   GPLv3
  */
 final class Dispatch implements MiddlewareInterface
 {
-    public function __construct()
-    {}
-
     /**
-     * @return ResponseInterface
+     * This method processes the request and returns the response.
      * 
-     * @author    José V S Carneiro <git@josevaltersilvacarneiro.net>
-     * @version   0.1
-     * @access    public
-     * @see       https://www.php-fig.org/psr/psr-15/
-     * @copyright Copyright (C) 2023, José V S Carneiro
-     * @license   GPLv3
+     * @param ServerRequestInterface  $request Request
+     * @param RequestHandlerInterface $handler Controller
+     * 
+     * @return ResponseInterface Response
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+
         $response = $handler->handle($request);
 
         return $response;
