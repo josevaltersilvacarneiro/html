@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface HashAttributeInterface extends AttributeInterface
@@ -60,7 +60,8 @@ interface HashAttributeInterface extends AttributeInterface
     public function setHash(string $value): static;
 
     /**
-     * This method returns if $value is able to build it.
+     * This method returns if $value is able to build it or
+     * if it is a hash.
      * 
      * @param string $value The value to be hashed or a hash
      * 
