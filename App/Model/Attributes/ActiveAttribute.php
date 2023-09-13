@@ -55,6 +55,17 @@ class ActiveAttribute implements AttributeInterface
     }
 
     /**
+     * This method disables the entity that has this attribute.
+     * 
+     * @return static itself
+     */
+    public function disable(): static
+    {
+        $this->_active = false;
+        return $this;
+    }
+
+    /**
      * This method returns the representation of the attribute.
      * 
      * @return mixed Status: true or false
