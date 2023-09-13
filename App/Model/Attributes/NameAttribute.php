@@ -79,7 +79,7 @@ final class NameAttribute implements NameAttributeInterface
             );
         }
 
-        $this->_completeName = $completeName;
+        $this->_completeName = mb_convert_case($completeName, MB_CASE_LOWER);
 
         return $this;
     }
