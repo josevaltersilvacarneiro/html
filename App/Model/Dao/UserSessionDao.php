@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 /**
- * The Dao (Data Access Object) package is a crucial component of the
- * application responsible for handling the interaction between the
- * application and the underlying database. It provides a set of classes
- * that encapsulate database operations, such as data retrieval, insertion,
- * update, and deletion, for various entities or tables in the system.
+ * The Dao (Data Access Object) package is a crucial component of the application
+ * responsible for handling the interaction between the application and the
+ * database. It provides a set of classes that encapsulate database operations,
+ * such as data retrieval, insertion, update, and deletion, for various entities
+ * or tables in the system.
+ * PHP VERSION >= 8.2.0
  * 
  * Copyright (C) 2023, José V S Carneiro
  * 
@@ -24,30 +25,40 @@ declare(strict_types=1);
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\App\Model\Dao
+ * @category Dao
+ * @package  Josevaltersilvacarneiro\Html\App\Model\Dao
+ * @author   José Carneiro <git@josevaltersilvacarneiro.net>
+ * @license  GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Dao
  */
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Dao;
 
-use Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao;
+use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
+use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Connect;
 
 /**
- * The UserSessionDao is responsible for managing userSession-related data
- * in the database. It provides methods to store, retrieve, update, and
- * delete userSession entities, ensuring efficient userSession management and
- * persistence.
+ * This class is responsible for managing session-related data in
+ * the database. It provides methods to store, retrieve, update, and
+ * delete session entities.
  * 
- * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.1
- * @see			Josevaltersilvacarneiro\Html\App\Model\Dao\GenericDao
- * @copyright	Copyright (C) 2023, José V S Carneiro
- * @license		GPLv3
+ * @category  UserSessionDao
+ * @package   Josevaltersilvacarneiro\Html\App\Model\Dao
+ * @author    José Carneiro <git@josevaltersilvacarneiro.net>
+ * @copyright 2023 José Carneiro
+ * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * @version   Release: 0.2.0
+ * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Dao
  */
-
 final class UserSessionDao extends GenericDao
 {
+    /**
+     * Initializes the UserSessionDao object.
+     * 
+     * @return void
+     */
     public function __construct()
     {
-        parent::__construct(_TB_SESSIONNAME);
+        parent::__construct(Connect::newMysqlConnection(), _TB_SESSIONNAME);
     }
 }
