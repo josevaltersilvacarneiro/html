@@ -46,7 +46,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface SessionEntityInterface extends EntityInterface, DependencyInterface
@@ -93,7 +93,7 @@ interface SessionEntityInterface extends EntityInterface, DependencyInterface
      * 
      * @return bool True if the session is expired; false otherwise
      */
-    public function isExperied(): bool;
+    public function isExpired(): bool;
 
     /**
      * Informs if the user is logged in.
