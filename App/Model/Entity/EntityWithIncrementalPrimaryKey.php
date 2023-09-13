@@ -35,19 +35,20 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
     EntityWithIncrementalPrimaryKeyInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\PrimaryKeyAttributeInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 
 /**
  * This class represents a entity with an incremental primary key.
  * 
- * @method void setId(string|int $id) Sets the id
+ * @method PrimaryKeyAttributeInterface setId(PrimaryKeyAttributeInterface $pk) Sets the id
  * 
  * @category  EntityWithIncrementalPrimaryKey
  * @package   Josevaltersilvacarneiro\Html\App\Model\Entity
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class EntityWithIncrementalPrimaryKey extends Entity implements
@@ -60,24 +61,23 @@ abstract class EntityWithIncrementalPrimaryKey extends Entity implements
      * but the main goal is to provide controlled access to updating the ID
      * property.
      * 
-     * @param string|int $id Entity's identifier
+     * @param PrimaryKeyAttributeInterface $pk Entity's identifier
      * 
-     * @return void
+     * @return static itself
      */
-    public function setId(string|int $id): void
+    public function setId(PrimaryKeyAttributeInterface $pk): static
     {
         if ($this->getCallingClass() !== EntityManager::class) {
-            return ;
+            return $this;
         }
-
-        // only the EntityManager class can modify the
-        // ID of an entity
 
         try {
             $myself = new \ReflectionObject($this);
             $proper = $myself->getProperty($this->getIdName());
-            $proper->setValue($this, $id);
+            $proper->setValue($this, $pk);
         } catch (\ReflectionException) {
         }    // ignore failures
+
+        return $this;
     }
 }
