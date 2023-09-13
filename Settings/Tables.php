@@ -35,6 +35,6 @@ declare(strict_types=1);
 /* table names                        */
 /*------------------------------------*/
 
-define('_TB_REQUESTNAME', 'tbRequest');
-define('_TB_SESSIONNAME', 'tbUserSession');
-define('_TB_USERNAME',    'tbUser');
+define('_TB_REQUESTNAME', 'requests');
+define('_TB_SESSIONNAME', 'sessions');
+define('_TB_USERNAME',    'users');
