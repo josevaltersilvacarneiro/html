@@ -35,20 +35,21 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
     EntityWithIncrementalPrimaryKeyInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\PrimaryKeyAttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\
+    PrimaryKeyAttributeInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 
 /**
  * This class represents a entity with an incremental primary key.
  * 
- * @method PrimaryKeyAttributeInterface setId(PrimaryKeyAttributeInterface $pk) Sets the id
+ * @method PrimaryKeyAttributeInterface setId(PrimaryKeyAttributeInterface $pk) Sets
  * 
  * @category  EntityWithIncrementalPrimaryKey
  * @package   Josevaltersilvacarneiro\Html\App\Model\Entity
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class EntityWithIncrementalPrimaryKey extends Entity implements
