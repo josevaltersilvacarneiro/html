@@ -47,7 +47,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface EntityInterface
@@ -59,6 +59,16 @@ interface EntityInterface
      * @return string The name of the property that represents the primary key
      */
     public function getIdName(): string;
+
+    /**
+     * This method must return the name of the property that
+     * represents the unique identifier of the entity.
+     * 
+     * @param mixed $value The value of the unique identifier
+     * 
+     * @return string The name of the property that represents the unique identifier
+     */
+    public function getUniqueName(mixed $value): string;
 
     /**
      * This method sets the state of the entity after its attributes
