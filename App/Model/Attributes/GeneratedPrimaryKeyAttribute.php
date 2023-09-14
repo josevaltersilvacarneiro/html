@@ -43,10 +43,10 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
-final class GeneratedPrimaryKeyAttribute implements
+final class GeneratedPrimaryKeyAttribute extends PrimaryKeyAttribute implements
     GeneratedPrimaryKeyAttributeInterface
 {
     /**
@@ -82,32 +82,6 @@ final class GeneratedPrimaryKeyAttribute implements
                 'It was not possible to generate a primary key',
                 $e,
             );
-        }
-    }
-
-    /**
-     * This method returns the representation of this attribute.
-     * 
-     * @return mixed Primary key
-     */
-    public function getRepresentation(): mixed
-    {
-        return $this->_generatedPrimaryKey;
-    }
-
-    /**
-     * This method returns a new instance of this attribute.
-     * 
-     * @param mixed $value Primary key
-     * 
-     * @return static|null A new instance of this attribute
-     */
-    public function newInstance(mixed $value): ?static
-    {
-        try {
-            return new static($value);
-        } catch (AttributeException) {
-            return null;
         }
     }
 }

@@ -42,10 +42,10 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
-class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
+abstract class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
 {
     private int $_id;
 
@@ -68,7 +68,7 @@ class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
      */
     public static function newInstance(mixed $value): ?static
     {
-        $myself = new self();
+        $myself = new static();
         $myself->_id = $value;
         return $myself;
     }
