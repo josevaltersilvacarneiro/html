@@ -58,7 +58,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.0
+ * @version   Release: 0.9.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -198,7 +198,7 @@ final class Session extends Entity implements SessionEntityInterface
         $cookie = $_COOKIE[self::KEYWORD] ?? null;
 
         if (is_null($cookie) 
-            || ($sessionId = self::decrypt($cookie, self::PASSCRYPT)) === false
+            || ($sessionId = self::_decrypt($cookie, self::PASSCRYPT)) === false
         ) {
             return self::_createSession() ?? false;
         }
@@ -252,7 +252,7 @@ final class Session extends Entity implements SessionEntityInterface
         }
 
         if ($session->flush()) {
-            $sessionIdEncrypted = self::encrypt($sessionId, self::PASSCRYPT);
+            $sessionIdEncrypted = self::_encrypt($sessionId, self::PASSCRYPT);
             setcookie(self::KEYWORD, $sessionIdEncrypted);
             return $session;
         }
