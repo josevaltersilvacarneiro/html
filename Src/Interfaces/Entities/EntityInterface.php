@@ -47,14 +47,14 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface EntityInterface
 {
     /**
      * This method must return the name of the property that
-     * represents the unique identifier of the entity.
+     * represents the primary key of the entity.
      * 
      * @return string The name of the property that represents the primary key
      */
