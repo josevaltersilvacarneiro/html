@@ -33,6 +33,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\PrimaryKeyAttribute;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
 use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\UniqueAttributeInterface;
@@ -60,7 +62,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\EntityManager\EntityManager;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.3.0
+ * @version   Release: 0.4.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
@@ -145,16 +147,20 @@ abstract class Entity implements EntityInterface
      * such as an invalid or missing ID property, the method gracefully returns
      * an empty string as a default value.
      * 
-     * @return string|int Entity's identifier on success; empty string otherwise
+     * @return PrimaryKeyAttribute Entity's identifier on success; empty string otherwise
+     * @throws EntityException     if the entity doesn't have a id
      */
-    public function getId(): string|int
+    public function getId(): PrimaryKeyAttribute
     {
         try {
             $myself = new \ReflectionObject($this);
             $proper = $myself->getProperty($this->getIdName());
             return $proper->getValue($this);
-        } catch (\ReflectionException) {
-            return '';
+        } catch (\ReflectionException $e) {
+            throw new EntityException(
+                'The entity ' . static::class . ' doesn\'t have a id',
+                $e
+            );
         }
     }
 
