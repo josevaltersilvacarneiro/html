@@ -32,9 +32,13 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityDatabase;
-use Josevaltersilvacarneiro\Html\App\Model\Entity\EntityManagerException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
 use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\AttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
+    EntityWithIncrementalPrimaryKeyInterface;
 
 /**
  * This class is a crucial part of the application's data access layer,
@@ -57,13 +61,15 @@ use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.2
+ * @version   Release: 0.3.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
 {
-    private const _METHOD_GET_UNIQUE_ID      = "getUNIQUE";
-    private const _METHOD_GET_REPRESENTATION = "getDatabaseRepresentation";
+    private const _METHOD_ENTITY_PK          = 'getIdName';
+    private const _METHOD_GET_UNIQUE_ID      = 'getUniqueName';
+    private const _METHOD_GET_REPRESENTATION = 'getRepresentation';
+    private const _METHOD_ATTR_NEWINSTANCE   = 'newInstance';
 
     /**
      * This method is used to find the appropriate GenericDao for a given entity
@@ -80,11 +86,10 @@ final class EntityManager
         $attrs = $reflect->getAttributes(
             flags: \ReflectionAttribute::IS_INSTANCEOF
         ); // array<\ReflectionAttribute>
-        
+
         // retrieves the attributes defined for the given entity class
 
         foreach ($attrs as $attr) {
-
             $reflectDao = new \Reflectionclass($attr->getName());
 
             if ($reflectDao->isSubclassOf(GenericDao::class)) {
@@ -101,87 +106,111 @@ final class EntityManager
     }
 
     /**
-     * This method plays a crucial role in the Entity Manager, allowing the
-     * retrieval of property values from an EntityDatabase object using
-     * reflection. By handling objects that implement the Entity interface, it
-     * ensures consistency and flexibility in managing entity data during
-     * runtime, facilitating data manipulation and synchronization tasks within
-     * the application's data access layer.
+     * This method maps the names of the attributes of an Entity
+     * reflection object to the names of the corresponding
+     * fields in the database.
+     * 
+     * @param \ReflectionClass $reflect A \ReflectionClass of Entity
+     * 
+     * @return array<string,string>   Key-value pairs of attribute names
+     * @throws EntityManagerException If any errors occur during the process
+     */
+    private static function _getMappedProperties(\ReflectionClass $reflect): array
+    {
+        $map = [];
+        try {
+            $method = $reflect->getMethod('__construct');
+            $params = $method->getParameters();
+
+            foreach ($params as $param) {
+                $attrs = $param->getAttributes();
+                $attr  = $attrs[0];
+                $name  = $attr->getArguments()[0];
+
+                $map[$param->getName()] = $name;
+            }
+        } catch (\ReflectionException | \OutOfRangeException $e) {
+            throw new EntityManagerException(
+                'Wasn\'t possible to map the attribute names',
+                $e
+            );
+        }
+
+        return $map;
+    }
+
+    /**
+     * This method plays a crucial role in the EntityManager, allowing the
+     * retrieval of property values from an Entity object using reflection.
      * 
      * @param \ReflectionClass $reflect A \ReflectionObject
-     * @param EntityDatabase   $entity  An EntityDatabase object
+     * @param EntityInterface  $entity  An Entity object
      * 
-     * @return array Key-value pairs of property names and values
-     * @throws EntityManagerException
+     * @return array<string,mixed>    Key-value pairs of property names and values
+     * @throws EntityManagerException If any errors occur during the process
      */
     private static function _getProperties(\ReflectionObject $reflect,
-        EntityDatabase $entity
+        EntityInterface $entity
     ): array {
-        $propers    = $reflect->getProperties();    // array<\ReflectionProperty>
 
-        $result     = array();
+        try {
+            $map = self::_getMappedProperties($reflect);
+        } catch (EntityManagerException $e) {
+            throw new EntityManagerException(
+                'Unable to map', $e
+            );
+        }
+
+        $propers = $reflect->getProperties();
+
+        $result = [];
         foreach ($propers as $proper) {
-            $name   = $proper->getName();           // gets the $proper name
-            $value  = $proper->getValue($entity);   // gets the $proper's value
+
+            $name  = $map[$proper->getName()];
+            $value = $proper->getValue($entity);
 
             if (is_object($value)) {
-                $reflectProper  = new \ReflectionObject($value);
 
-                if (!$reflectProper->implementsInterface(Entity::class)) {
-                    $e = new EntityManagerException();
+                $proper = new \ReflectionObject($value);
 
-                    $e->setAdditionalMsg(
-                        "The " . $proper->getName() .
-                        " is a object but it doesn't implement " . Entity::class
-                    );
+                if ($proper->implementsInterface(EntityInterface::class)) {
 
-                    throw $e;
-                }
+                    try {
+                        self::flush($value);
 
-                // if the property value is an object, the method checks if it
-                // implements the Entity interface. If not, it throws an
-                // EntityManagerException with an additional message indicating
-                // that the object should implement the Entity interface
-
-                if ($reflectProper->isSubclassOf(EntityDatabase::class)) {
-
-                    try { self::flush($value); 
-                    } catch (EntityManagerException) {
+                        $method = $proper->getMethod(self::_METHOD_ENTITY_PK);
+                        $value  = $method->invoke($value);
+                    } catch (EntityManagerException $e) {
+                        throw new EntityManagerException(
+                            'Unable to flush ' . $proper->getName(),
+                            $e
+                        );
+                    } catch (\ReflectionException $e) {
+                        throw new EntityManagerException(
+                            'Unable to invoke ' . self::_METHOD_ENTITY_PK,
+                            $e
+                        );
                     }
 
-                    // if the object is an instance of a subclass of EntityDatabase,
-                    // the method calls the flush method to synchronize the object
-                    // with the database. Any exceptions thrown by flush are ignored
-                }
-
-                if (!$reflectProper->hasMethod(self::_METHOD_GET_REPRESENTATION)) {
-                    $e = new EntityManagerException();
-
-                    $e->setAdditionalMsg(
-                        "The " . $reflectProper->getName() .
-                        " class doesn't have the "
-                        . self::_METHOD_GET_REPRESENTATION . " method"
-                    );
-
-                    throw $e;
-
-                    // If the method is not present, it throws an
-                    // EntityManagerException with an additional message
-                    // indicating that the method is missing
-                }
-
-                $reprMethod = $reflectProper->getMethod(
-                    self::_METHOD_GET_REPRESENTATION
-                );
-
-                try { $value = $reprMethod->invoke($value); 
-                }
-                catch (\ReflectionException $e) {
-                    throw new EntityManagerException($e);
+                    // if the object is an instance of a subclass of Entity,
+                    // the method calls the flush method to synchronize the
+                    // object with the database
+                } else {
+                    try {
+                        $method = $proper->getMethod(
+                            self::_METHOD_GET_REPRESENTATION
+                        );
+                        $value  = $method->invoke($value);
+                    } catch (\ReflectionException $e) {
+                        throw new EntityManagerException(
+                            'Unable to invoke ' . self::_METHOD_GET_REPRESENTATION,
+                            $e
+                        );
+                    }
                 }
             }
 
-            $result[$name] = $value;    // set the value to its respective property
+            $result[$name] = $value;
         }
 
         return $result;
@@ -189,223 +218,159 @@ final class EntityManager
 
     /**
      * This method provides a crucial mechanism for handling the initialization
-     * and instantiation of EntityDatabase objects based on their names and IDs,
+     * and instantiation of Entity objects based on their names and ids,
      * abstracting away the complexity of entity instantiation and ensuring
-     * consistency with the underlying database structure.
+     * consistency with the database structure.
      * 
-     * @param string     $entityName Name of the subclass of EntityDatabase
+     * @param string     $entityName Entity's name
      * @param string|int $entityId   Unique Identifier of the record
      * 
-     * @return EntityDatabase New instance of a subclass
-     * @throws EntityManagerException
+     * @return EntityInterface        New instance of a subclass
+     * @throws EntityManagerException If any errors occur during the process
      */
     public static function init(string $entityName,
         string|int $entityId
-    ): EntityDatabase {
-        try { $reflection = new \ReflectionClass($entityName); 
-        }
-        catch (\ReflectionException $e) { throw new EntityManagerException($e); 
+    ): EntityInterface {
+
+        try {
+            $reflection = new \ReflectionClass($entityName);
+        } catch (\ReflectionException $e) {
+
+            throw new EntityManagerException(
+                'Unable to instantiate ' . $entityName . ' class',
+                $e
+            );
         }
 
         // create a ReflectionClass for the specified entityName to
         // inspect its structure and attributes
 
-        if (!$reflection->hasMethod(self::_METHOD_GET_UNIQUE_ID)) {
-            $e = new EntityManagerException();
+        $constructEntity = $reflection->getConstructor();
 
-            $e->setAdditionalMsg(
-                "The " . self::_METHOD_GET_UNIQUE_ID .
-                " isn't defined in " . $entityName
+        if (is_null($constructEntity)) {
+    
+            throw new EntityManagerException(
+                'The ' . $entityName .
+                ' class doesn\'t have a __construct'
             );
-
-            throw $e;
         }
 
-        // Check if the Entity has the required self::_METHOD_GET_UNIQUE_ID
-        // method
-        // ALL ENTITIES MUST IMPLEMENT THE self::_METHOD_GET_UNIQUE_ID
-        // METHOD TO RETURN THE PRIMARY KEY FIELD
-
-        $constructEntity    = $reflection->getConstructor();
-
-        if ($constructEntity === false) {
-            $e = new EntityManagerException();
-
-            $e->setAdditionalMsg($entityName . " has no a __construct");
-
-            throw $e;
-        }
-
-        // check if the entity has a valid constructor
-
-        $dao                = self::_getDaoEntity($reflection);
+        $dao = self::_getDaoEntity($reflection);
 
         if ($dao === false) {
-            $e = new EntityManagerException();
 
-            $e->setAdditionalMsg(
-                "Couldn't instantiate object dao from " .
-                $entityName
+            throw new EntityManagerException(
+                'Couldn\'t instantiate object dao from ' . $entityName,
             );
-
-            throw $e;
         }
 
-        // get the appropriate Dao class for the entity and instantiate it
-
-        $methodEntity       = $reflection->getMethod(self::_METHOD_GET_UNIQUE_ID);
-
-        $entity     = $dao->r(
-            array($methodEntity->invoke(null, $entityId)   =>  $entityId)
-        );
-
-        // find the entity record in the database based on the provided entityId
-        // using the Dao's read method
+        try {
+            $methodEntity = $reflection->getMethod(self::_METHOD_GET_UNIQUE_ID);
+            $entity       = $dao->r(
+                array($methodEntity->invoke(null, $entityId) => $entityId)
+            );
+    
+            // find the entity record in the database based on the provided entityId
+            // using the Dao's read method
+        } catch (\ReflectionException $e) {
+            throw new EntityManagerException(
+                'The ' . self::_METHOD_GET_UNIQUE_ID .
+                ' method is not defined in ' . $entityName,
+                $e
+            );
+        }
 
         if ($entity === false) {
-            $e = new EntityManagerException();
 
-            $e->setAdditionalMsg(
-                "No record matching the " . $entityId .
-                " was found"
+            throw new EntityManagerException(
+                'No record matching the ' . $entityId . ' was found'
             );
+        }
 
-            throw $e;
+        try {
+            $map = self::_getMappedProperties($reflection);
+        } catch (EntityManagerException $e) {
+            throw new EntityManagerException(previous: $e);
         }
 
         $args = [];
         foreach ($constructEntity->getParameters() as $param) {
 
-            if (!array_key_exists($param->getName(), $entity)) {
+            $name = $map[$param->getName()];
+
+            if (!array_key_exists($name, $entity)) {
 
                 if (!$param->allowsNull() && !$param->isOptional()) {
-                    $e = new EntityManagerException();
 
-                    $e->setAdditionalMsg(
-                        "The " . $constructEntity->getShortName() .
-                        " entity requires the " . $param->getName() . " param " .
-                        "to be initialized and it cannot be null"
+                    throw new EntityManagerException(
+                        'The ' . $constructEntity->getShortName() .
+                        ' is mapped to ' . $name .
+                        ' but the table doesn\'t have this field'
                     );
-
-                    throw $e;
                 }
 
                 if ($param->allowsNull()) {
                     $args[] = null;
                 }
-
-                // if $param isn't defined in $entity, it isn't optional
-                // and doesn't allow null, THERE WAS AN ERROR
             } elseif ($param->hasType() && $param->getType()->isBuiltin()) {
+
                 settype(
-                    $entity[$param->getName()],
+                    $entity[$name],
                     (string) $param->getType()->getName()
                 );
 
-                $args[] = $entity[$param->getName()];
+                $args[] = $entity[$name];
 
                 // if $param is a builtin [ int, float, string, bool [
                 // of php, set its type and add it to args
             } else {
 
-                // here, $param in $entity isn't a builtin or it has no
-                // type, then it must be instantiated as an object
-
-                $properAttrs    = $param->getAttributes();
-
-                // $properAttrs gets all attributes of
-                // $param
-
-                if (count($properAttrs) === 0) {
-                    $e = new EntityManagerException();
-
-                    $e->setAdditionalMsg(
-                        "The " . $constructEntity->getShortName() .
-                        " entity requires the " . $param->getName() . " param " .
-                        "to be initialized but it doesn't specify the attribute"
-                    );
-
-                    throw $e;
-                }
-
-                // if the $param has no attributes,
-                // then it cannot be instantiated
-                // .*. THERE WAS AN IMPLEMENTATION ERROR .*.
-
-                $properAttr     = $properAttrs[0];
-
-                // by default, the attr used to instantiate a
-                // property is the first
-
                 try {
-                    $reflectProper  = new \ReflectionClass($properAttr->getName());
+                    $attrs         = $param->getAttributes();
+                    $attr          = $attrs[0];
+                    $reflectProper = new \ReflectionClass($attr->getName());
                 } catch (\ReflectionException $e) {
-                    throw new EntityManagerException($e);
+                    throw new EntityManagerException(
+                        'Unable to create a instance of reflection class on line ' .
+                        __LINE__, $e
+                    );
                 }
 
-                if ($reflectProper->isSubclassOf(EntityDatabase::class)) {
+                if ($reflectProper->isSubclassOf(Entity::class)) {
+
                     try {
-                        $name   = $param->getName();
                         $args[] = empty($entity[$name]) ? null :
-                            self::init($properAttr->getName(), $entity[$name]);
+                            self::init($attr->getName(), $entity[$name]);
                     } catch (EntityManagerException $e) {
-                        $ne = new EntityManagerException($e);
-
-                        $ne->setAdditionalMsg(
-                            "The " . $param->getName() .
-                            " couldn't be instantiated using a recursive " .
-                            "call to " . $properAttr->getName()
+                        throw new EntityManagerException(
+                            $attr->getName() .
+                            'Couldn\'t be instantiated using a recursive call',
+                            $e
                         );
-
-                        throw $ne;
                     }
 
-                    // recursive call -> tries to instantiate the object
-                    // that is an attribute of $entityName
-
-                } elseif ($reflectProper->implementsInterface(Entity::class)) {
-
-                    // if $reflectProper isn't a EntityDatabase
-                    // then it must implement the Entity interface
-
-                    $constructParam = $reflectProper->getConstructor();
-
-                    // get the __construct of $reflectProper to make sure
-                    // it has been implemented in the right way
-
-                    if (is_null($constructParam) 
-                        || $constructParam->getNumberOfParameters() === 0
-                    ) {
-                        $args[] = $reflectProper->newInstance();
-
-                        continue;
-                    } elseif ($constructParam->getNumberOfRequiredParameters() > 1) {
-                        $e = new EntityManagerException();
-
-                        $e->setAdditionalMsg(
-                            "The " . $param->getName() .
-                            " requires more than one parameter to be instantiated"
-                        );
-
-                        throw $e;
-                    }
+                } elseif ($reflectProper->implementsInterface(
+                    AttributeInterface::class
+                )
+                ) {
 
                     try {
-                        $args[] = $reflectProper->newInstance(
-                            $entity[$param->getName()]
+                        $method = $reflectProper->getMethod(
+                            self::_METHOD_ATTR_NEWINSTANCE
                         );
+                        $args[] = $method->invoke(null, $entity[$name]);
                     } catch (\ReflectionException $e) {
-                        throw new EntityManagerException($e);
+                        throw new EntityManagerException(
+                            'Unable to invoke ' . self::_METHOD_ATTR_NEWINSTANCE,
+                            $e
+                        );
                     }
+
                 } else {
-                    $e = new EntityManagerException();
 
-                    $e->setAdditionalMsg(
-                        "The " . $param->getName() .
-                        " doesn't implement " . Entity::class
+                    throw new EntityManagerException(
+                        'There was an error on line ' . __LINE__
                     );
-
-                    throw $e;
 
                     // an internal php or lib object was used as property
                 }
@@ -413,36 +378,38 @@ final class EntityManager
         } // end of foreach for each $proper
 
         if (count($args) < $constructEntity->getNumberOfRequiredParameters()) {
-            $e = new EntityManagerException();
 
-            $e->setAdditionalMsg($entityName . " is missing arguments");
-
-            throw $e;
+            throw new EntityManagerException(
+                $entityName . ' is missing arguments'
+            );
         }
 
         try {
             $entity = $reflection->newInstance(...$args);
-            $entity->setSTATE(EntityState::PERSISTENT);
+            $entity->setState(EntityState::PERSISTENT);
             return $entity;
         } catch (\InvalidArgumentException $e) {
-            throw new EntityManagerException($e);
+            throw new EntityManagerException(
+                'Couldn\'t instantiate ' . $entityName . ' class',
+                $e
+            );
         }
 
-        // instantiate the EntityDatabase object with the constructed $args array
+        // instantiate the Entity object with the constructed $args array
         // and set its state to EntityState::PERSISTENT
     }
 
     /**
-     * This method is responsible for deleting an EntityDatabase object from
+     * This method is responsible for deleting an Entity object from
      * the database.
      * 
-     * @param EntityDatabase $entity Entity to be deleted
+     * @param EntityInterface $entity Entity to be deleted
      * 
      * @return bool true on success; false otherwise
      */
-    public static function del(EntityDatabase $entity): bool
+    public static function del(EntityInterface $entity): bool
     {
-        if ($entity->getSTATE() !== EntityState::PERSISTENT) {
+        if ($entity->getState() !== EntityState::PERSISTENT) {
             return false;
         }
 
@@ -458,27 +425,29 @@ final class EntityManager
             return false;
         }
 
-        // if the DAO cannot be instantiated, it returns false
-
-        return $dao->d(
-            array(
-            $entity::getIDNAME()    =>  $entity->getID()
-            )
-        );
+        try {
+            return $dao->d(
+                array(
+                    $entity::getIdName() => $entity->getId()->getRepresentation(),
+                )
+            );
+        } catch (EntityException) {
+            return false;
+        }
     }
 
     /**
      * This method is responsible for synchronizing the state of an
      * EntityDatabase object with the corresponding database record.
      * 
-     * @param EntityDatabase $entity Entity to be synchronized
+     * @param EntityInterface $entity Entity to be synchronized
      * 
      * @return bool true on success; false otherwise
      */
-    public static function flush(EntityDatabase $entity): bool
+    public static function flush(EntityInterface $entity): bool
     {
-        if ($entity->getSTATE() === EntityState::PERSISTENT 
-            || $entity->getSTATE() === EntityState::REMOVED
+        if ($entity->getState() === EntityState::PERSISTENT 
+            || $entity->getState() === EntityState::REMOVED
         ) {
             return false;
         }
@@ -506,7 +475,7 @@ final class EntityManager
 
         // if the DAO cannot be instantiated, it returns false
 
-        switch ($entity->getSTATE()) {
+        switch ($entity->getState()) {
         case EntityState::TRANSIENT:    // IF created but not stored,
             $id = $dao->ic($props);     // store it in the DB
 
@@ -514,7 +483,9 @@ final class EntityManager
                 return false;
             }
 
-            $entity->setID($id);
+            if ($entity instanceof EntityWithIncrementalPrimaryKeyInterface) {
+                $entity->getId()->setId($id);
+            }
             break;
         case EntityState::DETACHED:     // IF changed after being read,
             $ok = $dao->u($props);      // update it in the DB
@@ -526,7 +497,7 @@ final class EntityManager
             break;
         }
 
-        $entity->setSTATE(EntityState::PERSISTENT);
+        $entity->setState(EntityState::PERSISTENT);
 
         // on success, change the state to persistent
 
