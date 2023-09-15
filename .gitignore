@@ -5,9 +5,6 @@
 
 .env
 
-# testing programs
-Tests/
-
 ./Log/*
 
 # vendor
