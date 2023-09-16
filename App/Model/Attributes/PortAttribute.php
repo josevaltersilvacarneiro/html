@@ -41,7 +41,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 class PortAttribute implements PortAttributeInterface
@@ -77,7 +77,7 @@ class PortAttribute implements PortAttributeInterface
      * 
      * @param mixed $value Port number
      * 
-     * @return PortAttributeInterface|null $this on success; null otherwise
+     * @return static|null $this on success; null otherwise
      */
     public function newInstance(mixed $value): ?static
     {
