@@ -41,7 +41,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\DateAttributeInterfac
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.0
+ * @version   Release: 0.2.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class DateAttribute extends \DateTimeImmutable implements
@@ -62,9 +62,9 @@ final class DateAttribute extends \DateTimeImmutable implements
      * 
      * @param mixed $value Date
      * 
-     * @return DateAttributeInterface|null $this on success, null on failure
+     * @return static|null $this on success, null on failure
      */
-    public function newInstance(mixed $value): ?DateAttributeInterface
+    public function newInstance(mixed $value): ?static
     {
         return new self($value);
     }
