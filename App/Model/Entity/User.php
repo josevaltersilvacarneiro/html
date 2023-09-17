@@ -61,7 +61,7 @@ use Josevaltersilvacarneiro\Html\App\Model\Attributes\ActiveAttribute;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.0
+ * @version   Release: 0.9.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserDao]
@@ -97,6 +97,19 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
     public static function getIdName(): string
     {
         return '_id';
+    }
+
+    /**
+     * This method returns the name of the unique field.
+     * 
+     * @param mixed $value The value that represents the unique field
+     * 
+     * @return string If $value is a email, returns '_email'; otherwise returns '_id'
+     */
+    public static function getUniqueName(mixed $value): string
+    {
+        return
+            filter_var($value, FILTER_VALIDATE_EMAIL) ? '_email' : self::getIdName();
     }
 
     /**

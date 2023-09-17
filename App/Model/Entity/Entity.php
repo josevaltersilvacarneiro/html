@@ -62,7 +62,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\EntityManager\EntityManager;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.0
+ * @version   Release: 0.4.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
@@ -95,6 +95,19 @@ abstract class Entity implements EntityInterface
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
 
         return $trace[2]['class'];
+    }
+
+    /**
+     * This method is used to retrieve the name of the field that represents
+     * a unique identifier (or constraint) for the entity.
+     * 
+     * @param mixed $value Value used to retrieve the name of the field
+     * 
+     * @return string Unique constraint name
+     */
+    public static function getUniqueName(mixed $value): string
+    {
+        return self::getIdName();
     }
 
     /**
