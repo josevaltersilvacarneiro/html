@@ -38,7 +38,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Dependency;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Dependency
  */
 interface DependencyInterface
@@ -48,7 +48,7 @@ interface DependencyInterface
      * 
      * @param array<DependencyInterface> $dependencies Its dependencies
      * 
-     * @return static itself on success, false on failure
+     * @return static|false itself on success, false on failure
      */
     public static function fork(array $dependencies = []): static|false;
 }
