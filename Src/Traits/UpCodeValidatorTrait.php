@@ -38,7 +38,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait UpCodeValidatorTrait
@@ -67,5 +67,17 @@ trait UpCodeValidatorTrait
     {
         return strlen($hashCode) === 64 &&
             preg_match("/^[a-f0-9]{64}$/", $hashCode);
+    }
+
+    /**
+     * Generates a hash for a given word.
+     * 
+     * @param string $word Word to be hashed
+     * 
+     * @return string Hashed word
+     */
+    private static function _generateCodeHash(string $word): string
+    {
+        return hash('SHA256', $word);
     }
 }
