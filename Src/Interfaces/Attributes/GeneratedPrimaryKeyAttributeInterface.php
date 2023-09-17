@@ -32,7 +32,8 @@ namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\
     PrimaryKeyAttributeInterface;
-use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
+    AttributeExceptionInterface;
 
 /**
  * This interface represents a primary key that not
@@ -43,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface GeneratedPrimaryKeyAttributeInterface extends PrimaryKeyAttributeInterface
@@ -54,7 +55,7 @@ interface GeneratedPrimaryKeyAttributeInterface extends PrimaryKeyAttributeInter
      * 
      * @return string A value that can be used as a primary key
      * 
-     * @throws AttributeException If is not possible to generate a primary key
+     * @throws AttributeExceptionInterface If isn't possible to generate a pk
      */
     public static function generatePrimaryKey(): string;
 }
