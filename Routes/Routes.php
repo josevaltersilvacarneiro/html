@@ -32,43 +32,43 @@ return [
     'GET|/' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Home\Home::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'GET|/home' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Home\Home::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'GET|/login' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Login::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'POST|/login/signin' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Signin::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'POST|/login/signout' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Signout::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'GET|/register' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Register\Register::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
     'POST|/register/signup' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Register\Signup::class,
         'dependencies' => [
-            \Josevaltersilvacarneiro\Html\App\Model\Entity\AppEntity\UserSession::class,
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
 
