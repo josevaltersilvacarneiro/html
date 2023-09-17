@@ -58,7 +58,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.1
+ * @version   Release: 0.9.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -66,7 +66,6 @@ final class Session extends Entity implements SessionEntityInterface
 {
     use CryptTrait;
 
-    private const KEYWORD   = 'session';
     private const PASSCRYPT = 'odpjosjsaldiorowenokwnfdkfweke';
     private const NUMBER_OF_DAYS_TO_EXPIRE = 1;
 
