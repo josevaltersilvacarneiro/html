@@ -38,7 +38,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait UpCodeValidatorTrait
@@ -79,5 +79,20 @@ trait UpCodeValidatorTrait
     private static function _generateCodeHash(string $word): string
     {
         return hash('SHA256', $word);
+    }
+
+    /**
+     * Generates a random code.
+     * 
+     * @return string Random code
+     */
+    private static function _generateValidCode(): string
+    {
+        try {
+            return random_bytes(16);
+        } catch (\Random\RandomException) {
+            // Warning: This is not a secure random number generator
+            return '5f3e2a1b4c3d2e1f';
+        }
     }
 }
