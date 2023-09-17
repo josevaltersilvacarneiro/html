@@ -3,6 +3,9 @@
 # Author: José V S Carneiro <git@josevaltersilvacarneiro.net>
 # GPLv3
 
+# see https://github.com/josevaltersilvacarneiro/database_html
+Migrations/
+
 .env
 
 ./Log/*
