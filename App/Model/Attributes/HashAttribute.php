@@ -101,7 +101,7 @@ final class HashAttribute implements HashAttributeInterface
      * 
      * @param string $value The value to be hashed or a hash
      * 
-     * @return bool true if yes; false otherwise
+     * @return bool true if so; false otherwise
      */
     public function isThisYou(string $value): bool
     {
