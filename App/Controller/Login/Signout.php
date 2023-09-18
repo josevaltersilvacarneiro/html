@@ -34,42 +34,33 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Controller\Login;
 
-use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
 
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Nyholm\Psr7\Response;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * This controllers renders the login page.
+ * This class processes the user logout.
  * 
- * @category  Login
+ * @category  Signout
  * @package   Josevaltersilvacarneiro\Html\App\Controllers\Login
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.6.0
+ * @version   Release: 0.0.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
-final class Login extends HTMLController
+class Signout implements RequestHandlerInterface
 {
     /**
      * Initializes the controller.
      * 
-     * @param SessionEntityInterface $session session
+     * @param SessionEntityInterface $session session entity
      */
     public function __construct(private readonly SessionEntityInterface $session)
     {
-        $this->setDir('Login');
-        $this->setTitle('Login');
-        $this->setDescription(
-            'The login page provides a simple and secure interface for users
-			to authenticate and access the system. It offers a username and
-			password input field for users to enter their credentials and a
-			login button to initiate the authentication process.'
-        );
-        $this->setKeywords('MVC SOLID josevaltersilvacarneiro login');
     }
 
     /**
@@ -81,13 +72,11 @@ final class Login extends HTMLController
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->session->isUserLogged()) {
-            return new Response(302, ['Location' => '/']);
+        if ($this->session->isUserLogged() && $this->session->killme()) {
+            setcookie(SessionEntityInterface::KEYWORD);
+            return new Response(302, ['Location' => '/login']);
         }
 
-        return new Response(
-            200, ['Content-Type' => 'text/html;charset=UTF-8'],
-            parent::renderLayout()
-        );
+        return new Response(302, ['Location' => '/']);
     }
 }

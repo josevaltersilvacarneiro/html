@@ -34,25 +34,34 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Controller\Login;
 
-use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
+
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\SaltAttribute;
+
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
+
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Nyholm\Psr7\Response;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * This controllers renders the login page.
+ * This class processes the user login form.
  * 
- * @category  Login
+ * @category  Signin
  * @package   Josevaltersilvacarneiro\Html\App\Controllers\Login
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.6.0
+ * @version   Release: 0.0.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
-final class Login extends HTMLController
+final class Signin implements RequestHandlerInterface
 {
     /**
      * Initializes the controller.
@@ -61,15 +70,6 @@ final class Login extends HTMLController
      */
     public function __construct(private readonly SessionEntityInterface $session)
     {
-        $this->setDir('Login');
-        $this->setTitle('Login');
-        $this->setDescription(
-            'The login page provides a simple and secure interface for users
-			to authenticate and access the system. It offers a username and
-			password input field for users to enter their credentials and a
-			login button to initiate the authentication process.'
-        );
-        $this->setKeywords('MVC SOLID josevaltersilvacarneiro login');
     }
 
     /**
@@ -85,9 +85,57 @@ final class Login extends HTMLController
             return new Response(302, ['Location' => '/']);
         }
 
-        return new Response(
-            200, ['Content-Type' => 'text/html;charset=UTF-8'],
-            parent::renderLayout()
-        );
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        if ($email === false || $email === null) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        $hash = filter_input(INPUT_POST, 'hash', FILTER_SANITIZE_STRING);
+        if ($hash === false || $hash === null) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        $newHash = filter_input(INPUT_POST, 'newHash', FILTER_SANITIZE_STRING);
+        if ($newHash === false || $newHash === null) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        $newSalt = filter_input(INPUT_POST, 'newSalt', FILTER_SANITIZE_STRING);
+        if ($newSalt === false || $newSalt === null) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        try {
+            $email   = new EmailAttribute($email);
+            $hash    = new HashAttribute($hash);
+            $newHash = new HashAttribute($newHash);
+            $newSalt = new SaltAttribute($newSalt);
+        } catch (AttributeException $e) {
+            $e->storeLog();
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        $user = User::newInstance($email);
+        if (is_null($user) || !$hash::areHashesEqual($hash, $user->getHash())) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        // note that the user's password is changed every
+        // time the user logs in
+
+        $user->setPassword($newHash, $newSalt);
+
+        try {
+            $this->session->setUser($user);
+        } catch (EntityException $e) {
+            $e->storeLog();
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        if (!$this->session->flush()) {
+            return new Response(302, ['Location' => '/login']);
+        }
+
+        return new Response(302, ['Location' => '/']);
     }
 }
