@@ -30,10 +30,10 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes;
 
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\
-    PrimaryKeyAttributeInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
-    AttributeExceptionInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
+    PrimaryKeyAttributeInterface};
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\{
+    AttributeExceptionInterface};
 
 /**
  * This interface represents a primary key that not
@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface GeneratedPrimaryKeyAttributeInterface extends PrimaryKeyAttributeInterface
