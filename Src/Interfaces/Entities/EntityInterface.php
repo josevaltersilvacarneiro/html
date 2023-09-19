@@ -32,8 +32,8 @@ namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Entities;
 
 use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\UniqueAttributeInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\
-    PrimaryKeyAttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
+    PrimaryKeyAttributeInterface};
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterface;
 
 /**
@@ -47,7 +47,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface EntityInterface

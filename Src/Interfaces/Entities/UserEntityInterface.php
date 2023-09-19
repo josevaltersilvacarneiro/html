@@ -30,8 +30,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Entities;
 
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
-    EntityWithIncrementalPrimaryKeyInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
+    EntityWithIncrementalPrimaryKeyInterface};
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\NameAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\EmailAttributeInterface;
