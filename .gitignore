@@ -18,3 +18,6 @@ Src/composer.lock
 
 # JavaScript will not compile
 Public/JavaScript
+
+# unitary tests
+Src/Classes/Sql/MockConnect.php
