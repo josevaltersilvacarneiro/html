@@ -58,7 +58,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.2
+ * @version   Release: 0.9.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -94,7 +94,7 @@ final class Session extends Entity implements SessionEntityInterface
      */
     public static function getIdName(): string
     {
-        return 'userSessionID';
+        return '_sessionId';
     }
 
     /**
