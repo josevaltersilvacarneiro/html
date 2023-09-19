@@ -31,8 +31,8 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Exceptions;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\AttributeLog;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
-    AttributeExceptionInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\{
+    AttributeExceptionInterface};
 
 /**
  * If an invalid argument is passed at initialization or when
@@ -43,7 +43,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://www.php.net/manual/en/class.invalidargumentexception.php
  */
 final class AttributeException extends \InvalidArgumentException implements
