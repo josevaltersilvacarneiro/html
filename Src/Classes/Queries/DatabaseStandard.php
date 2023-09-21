@@ -43,7 +43,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Classes\Queries;
  * @method string generateDeleteStandard(string $table, array $uniqueIdentifiers)
  * 
  * @author		José V S Carneiro <git@josevaltersilvacarneiro.net>
- * @version		0.5
+ * @version		0.6
  * @see			https://en.wikipedia.org/wiki/SQL
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
@@ -77,13 +77,14 @@ class DatabaseStandard
 		return $query;
 	}
 
-	public static function generateRequiredColumns(string $table): string
+	public static function generateRequiredColumns(string $table, $dbName = 'db'): string
 	{
 		$query = <<<QUERY
 			SELECT	COLUMN_NAME 
 			FROM	INFORMATION_SCHEMA.COLUMNS 
-			WHERE	TABLE_NAME	= :$table
-			AND		IS_NULLABLE	= 'NO'
+			WHERE	TABLE_SCHEMA = :$dbName
+			AND     TABLE_NAME	 = :$table
+			AND		IS_NULLABLE	 = 'NO'
 			AND		COLUMN_DEFAULT IS NULL
 			AND		EXTRA != 'AUTO_INCREMENT';
 		QUERY;
