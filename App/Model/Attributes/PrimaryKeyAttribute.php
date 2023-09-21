@@ -42,12 +42,12 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 abstract class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
 {
-    private int $_id;
+    protected string|int $_id;
 
     /**
      * Returns the representation of this attribute.
