@@ -40,19 +40,11 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Sql\SqlInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Dao
  */
 interface DaoInterface
 {
-    /**
-     * Initializes the Dao.
-     * 
-     * @param SqlInterface $sql   SqlInterface instance
-     * @param string       $table Table name
-     */
-    public function __construct(SqlInterface $sql, string $table);
-
     /**
      * This method persists the record in the database.
      * 

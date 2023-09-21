@@ -39,7 +39,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\SanitizeSql;
 /**
  * This class makes CRUD - creates, reads, updates and deletes.
  * 
- * @var string $table table's name where the operations will be performed
+ * @var string $_table table's name where the operations will be performed
  * 
  * @method bool         c(array $register) creates a new register
  * @method array|false  r(array $register) reads a register
@@ -52,21 +52,24 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\SanitizeSql;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.3.1
+ * @version   Release: 0.3.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Dao
  * @see       https://www.php.net/manual/en/function.list
  */
 class GenericDao extends SanitizeSql implements DaoInterface
 {
+	private readonly string $_table;
+
 	/**
 	 * Initializes the Dao.
 	 * 
 	 * @param \PDO   $conn  PDO instance
 	 * @param string $table Table name
 	 */
-	public function __construct(\PDO $conn, private readonly string $table)
+	public function __construct(\PDO $conn, string $table)
 	{
 		parent::__construct($conn);
+		$this->_table = $table;
 	}
 
 	/**
@@ -79,7 +82,7 @@ class GenericDao extends SanitizeSql implements DaoInterface
 	 */
 	public function c(array $register): bool
 	{
-		$record = parent::cleanCreate($this->table, $register);
+		$record = parent::cleanCreate($this->_table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -99,7 +102,7 @@ class GenericDao extends SanitizeSql implements DaoInterface
 	 */
 	public function r(array $register): array|false
 	{
-		$record = parent::cleanRead($this->table, $register);
+		$record = parent::cleanRead($this->_table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -121,7 +124,7 @@ class GenericDao extends SanitizeSql implements DaoInterface
 	 */
 	public function u(array $register): bool
 	{
-		$record = parent::cleanUpdate($this->table, $register);
+		$record = parent::cleanUpdate($this->_table, $register);
 		if ($record === false) return false;
 		// failed
 
@@ -141,7 +144,7 @@ class GenericDao extends SanitizeSql implements DaoInterface
 	 */
 	public function d(array $register): bool
 	{
-		$record = parent::cleanDelete($this->table, $register);
+		$record = parent::cleanDelete($this->_table, $register);
 		if ($record === false) return false;
 		// failed
 
