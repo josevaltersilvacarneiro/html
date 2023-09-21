@@ -21,3 +21,6 @@ Public/JavaScript
 
 # unitary tests
 Src/Classes/Sql/MockConnect.php
+
+# ignore the tests
+.phpunit.cache/
