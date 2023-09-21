@@ -48,7 +48,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.5.2
+ * @version   Release: 0.5.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Sql
  */
 abstract class SanitizeSql extends Sql
@@ -66,6 +66,7 @@ abstract class SanitizeSql extends Sql
 	 * ]
 	 */
 	private static array $_TABLES = [];
+	private const DB_NAME = _DBNAME_MYSQL;
 
 	/**
 	 * Initializes the SanitizeSql.
@@ -313,9 +314,8 @@ abstract class SanitizeSql extends Sql
 	{
 		$query = DatabaseStandard::generateRequiredColumns('tb');
 
-		$stmt = $this->query($query, array('tb' => $table));
+		$stmt = $this->query($query, ['tb' => $table, 'db' => self::DB_NAME]);
 		if ($stmt === false) {
-			// there was an error
 			return false;
 		}
 
