@@ -1,0 +1,39 @@
+# Copyright (C) 2023, José Carneiro
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,    
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+version: "3.9"
+services:
+  db:
+    image: mysql/mysql-server:latest
+    container_name: database_html
+    ports:
+      - "3306:3306"
+    networks:
+      - html-bridge
+
+  web:
+    image: josevaltersilvacarneiro/html:1.0
+    container_name: html
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - html-bridge
+
+networks:
+  html-bridge:
+    driver: bridge
