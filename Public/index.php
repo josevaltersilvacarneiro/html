@@ -41,7 +41,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Container\Container;
 use Nyholm\Psr7\Factory\Psr17Factory;
 
 try {
-    $routes       = require_once __DIR__ . '/../Settings/Routes.php';
+    $routes       = require_once __DIR__ . '/../Routes/Routes.php';
     $container    = new Container();
     $html         = include_once '../Bootstrap/App.php';
     $psr17Factory = new Psr17Factory();
@@ -76,6 +76,6 @@ try {
     echo $response->getBody();
 } catch (\Throwable $e) {
     foreach ($e->getTrace() as $exc) {
-        echo $exc->getMessage();
+        echo var_dump($exc);
     }
 }
