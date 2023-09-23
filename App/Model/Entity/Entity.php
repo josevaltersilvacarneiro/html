@@ -40,6 +40,7 @@ use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\UniqueAttributeInterface;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\EntityManager\EntityManager;
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
 
 /**
  * This class defines the basic structure and functionality for entities,
@@ -62,7 +63,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\EntityManager\EntityManager;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.1
+ * @version   Release: 0.4.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
