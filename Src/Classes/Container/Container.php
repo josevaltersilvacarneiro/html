@@ -52,13 +52,13 @@ use Psr\Container\NotFoundExceptionInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.1
+ * @version   Release: 0.2.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Container
  * @see       https://www.php-fig.org/psr/psr-11/
  */
 class Container implements ContainerInterface
 {
-    private readonly array $_container;
+    private array $_container;
 
     /**
      * This method adds a new entry to the container.
