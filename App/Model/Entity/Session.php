@@ -33,15 +33,20 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\GeneratedPrimaryKeyAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 use Josevaltersilvacarneiro\Html\App\Model\Dao\UserSessionDao;
 
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\UserEntityInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\RequestEntityInterface;
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\GeneratedPrimaryKeyAttribute;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\RequestEntityInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\UserEntityInterface;
+
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\IpAttribute;
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\PortAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\DateAttribute;
+
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\AttributeExceptionInterface;
 
 use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
 
@@ -58,7 +63,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.3
+ * @version   Release: 0.9.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -230,23 +235,19 @@ final class Session extends Entity implements SessionEntityInterface
         $sessionId = GeneratedPrimaryKeyAttribute::generatePrimaryKey();
 
         try {
-            $requestReflec  = new \ReflectionClass(EntityRequestInterface::class);
-            $requestAttr    = $requestReflec->getAttributes()[0];
-            $requestReflec  = new \ReflectionClass($requestAttr->getName());
-            $sessionRequest = $requestReflec->newInstance(
-                null, __IP__, __PORT__,
+            $request = new Request(
+                null,
+                new IpAttribute(__IP__),
+                new PortAttribute(__PORT__),
                 new DateAttribute
             );
 
-            $userReflec    = new \ReflectionClass(EntitySessionInterface::class);
-            $userAttr    = $userReflec->getAttributes()[0];
-            $userReflec = new \ReflectionClass($userAttr->getName());
-            $session    = $userReflec->newInstance(
-                $sessionId, null,
-                $sessionRequest
+            $session = new Session(
+                new GeneratedPrimaryKeyAttribute($sessionId),
+                null,
+                $request
             );
-        } catch (\ReflectionException | \OutOfRangeException |
-        \InvalidArgumentException) {
+        } catch (\InvalidArgumentException | AttributeExceptionInterface) {
             return null;
         }
 
