@@ -35,8 +35,8 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Controller\Home;
 
 use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
-    SessionEntityInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
+    SessionEntityInterface};
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -52,7 +52,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class Home extends HTMLController
