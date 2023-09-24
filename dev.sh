@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+sudo apt update && sudo apt upgrade -y
+sudo add-apt-repository ppa:ondrej/php
 cat requirements.txt | xargs sudo apt install -y
 sudo curl -sS https://getcomposer.org/installer -o composer-setup.php && sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 cd Src/ && composer update
