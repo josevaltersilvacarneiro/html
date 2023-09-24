@@ -1,0 +1,6 @@
+php8.1
+php8.1-curl
+php8.1-gd
+php8.1-intl
+php8.1-xsl
+php8.1-mbstring
