@@ -35,7 +35,6 @@ define('_TIMEZONE_', 'America/Bahia');
 
 date_default_timezone_set(_TIMEZONE_);
 
-require_once 'Database.php'; // variables responsible for accessing the database
 require_once 'Tables.php';   // required tables and fields in the database
 
 require_once 'Host.php';     // hosting machine
