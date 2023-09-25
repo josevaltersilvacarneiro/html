@@ -8,7 +8,7 @@ Migrations/
 
 .env
 
-./Log/*
+Logs/
 
 # vendor
 Src/vendor/
