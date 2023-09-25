@@ -36,7 +36,8 @@ declare(strict_types=1);
 /* as environment variables            */
 /*-------------------------------------*/
 
-define('_DSN_MYSQL',  getenv('DSN_MYSQL'));
-define('_DBNAME_MYSQL', 'database_html');
-define('_USER_MYSQL', getenv('USER_MYSQL'));
-define('_PASS_MYSQL', getenv('PASS_MYSQL'));
+define('_HOST_MYSQL', $_ENV['HOST_MYSQL']);
+define('_DBNAME_MYSQL', $_ENV['DB_MYSQL']);
+define('_USER_MYSQL', $_ENV['USER_MYSQL']);
+define('_PASS_MYSQL', $_ENV['PASS_MYSQL']);
+define('_DSN_MYSQL',  'mysql:host=' . _HOST_MYSQL . ';dbname=' . _DBNAME_MYSQL);
