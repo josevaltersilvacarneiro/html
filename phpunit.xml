@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd" colors="true" displayDetailsOnTestsThatTriggerWarnings="true" cacheDirectory=".phpunit.cache">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd" colors="true" displayDetailsOnTestsThatTriggerWarnings="true" cacheDirectory=".phpunit.cache" bootstrap="Settings/Database.php">
   <coverage/>
   <testsuites>
     <testsuite name="unit">
@@ -10,4 +10,10 @@
     <testdoxText outputFile="/tmp/testdox.txt"/>
   </logging>
   <source/>
+  <php>
+    <env name="HOST_MYSQL" value="127.0.0.1"/>
+    <env name="DB_MYSQL" value="database_html"/>
+    <env name="USER_MYSQL" value="root"/>
+    <env name="PASS_MYSQL" value="admin"/>
+  </php>
 </phpunit>
