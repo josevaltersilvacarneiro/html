@@ -19,6 +19,9 @@ sudo apt update && sudo apt upgrade -y
 sudo add-apt-repository ppa:ondrej/php
 cat requirements.txt | xargs sudo apt install -y
 sudo curl -sS https://getcomposer.org/installer -o composer-setup.php && sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-cd Src/ && composer update
-cp example.env .env
+cd Src/ && composer update && cd ../
 [ -f composer-setup.php ] && rm composer-setup.php
+cp example.env .env
+sudo apt install docker.io -y
+sudo docker run --name html_mysql -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=database_html -p 3306:3306 -d mysql:latest
+php db.php
