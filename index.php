@@ -23,44 +23,44 @@ declare(strict_types=1);
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * @category FrontController
- * @package  Josevaltersilvacarneiro\Html\Public
+ * @package  Josevaltersilvacarneiro\Html
  * @author   José Carneiro <git@josevaltersilvacarneiro.net>
  * @license  https://www.gnu.org/licenses/quick-guide-gplv3.html GPLv3
- * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Public
+ * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/
  */
 
-include_once '../Src/vendor/autoload.php';
+include_once 'Src/vendor/autoload.php';
 
-include_once '../Settings/Server.php';
-include_once '../Settings/Public.php';
+# DEVELOPMENT
 
-//$app = include_once '../Bootstrap/App.php';
+$dotenv = new Symfony\Component\Dotenv\Dotenv();
+$dotenv->load(__DIR__ . '/.env');
+
+# END DEVELOPMENT
+
+require_once 'Settings/Database.php';
+
+include_once 'Settings/Server.php';
+include_once 'Settings/Public.php';
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Container\Container;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 
 try {
-    $routes       = require_once __DIR__ . '/../Routes/Routes.php';
-    $container    = new Container();
-    $html         = include_once '../Bootstrap/App.php';
-    $psr17Factory = new Psr17Factory();
+    $routes       = require_once __DIR__ . '/Routes/Routes.php';
+    $html         = include_once __DIR__ . '/Bootstrap/App.php';
 
-    //echo $_SERVER['REQUEST_METHOD'] . '|' . $_SERVER['REQUEST_URI'] . '<br>'; exit();
+    $container    = new Container();
+    $psr17Factory = new Psr17Factory();
 
     $request = $psr17Factory->createServerRequest(
         $_SERVER['REQUEST_METHOD'],
         mb_substr(__URL__, 0, -1) . $_SERVER['REQUEST_URI'], $_SERVER
     );
 
-    //echo var_dump($request->getServerParams()); exit();
-    //echo $request->getRequestTarget(); echo var_dump($request->getAttributes()); exit();
-
     $route = $routes[$_SERVER['REQUEST_METHOD'] . '|' . $_SERVER['REQUEST_URI']];
     $container->add($route['controller'], $route['dependencies']);
-
-    //$container->add($route->getControllerNamespace(), $route->getService(),
-    //    $route->getParameters());
 
     $controller = $container->get($route['controller']);
     $response   = $html->process($request, $controller);
@@ -74,7 +74,8 @@ try {
     }
 
     echo $response->getBody();
-} catch (\Throwable $e) {
+} catch (\Exception $e) {
+    echo $e->getMessage();
     foreach ($e->getTrace() as $exc) {
         echo var_dump($exc);
     }
