@@ -1,0 +1,65 @@
+{#
+ * This package is responsible for displaying the html elements.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * @package     Josevaltersilvacarneiro\Html\App\View\Login
+#}
+
+{% set REGISTER_	= URL_ ~ 'register' %}
+
+<main class="d-flex justify-content-center align-items-center">
+	<div id="LoginMaindiv0" class="rounded-4">
+		<div id="LoginMaindiv0div0" class="d-flex justify-content-center align-items-center"> <!-- CENTRALIZING -->
+			<img src="{{ LOGO_ }}"
+				alt="greater-than and less-than signs with a vertical bar inside"
+				title="Web Development" class="rounded-circle" id="logo">
+		</div>
+		<div id="LoginMaindiv0div1" class="d-flex justify-content-center">
+			<form id="LoginMaindiv0div1form0" class="d-flex justify-content-between align-items-center flex-column Form">
+				<!-- USER ENTRY -->
+				<div id="LoginMaindiv0div1form0div0" class="LoginMainFormdivfield"> <!-- email -->
+
+					<label for='LoginMaindiv0div1form0div0email' class="d-flex align-items-center">Email</label>
+
+					<input
+						type=email name="email" id='LoginMainEmail'
+						placeholder="example@jose.net" required autofocus>
+					</input>
+				</div>
+				<div id="LoginMaindiv0div1form0div1" class="LoginMainFormdivfield"> <!-- password -->
+
+					<label for='LoginMaindiv0div1dorm0div1password' class="d-flex align-items-center">Password</label>
+
+					<input type=password name="password" id='LoginMainPassword'
+						placeholder="TheLoveisBeaut1ful" required autocomplete=off>
+					</input>
+				</div>
+				<div class="d-flex justify-content-between align-items-center"> <!-- buttons -->
+					<input type=button value="Recover" class="btn btn-primary border border-0 text-center LoginClick"
+						id='LoginMainRecover'>
+
+					</input>
+					<input type=button value="Continue" class="btn btn-primary border border-0 text-center LoginClick"
+						id='LoginMainControl'>
+
+					</input>
+				</div>
+			</form>
+		</div>
+	</div>
+	<a href="{{ REGISTER_ }}"><p id="registerUser" class="btn btn-primary border border-0 LoginClick">Register</p></a>
+</main>
