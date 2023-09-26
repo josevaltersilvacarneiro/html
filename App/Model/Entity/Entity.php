@@ -33,13 +33,17 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\PrimaryKeyAttribute;
-use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
+
 use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
+
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\UniqueAttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
+    PrimaryKeyAttributeInterface};
 
 use Josevaltersilvacarneiro\Html\Src\Classes\EntityManager\EntityManager;
+
+use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
 
 /**
@@ -63,7 +67,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.2
+ * @version   Release: 0.4.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
@@ -108,7 +112,7 @@ abstract class Entity implements EntityInterface
      */
     public static function getUniqueName(mixed $value): string
     {
-        return self::getIdName();
+        return static::getIdName();
     }
 
     /**
@@ -161,10 +165,10 @@ abstract class Entity implements EntityInterface
      * such as an invalid or missing ID property, the method gracefully returns
      * an empty string as a default value.
      * 
-     * @return PrimaryKeyAttribute Entity's identifier on success; empty string otherwise
-     * @throws EntityException     if the entity doesn't have a id
+     * @return ?PrimaryKeyAttributeInterface Entity's identifier on success; empty string otherwise
+     * @throws EntityExceptionInterface      if the entity doesn't have a id
      */
-    public function getId(): PrimaryKeyAttribute
+    public function getId(): ?PrimaryKeyAttributeInterface
     {
         try {
             $myself = new \ReflectionObject($this);
@@ -192,7 +196,7 @@ abstract class Entity implements EntityInterface
     public static function newInstance(UniqueAttributeInterface $uid): ?static
     {
         try {
-            return EntityManager::init(static::class, $uid->getRepresentation());
+            return EntityManager::init(static::class, $uid);
         } catch (EntityManagerException) {
             return null;
         }

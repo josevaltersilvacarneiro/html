@@ -42,6 +42,9 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\RequestEntityInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\UserEntityInterface;
 
+use Josevaltersilvacarneiro\Html\App\Model\Entity\Request;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
+
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\IpAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\PortAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\DateAttribute;
@@ -55,15 +58,15 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * session-related data and operations.
  * 
  * @var GeneratedPrimaryKeyAttribute $_sessionId  primary key
- * @var ?UserEntityInterface         $_sessionUser foreign key
- * @var RequestEntityInterface       $_request     foreign key
+ * @var ?UserEntity         $_sessionUser foreign key
+ * @var RequestEntity       $_request     foreign key
  * 
  * @category  Session
  * @package   Josevaltersilvacarneiro\Html\App\Model\Entity
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.9.4
+ * @version   Release: 0.10.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -79,16 +82,16 @@ final class Session extends Entity implements SessionEntityInterface
      * with the provided values.
      * 
      * @param GeneratedPrimaryKeyAttribute $_sessionId   primary key
-     * @param ?UserEntityInterface         $_sessionUser foreign key
-     * @param RequestEntityInterface       $_request     foreign key
+     * @param ?User                        $_sessionUser foreign key
+     * @param Request                      $_request     foreign key
      * 
      * @return void
      */
     public function __construct(
         #[GeneratedPrimaryKeyAttribute("session_id")] private
         GeneratedPrimaryKeyAttribute $_sessionId,
-        #[User("sessionuser")] private ?UserEntityInterface $_sessionUser,
-        #[Request("request")] private RequestEntityInterface $_request
+        #[User("sessionuser")] private ?User $_sessionUser,
+        #[Request("request")] private Request $_request
     ) {
     }
 
@@ -207,21 +210,13 @@ final class Session extends Entity implements SessionEntityInterface
             return self::_createSession() ?? false;
         }
 
-        try {
-            $sessionReflect = new \ReflectionClass(EntitySessionInterface::class);
-            $sessionAttr    = $sessionReflect->getAttributes()[0];
-            $sessionReflect = new \ReflectionClass($sessionAttr->getName());
-            $session        = $sessionReflect->getMethod('newInstance')
-                ->invoke(null, $sessionId);
-        } catch (\ReflectionException) {
-            return false;
-        }
+        $session = static::newInstance(new GeneratedPrimaryKeyAttribute($sessionId));
 
         if (is_null($session) || $session->isExpired()) {
             return self::_createSession() ?? false;
         }
 
-        return $session ?? false;
+        return $session;
     }
 
     /**

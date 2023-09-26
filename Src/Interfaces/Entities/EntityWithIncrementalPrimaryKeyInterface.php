@@ -30,6 +30,8 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Interfaces\Entities;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
+    IncrementalPrimaryKeyAttributeInterface};
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
 
 /**
@@ -41,10 +43,17 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.1.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface EntityWithIncrementalPrimaryKeyInterface extends EntityInterface
 {
-
+    /**
+     * Sets the id of the entity.
+     * 
+     * @param IncrementalPrimaryKeyAttributeInterface $pk The id of the entity
+     * 
+     * @return static itself
+     */
+    public function setId(IncrementalPrimaryKeyAttributeInterface $pk): static;
 }

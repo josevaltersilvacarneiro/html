@@ -47,7 +47,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.5
+ * @version   Release: 0.0.6
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface EntityInterface
@@ -93,10 +93,10 @@ interface EntityInterface
      * 
      * Note that all entities must have a unique identifier.
      * 
-     * @return PrimaryKeyAttributeInterface
-     * @throws EntityExceptionInterface if the entity doesn't have a id
+     * @return PrimaryKeyAttributeInterface Primary key
+     * @throws EntityExceptionInterface     If the entity doesn't have a id
      */
-    public function getId(): PrimaryKeyAttributeInterface;
+    public function getId(): ?PrimaryKeyAttributeInterface;
 
     /**
      * This method create a new instance this entity based on $uid.

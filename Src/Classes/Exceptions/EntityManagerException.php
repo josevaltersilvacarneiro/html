@@ -31,8 +31,8 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Exceptions;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Log\EntityManagerLog;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
-    EntityManagerExceptionInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\{
+    EntityManagerExceptionInterface};
 
 /**
  * This class is responsible for throwing exceptions related to the
@@ -43,7 +43,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.1
+ * @version   Release: 0.2.2
  * @link      https://www.php.net/manual/en/class.runtimeexception.php
  */
 final class EntityManagerException extends \DomainException implements

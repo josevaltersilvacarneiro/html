@@ -34,9 +34,9 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\Container;
 
+use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\ContainerException;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\NotFoundException;
-use Josevaltersilvacarneiro\Html\App\Controller\Controller;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -52,7 +52,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.2
+ * @version   Release: 0.3.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Container
  * @see       https://www.php-fig.org/psr/psr-11/
  */
@@ -73,33 +73,21 @@ class Container implements ContainerInterface
     {
         $dependencies = array_map(
             function ($dependency) {
-                if (! class_exists($dependency)) {
+                try {
+                    $reflectDependency = new \ReflectionClass($dependency);
+                    return $reflectDependency->getMethod('fork')->invoke(null);
+                } catch (\ReflectionException $e) {
+                    echo var_dump($e);
                     throw new ContainerException(
-                        "Class {$dependency} not found",
-                        1000
+                        "Error while retrieving the entry {$dependency}", 10, $e
                     );
                 }
-
-                $reflectDependency = new \ReflectionClass($dependency);
-
-                if (!$reflectDependency->hasMethod('fork')) {
-                    throw new ContainerException(
-                        "Class {$dependency} hasn't a fork method",
-                        1000
-                    ); 
-                }
-
-                return $dependency::fork();
             },
             $dependencies
         );
 
         try {
-            $this->_container[$className] = function ($container) use (
-                $className, $dependencies
-            ) {
-                return new $className(...$dependencies);
-            };
+            $this->_container[$className] = new $className(...$dependencies);
         } catch (\Error $e) {
             throw new ContainerException(
                 "Error while retrieving the entry {$className}", 10, $e
@@ -122,7 +110,7 @@ class Container implements ContainerInterface
             throw new NotFoundException("{$id} not found in container");
         }
 
-        return $this->_container[$id]($this);
+        return $this->_container[$id];
     }
 
     /**

@@ -36,20 +36,20 @@ namespace Josevaltersilvacarneiro\Html\App\Model\Entity;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
     EntityWithIncrementalPrimaryKeyInterface};
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
-    PrimaryKeyAttributeInterface};
+    IncrementalPrimaryKeyAttributeInterface};
 use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 
 /**
  * This class represents a entity with an incremental primary key.
  * 
- * @method PrimaryKeyAttributeInterface setId(PrimaryKeyAttributeInterface $pk) Sets
+ * @method IncrementalPrimaryKeyAttributeInterface setId(IncrementalPrimaryKeyAttributeInterface $pk) Sets
  * 
  * @category  EntityWithIncrementalPrimaryKey
  * @package   Josevaltersilvacarneiro\Html\App\Model\Entity
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class EntityWithIncrementalPrimaryKey extends Entity implements
@@ -62,16 +62,12 @@ abstract class EntityWithIncrementalPrimaryKey extends Entity implements
      * but the main goal is to provide controlled access to updating the ID
      * property.
      * 
-     * @param PrimaryKeyAttributeInterface $pk Entity's identifier
+     * @param IncrementalPrimaryKeyAttributeInterface $pk Entity's identifier
      * 
      * @return static itself
      */
-    public function setId(PrimaryKeyAttributeInterface $pk): static
+    public function setId(IncrementalPrimaryKeyAttributeInterface $pk): static
     {
-        if ($this->getCallingClass() !== EntityManager::class) {
-            return $this;
-        }
-
         try {
             $myself = new \ReflectionObject($this);
             $proper = $myself->getProperty($this->getIdName());

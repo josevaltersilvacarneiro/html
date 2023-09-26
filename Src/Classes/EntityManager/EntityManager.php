@@ -31,14 +31,18 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Src\Classes\EntityManager;
 
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\IncrementalPrimaryKeyAttribute;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\PrimaryKeyAttributeInterface;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\Entity;
 use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
 use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\AttributeInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\UniqueAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\EntityInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
-    EntityWithIncrementalPrimaryKeyInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
+    EntityWithIncrementalPrimaryKeyInterface};
 
 /**
  * This class is a crucial part of the application's data access layer,
@@ -47,8 +51,8 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
  * for initializing, deleting, and synchronizing the state of EntityDatabase
  * objects with the database.
  * 
- * @staticvar string _METHOD_GET_UNIQUE_ID      id
- * @staticvar string _METHOD_GET_REPRESENTATION representation of the class in DB
+ * @staticvar string _METHOD_GET_UNIQUE_NAME      id
+ * @staticvar string _METHOD_ATTR_GET_REPRESENTATION representation of the class in DB
  * 
  * @method GenericDao|false _getDaoEntity(\ReflectionClass &$reflect)
  * @method array _getProperties(\ReflectionObject &$reflect, EntityDatabase &$entity)
@@ -61,15 +65,15 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.3.0
+ * @version   Release: 0.4.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
 {
-    private const _METHOD_ENTITY_PK          = 'getIdName';
-    private const _METHOD_GET_UNIQUE_ID      = 'getUniqueName';
-    private const _METHOD_GET_REPRESENTATION = 'getRepresentation';
-    private const _METHOD_ATTR_NEWINSTANCE   = 'newInstance';
+    private const _METHOD_ENTITY_PK               = 'getId';
+    private const _METHOD_GET_UNIQUE_NAME         = 'getUniqueName';
+    private const _METHOD_ATTR_GET_REPRESENTATION = 'getRepresentation';
+    private const _METHOD_ATTR_NEWINSTANCE        = 'newInstance';
 
     /**
      * This method is used to find the appropriate GenericDao for a given entity
@@ -179,7 +183,7 @@ final class EntityManager
                         self::flush($value);
 
                         $method = $proper->getMethod(self::_METHOD_ENTITY_PK);
-                        $value  = $method->invoke($value);
+                        $value  = $method->invoke($value)?->getRepresentation();
                     } catch (EntityManagerException $e) {
                         throw new EntityManagerException(
                             'Unable to flush ' . $proper->getName(),
@@ -198,12 +202,12 @@ final class EntityManager
                 } else {
                     try {
                         $method = $proper->getMethod(
-                            self::_METHOD_GET_REPRESENTATION
+                            self::_METHOD_ATTR_GET_REPRESENTATION
                         );
                         $value  = $method->invoke($value);
                     } catch (\ReflectionException $e) {
                         throw new EntityManagerException(
-                            'Unable to invoke ' . self::_METHOD_GET_REPRESENTATION,
+                            'Unable to invoke ' . self::_METHOD_ATTR_GET_REPRESENTATION,
                             $e
                         );
                     }
@@ -215,6 +219,35 @@ final class EntityManager
 
         return $result;
     }
+
+    /**
+     * Instantiates a primary key attribute object based on the
+     * $key using reflection parameter.
+     * 
+     * @param \ReflectionClass $reflection \ReflectionClass of Entity
+     * @param string|int       $key        Unique identifier
+     * 
+     * @return ?PrimaryKeyAttributeInterface New instance of a subclass on success; null otherwise
+     */
+     private static function _instantiatePrimaryKey(\ReflectionClass $reflection, string|int $key): ?PrimaryKeyAttributeInterface
+     {
+        try {
+            $params = $reflection->getConstructor()->getParameters();
+
+            foreach ($params as $param) {
+                $attr = $param->getAttributes()[0];
+                $attrReflect = new \ReflectionClass($attr->getName());
+                if ($attrReflect->isSubclassOf(PrimaryKeyAttributeInterface::class)) {
+                    $method = $attrReflect->getMethod(self::_METHOD_ATTR_NEWINSTANCE);
+                    return $method->invoke(null, $key);
+                }
+            }
+        } catch (\ReflectionException) {
+            return null;
+        }
+
+        return null;
+     }
 
     /**
      * This method provides a crucial mechanism for handling the initialization
@@ -229,13 +262,12 @@ final class EntityManager
      * @throws EntityManagerException If any errors occur during the process
      */
     public static function init(string $entityName,
-        string|int $entityId
+        UniqueAttributeInterface $id
     ): EntityInterface {
 
         try {
             $reflection = new \ReflectionClass($entityName);
         } catch (\ReflectionException $e) {
-
             throw new EntityManagerException(
                 'Unable to instantiate ' . $entityName . ' class',
                 $e
@@ -248,7 +280,6 @@ final class EntityManager
         $constructEntity = $reflection->getConstructor();
 
         if (is_null($constructEntity)) {
-    
             throw new EntityManagerException(
                 'The ' . $entityName .
                 ' class doesn\'t have a __construct'
@@ -258,32 +289,32 @@ final class EntityManager
         $dao = self::_getDaoEntity($reflection);
 
         if ($dao === false) {
-
             throw new EntityManagerException(
                 'Couldn\'t instantiate object dao from ' . $entityName,
             );
         }
 
         try {
-            $methodEntity = $reflection->getMethod(self::_METHOD_GET_UNIQUE_ID);
-            $entity       = $dao->r(
-                array($methodEntity->invoke(null, $entityId) => $entityId)
+            $methodEntity = $reflection->getMethod(self::_METHOD_GET_UNIQUE_NAME);
+            $unique = self::_getMappedProperties($reflection)[$methodEntity->invoke(null, $id)];
+
+            $entity = $dao->r(
+                [$unique => $id->getRepresentation()]
             );
     
             // find the entity record in the database based on the provided entityId
             // using the Dao's read method
         } catch (\ReflectionException $e) {
             throw new EntityManagerException(
-                'The ' . self::_METHOD_GET_UNIQUE_ID .
+                'The ' . self::_METHOD_GET_UNIQUE_NAME .
                 ' method is not defined in ' . $entityName,
                 $e
             );
         }
 
         if ($entity === false) {
-
             throw new EntityManagerException(
-                'No record matching the ' . $entityId . ' was found'
+                'No record matching the ' . $id->getRepresentation() . ' was found'
             );
         }
 
@@ -340,7 +371,7 @@ final class EntityManager
 
                     try {
                         $args[] = empty($entity[$name]) ? null :
-                            self::init($attr->getName(), $entity[$name]);
+                            self::init($attr->getName(), self::_instantiatePrimaryKey($reflection, $entity[$name]));
                     } catch (EntityManagerException $e) {
                         throw new EntityManagerException(
                             $attr->getName() .
@@ -365,14 +396,6 @@ final class EntityManager
                             $e
                         );
                     }
-
-                } else {
-
-                    throw new EntityManagerException(
-                        'There was an error on line ' . __LINE__
-                    );
-
-                    // an internal php or lib object was used as property
                 }
             } // end of instantiating a Entity object
         } // end of foreach for each $proper
@@ -386,8 +409,14 @@ final class EntityManager
 
         try {
             $entity = $reflection->newInstance(...$args);
-            $entity->setState(EntityState::PERSISTENT);
-            return $entity;
+            if ($entity instanceof EntityInterface) {
+                $entity->setState(EntityState::PERSISTENT);
+                return $entity;
+            }
+
+            throw new EntityManagerException(
+                'The ' . $entityName . ' class doesn\'t implement EntityInterface'
+            );
         } catch (\InvalidArgumentException $e) {
             throw new EntityManagerException(
                 'Couldn\'t instantiate ' . $entityName . ' class',
@@ -476,25 +505,25 @@ final class EntityManager
         // if the DAO cannot be instantiated, it returns false
 
         switch ($entity->getState()) {
-        case EntityState::TRANSIENT:    // IF created but not stored,
-            $id = $dao->ic($props);     // store it in the DB
+            case EntityState::TRANSIENT:    // IF created but not stored,
+                $id = $dao->ic($props);     // store it in the DB
 
-            if ($id === false) {
-                return false;
-            }
+                if ($id === false) {
+                    return false;
+                }
 
-            if ($entity instanceof EntityWithIncrementalPrimaryKeyInterface) {
-                $entity->getId()->setId($id);
-            }
-            break;
-        case EntityState::DETACHED:     // IF changed after being read,
-            $ok = $dao->u($props);      // update it in the DB
+                if ($entity instanceof EntityWithIncrementalPrimaryKeyInterface) {
+                    $entity->setId(IncrementalPrimaryKeyAttribute::newInstance($id));
+                }
+                break;
+            case EntityState::DETACHED:     // IF changed after being read,
+                $ok = $dao->u($props);      // update it in the DB
 
-            if (!$ok) {
-                return false;
-            }
+                if (!$ok) {
+                    return false;
+                }
 
-            break;
+                break;
         }
 
         $entity->setState(EntityState::PERSISTENT);
