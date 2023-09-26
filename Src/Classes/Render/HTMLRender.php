@@ -52,14 +52,15 @@ use \Twig\Loader\FilesystemLoader;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.1
+ * @version   Release: 0.10.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Render
  */
 abstract class HTMLRender implements HtmlRenderInterface
 {
-	private const PATH = __VIEW__;
+	private const PATH = _TEMPLATES;
 
 	private string $_dir;
+	private string $_page;
 	private string $_title;
 	private string $_description;
 	private string $_keywords;
@@ -76,6 +77,20 @@ abstract class HTMLRender implements HtmlRenderInterface
 	public function setDir(string $dir): static
 	{
 		$this->_dir = $dir . DIRECTORY_SEPARATOR;
+
+		return $this;
+	}
+
+	/**
+	 * Sets up the page that should be rendered.
+	 * 
+	 * @param string $page Page
+	 * 
+	 * @return static itself
+	 */
+	public function setPage(string $page): static
+	{
+		$this->_page = $page;
 
 		return $this;
 	}
@@ -161,66 +176,6 @@ abstract class HTMLRender implements HtmlRenderInterface
 	}
 
 	/**
-	 * Returns the header.
-	 * 
-	 * @return array<string,mixed> header
-	 */
-	private function addHeader(): array
-	{
-		$header = $this->getDir() . "Header-" . __VERSION__ . ".html.twig";
-		$headerFile = self::PATH . $header;
-
-		if (!file_exists($headerFile) || !is_readable($headerFile)) {
-			return [];
-		}
-
-		return [
-			// its variables
-			'HEADER_'	=> $header
-		];
-	}
-
-	/**
-	 * Returns the main.
-	 * 
-	 * @return array<string,mixed> main
-	 */
-	private function addMain(): array
-	{
-		$main = $this->getDir() . "Main-" . __VERSION__ . ".html.twig";
-		$mainFile = self::PATH . $main;
-
-		if (!file_exists($mainFile) || !is_readable($mainFile)) {
-			return [];
-		}
-
-		return [
-			// its variables
-			'MAIN_' => $main
-		];
-	}
-
-	/**
-	 * Returns the footer.
-	 * 
-	 * @return array<string,mixed> footer
-	 */
-	private function addFooter(): array
-	{
-		$footer = $this->getDir() . "Footer-" . __VERSION__ . ".html.twig";
-		$footerFile = self::PATH . $footer;
-
-		if (!file_exists($footerFile) || !is_readable($footerFile)) {
-			return [];
-		}
-
-		return [
-			// its variables
-			'FOOTER_' => $footer
-		];
-	}
-
-	/**
 	 * This method reders the layout and returns it.
 	 * 
 	 * @return string What is rendered for the user
@@ -231,6 +186,7 @@ abstract class HTMLRender implements HtmlRenderInterface
 		$twig   = new Environment($loader);
 
 		$glbs = [
+			'PAGE_'        => $this->_page . '.html.twig',
 			'TITLE_'       => $this->_title,
 			'DESCRIPTION_' => $this->_description,
 			'KEYWORDS_'    => $this->_keywords,
@@ -246,11 +202,8 @@ abstract class HTMLRender implements HtmlRenderInterface
 
 		$vars = array_merge(
 			$glbs,
-			$this->addHeader(),
-			$this->addMain(),
-			$this->addFooter()
 		);
 
-		return $twig->render('HTMLLayout.html.twig', $vars);
+		return $twig->render('Layout.html.twig', $vars);
 	}
 }

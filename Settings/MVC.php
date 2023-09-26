@@ -47,3 +47,7 @@ define('__CONTROLLER__',
     __ROOT__        .   'App'   .   DIRECTORY_SEPARATOR .
     'Controller'    . DIRECTORY_SEPARATOR
 );
+
+define('_TEMPLATES',
+    __ROOT__ . 'Templates' . DIRECTORY_SEPARATOR
+);

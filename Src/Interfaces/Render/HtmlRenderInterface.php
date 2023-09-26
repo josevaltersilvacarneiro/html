@@ -40,7 +40,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Render\RenderInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.1.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Render
  */
 interface HtmlRenderInterface extends RenderInterface
@@ -53,6 +53,15 @@ interface HtmlRenderInterface extends RenderInterface
      * @return static itself
      */
     public function setDir(string $dir): static;
+
+    /**
+     * Sets up the page that should be rendered.
+     * 
+     * @param string $page Page
+     * 
+     * @return static itself
+     */
+    public function setPage(string $page): static;
 
     /**
      * Sets up the head title.
