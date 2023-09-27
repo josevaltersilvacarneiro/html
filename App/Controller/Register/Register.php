@@ -50,7 +50,7 @@ use Psr\Http\Message\ResponseInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.3.1
+ * @version   Release: 0.3.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class Register extends HTMLController
@@ -62,7 +62,6 @@ final class Register extends HTMLController
      */
     public function __construct(private readonly SessionEntityInterface $session)
     {
-        $this->setDir('Register');
         $this->setPage('Register');
         $this->setTitle('Register');
         $this->setDescription(

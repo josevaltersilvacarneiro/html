@@ -1,10 +1,12 @@
-{#
- * This package is responsible for displaying the html elements.
+@charset "UTF-8";
+
+/**
+ * This package is responsible for styling the web pages.
  * 
  * Copyright (C) 2023, José V S Carneiro
  * 
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU General Public License as published by  
  * the Free Software Foundation, either version 3 of the License, or
  * any later version.
  * 
@@ -16,19 +18,6 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
- * @package     Josevaltersilvacarneiro\Html\App\View\Login
-#}
+ * @package     Josevaltersilvacarneiro\Html\Public\Css\Register
+ */
 
-{% extends "Credential.html.twig" %}
-
-{% set FORM_ACTION_ = URL_ ~ "login/signin" %}
-
-{% block css %}
-    {{ parent() }}
-    <link rel="stylesheet" href={{ CSS_ ~ 'Login.css' }}>
-{% endblock %}
-
-{# defines the route that will process the form #}
-{% block form_action FORM_ACTION_ %}
-
-{% set REGISTER_	= URL_ ~ 'register' %}

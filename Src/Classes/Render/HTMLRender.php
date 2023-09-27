@@ -52,34 +52,19 @@ use \Twig\Loader\FilesystemLoader;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.2
+ * @version   Release: 0.10.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Render
  */
 abstract class HTMLRender implements HtmlRenderInterface
 {
 	private const PATH = _TEMPLATES;
 
-	private string $_dir;
 	private string $_page;
 	private string $_title;
 	private string $_description;
 	private string $_keywords;
 	private string $_robots = "Index";
 	private array $_variables = [];
-
-	/**
-	 * Sets up the View directory.
-	 * 
-	 * @param string $dir directory in __VIEW__
-	 * 
-	 * @return static itself
-	 */
-	public function setDir(string $dir): static
-	{
-		$this->_dir = $dir . DIRECTORY_SEPARATOR;
-
-		return $this;
-	}
 
 	/**
 	 * Sets up the page that should be rendered.
@@ -166,16 +151,6 @@ abstract class HTMLRender implements HtmlRenderInterface
 	}
 
 	/**
-	 * Returns the View directory.
-	 * 
-	 * @return string directory in __VIEW__
-	 */
-	public function getDir(): string
-    {
-        return $this->_dir;
-	}
-
-	/**
 	 * This method reders the layout and returns it.
 	 * 
 	 * @return string What is rendered for the user
@@ -186,7 +161,7 @@ abstract class HTMLRender implements HtmlRenderInterface
 		$twig   = new Environment($loader);
 
 		$glbs = [
-			'PAGE_'        => $this->_page . '.html.twig',
+			'PAGE_'        => $this->_page,
 			'TITLE_'       => $this->_title,
 			'DESCRIPTION_' => $this->_description,
 			'KEYWORDS_'    => $this->_keywords,
@@ -194,7 +169,6 @@ abstract class HTMLRender implements HtmlRenderInterface
 			'URL_'         => __URL__,
 			'ROBOTS_'      => $this->_robots,
 			'CSS_'         => __CSS__,
-			'DIR_'         => $this->_dir,
 			'VERSION_'     => __VERSION__,
 			'JS_'          => __JS__,
 			'IMG_'         => __IMG__
@@ -204,6 +178,6 @@ abstract class HTMLRender implements HtmlRenderInterface
 			$glbs,
 		);
 
-		return $twig->render('Layout.html.twig', $vars);
+		return $twig->render($this->_page . '.html.twig', $vars);
 	}
 }

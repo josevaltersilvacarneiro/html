@@ -24,7 +24,6 @@
  * DESCRIPTION_		- PAGE'S DESCRIPTION, i.e. a brief overview
  * KEYWORDS_		- PAGE'S KEYWORDS
  * ROBOTS_			- PAGE'S ROBOTS, i.e. the indexing level for the page
- * DIR_				- PAGE'S DIRECTORY, i.e. the dir according to the served page (for example, Login/)
  * 
  * HEADER_			- PATH TO THE FILE CONTAINING THE PAGE'S HEADER
  * MAIN_			- PATH TO THE FILE CONTAINING THE PAGE'S MAIN BODY
@@ -33,13 +32,13 @@
  * In addition, all global variables are available here.
  * 
  * @author		José V S Carneiro
- * @version		0.7.0
+ * @version		0.8.0
  * @copyright	Copyright (C) 2023, José V S Carneiro
  * @license		GPLv3
 #}
 
-{% set CURRENT_YEAR_	= "now"|date("Y") %}
-{% set LOGO_			= IMG_ ~ 'Code.png' %}
+{% set CURRENT_YEAR_ = "now"|date("Y") %}
+{% set LOGO_		 = IMG_ ~ 'Code.png' %}
 
 <!DOCTYPE html>
 <html lang='en'>
@@ -73,28 +72,20 @@
 		<!-- BEGIN bootstrap -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 		<!-- ENDOF bootstrap -->
-		<link rel=stylesheet href={{ CSS_ ~ 'Style.css' }}>
-		<link rel=stylesheet href={{ CSS_ ~ DIR_ ~ 'Style-' ~ VERSION_ ~ '.css' }}>
+
+		{% block css %}
+			<link rel=stylesheet href={{ CSS_ ~ 'Style.css' }}>
+		{% endblock %}
 
 		<noscript>Your browser doens't support Javascript.</noscript>
 	</head>
 	<body>
-		{% if HEADER_ is defined %}
-			{% include HEADER_ %}
-		{% endif %}
+		{% block content %}
 
-		{% if PAGE_ is defined %}
-			{% include PAGE_ %}
-		{% endif %}
-
-		{% if FOOTER_ is defined %}
-			{% include FOOTER_ %}
-		{% endif %}
-		<div id="liveAlertPlaceholder"></div>
+		{% endblock %}
 	</body>
 	<!-- BEGIN bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
 	<!-- ENDOF bootstrap -->
-	<script type="module" src="{{ JS_ ~ 'Public/app.js' }}"></script>
 </html>

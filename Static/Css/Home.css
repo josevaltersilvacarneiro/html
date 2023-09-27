@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+/**
+ * This package is responsible for styling the web pages.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+main > *
+{ height: 94%; background-color: #141E61; }
+
+#left__screen
+{ width: 16%; }
+
+#right__screen
+{ width: 80%; }
+
+main > * > *
+{ height: 90%; width: 90%; }
+
+a, a:visited
+{ text-decoration: none; }
+
+#logo
+{ height: 10%; }
+
+#navMenu
+{ height: 90%; }
+
+#navMenu menu
+{
+	padding: 0;
+	height: 75%;
+	width: 100%;
+}
+
+.home__list
+{
+	list-style: none;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.home__list li
+{
+	margin: 0;
+	padding: 0;
+	height: 15%;
+	background-color: none;
+}
+
+.home__list a:visited,
+.home__list a:link
+{ color: #5C469C; }
+
+.home__list a
+{
+	padding: 5% 5%;
+	height: 100%;
+	color: #EEEEEE;
+}
+
+.home__list a > *
+{ height: 100%; }
+
+.home__list a p
+{
+	margin: 0;
+}
+
+.home__list a:hover
+{ cursor: pointer; }
+
+/* JavaScript */
+
+#jsBody
+{
+	overflow-y:			scroll; /* auto */
+	scrollbar-width:	thin;
+	scrollbar-color:	transparent transparent;
+}
+
+/*************************/
+/* DELETE FROM HERE DOWN */
+
+#jsBody h2
+{ color: #D4ADFC; }
+
+#jsBody p
+{
+	color: 			#D4ADFC;
+
+	text-align:		justify;
+	text-justify:	inter-word;
+	text-indent:	2em;
+}

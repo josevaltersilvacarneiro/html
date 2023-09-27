@@ -33,11 +33,11 @@ declare(strict_types=1);
  */
 
 define('__IMG__',
-    __URL__     .  'Public'   .  DIRECTORY_SEPARATOR .
+    __URL__     .  'Static'   .  DIRECTORY_SEPARATOR .
     'Images'    .  DIRECTORY_SEPARATOR);                // image files
 
 define('__CSS__',
-    __URL__ .   'Public'    .   DIRECTORY_SEPARATOR .
+    __URL__ .   'Static'    .   DIRECTORY_SEPARATOR .
     'Css'   .   DIRECTORY_SEPARATOR);		            // css files
 
 define('__JS__',
