@@ -52,7 +52,7 @@ use PHPMailer\PHPMailer\SMTP;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.2
+ * @version   Release: 0.2.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Mail
  * @see       https://github.com/PHPMailer/PHPMailer/tree/master
  */
@@ -72,7 +72,7 @@ class Mail implements MailInterface
 
         $this->_mailman->Host = _MAIL_SMTP;
         $this->_mailman->Port = _PORT_SMTP;
-        
+
         $this->_mailman->SMTPAuth = true;
 
         $this->_mailman->Username = _USER_SMTP;
@@ -174,7 +174,7 @@ class Mail implements MailInterface
      */
     public function send(): bool
     {
-        if (! $this->_mailman->send()) {
+        if (!$this->_mailman->send()) {
             throw new MailException($this->_mailman->ErrorInfo);
         }
 
