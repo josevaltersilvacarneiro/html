@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class NameAttribute implements NameAttributeInterface
@@ -140,7 +140,7 @@ final class NameAttribute implements NameAttributeInterface
      */
     private function _isNameValid(string $completeName): bool
     {
-        return !mb_strlen($completeName) > 80 &&
+        return !(mb_strlen($completeName) > 80) &&
             preg_match("/^.{3,} .*.{3,}$/", $completeName);
     }
 
