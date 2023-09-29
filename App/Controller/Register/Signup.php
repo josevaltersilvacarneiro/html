@@ -35,17 +35,19 @@ declare(strict_types=1);
 namespace Josevaltersilvacarneiro\Html\App\Controller\Register;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Mail\MailInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\NameAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\SaltAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\ActiveAttribute;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\MailExceptionInterface;
 
 use Josevaltersilvacarneiro\Html\Src\Traits\EmailValidatorTrait;
+use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
@@ -60,20 +62,27 @@ use Psr\Http\Message\ResponseInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.1.0
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 class Signup implements RequestHandlerInterface
 {
-    use EmailValidatorTrait;
+    use EmailValidatorTrait, CryptTrait;
+
+    private const _SENDER_NAME = 'José Carneiro';
+    private const _SENDER      = 'me@message.josevaltersilvacarneiro.net';
+    private const _REPLY_NAME  = 'José Carneiro';
+    private const _REPLY       = 'me@message.josevaltersilvacarneiro.net';
 
     /**
      * Initialize the object.
      * 
      * @param SessionEntityInterface $session session
      */
-    public function __construct(private readonly SessionEntityInterface $session)
-    {
+    public function __construct(
+        private readonly SessionEntityInterface $session,
+        private readonly MailInterface $_mail
+    ) {
     }
 
     /**
@@ -89,7 +98,7 @@ class Signup implements RequestHandlerInterface
             return new Response(302, ['Location' => '/']);
         }
 
-        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $name = filter_input(INPUT_POST, 'name');
         if ($name === false || $name === null) {
             return new Response(302, ['Location' => '/register']);
         }
@@ -99,23 +108,8 @@ class Signup implements RequestHandlerInterface
             return new Response(302, ['Location' => '/register']);
         }
 
-        $hash = filter_input(INPUT_POST, 'hash', FILTER_SANITIZE_STRING);
+        $hash = filter_input(INPUT_POST, 'password');
         if ($hash === false || $hash === null) {
-            return new Response(302, ['Location' => '/register']);
-        }
-
-        $salt = filter_input(INPUT_POST, 'salt', FILTER_SANITIZE_STRING);
-        if ($salt === false || $salt === null) {
-            return new Response(302, ['Location' => '/register']);
-        }
-
-        $code = filter_input(INPUT_POST, 'code', FILTER_SANITIZE_STRING);
-        if ($code === false || $code === null) {
-            return new Response(302, ['Location' => '/register']);
-        }
-
-        $hashCode = filter_input(INPUT_POST, 'hash_code', FILTER_SANITIZE_STRING);
-        if ($hashCode === false || $hashCode === null) {
             return new Response(302, ['Location' => '/register']);
         }
 
@@ -123,32 +117,47 @@ class Signup implements RequestHandlerInterface
             $name  = new NameAttribute($name);
             $email = new EmailAttribute($email);
             $hash  = new HashAttribute($hash);
-            $salt  = new SaltAttribute($salt);
-            $actv  = new ActiveAttribute(true);
+            $actv  = new ActiveAttribute(false);
         } catch (AttributeException $e) {
             $e->storeLog();
             return new Response(302, ['Location' => '/register']);
         }
 
-        if (!$this->_isCodeHashValid(
-            $email->getRepresentation(),
-            $code,
-            $hashCode
-        )
-        ) {
-            return new Response(302, ['Location' => '/register']);
-        }
-
-        $user = new User(null, $name, $email, $hash, $salt, $actv);
+        $user = new User(null, $name, $email, $hash, $actv);
         if (!$user->flush()) {
             return new Response(302, ['Location' => '/register']);
         }
 
-        $this->session->setUser($user);
-        $this->session->flush();
+        // confirm email
 
-        // If the session cannot be updated, the user will have to log in again
+        $url           = __URL__;
+        $email         = $user->getEmail()->getRepresentation();
+        $hash          = self::_generateEmailCodeHash($email, $code = self::_generateEmailCode());
+        $encryptedCode = self::_encrypt($code, self::_PASSWORD);
 
-        return new Response(302, ['Location' => '/']);
+        if ($encryptedCode === false) {
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        $encryptedCode = urlencode($encryptedCode);
+        $hash          = urlencode($hash);
+        $message = <<<MESSAGE
+            <p>Confirm your email address by clicking on the link below:</p>
+            <a href="{$url}confirm/email?email=$email&code=$encryptedCode&hash=$hash">Confirm</a>
+        MESSAGE;
+
+        try {
+            $this->_mail->setSender(self::_SENDER, self::_SENDER_NAME)
+                ->setReplyTo(self::_REPLY, self::_REPLY_NAME)
+                ->setSubject('Confirm your email address')
+                ->setBody($message)
+                ->addRecipient($email, $name->getRepresentation())
+                ->send();
+        } catch (MailExceptionInterface $e) {
+            $e->storeLog();
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        return new Response(302, ['Location' => '/login']);
     }
 }

@@ -41,14 +41,13 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\UserEntityInterface;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\NameAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\SaltAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\ActiveAttribute;
 
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\IncrementalPrimaryKeyAttribute;
+use Josevaltersilvacarneiro\Html\Src\Enums\EntityState;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\NameAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\EmailAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\HashAttributeInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\SaltAttributeInterface;
 
 /**
  * The User Entity represents a user. It encapsulates the user's
@@ -59,7 +58,6 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\SaltAttributeInterfac
  * @var NameAttribute                   $_name   fullname @example José Carneiro
  * @var EmailAttribute                  $_email  email @example git@josevaltersilvacarneiro.net
  * @var HashAttribute                   $_hash   user's password hash
- * @var SaltAttribute                   $_salt   password salt
  * @var ActiveAttribute                 $_active true if the used is logged in; false otherwise
  * 
  * @category  User
@@ -67,7 +65,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\SaltAttributeInterfac
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.0
+ * @version   Release: 0.10.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserDao]
@@ -80,7 +78,6 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      * @param NameAttribute                   $_name   name of the user @example José Carneiro
      * @param EmailAttribute                  $_email  @example git@josevaltersilvacarneiro.net
      * @param HashAttribute                   $_hash   a SHA256 hash
-     * @param SaltAttribute                   $_salt   random letters used to generate the hash
      * @param ActiveAttribute                 $_active true if active; false otherwise
      * 
      * @return void
@@ -90,7 +87,6 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
         #[NameAttribute('fullname')] private NameAttribute $_name,
         #[EmailAttribute('email')] private EmailAttribute $_email,
         #[HashAttribute('hash')] private HashAttribute $_hash,
-        #[SaltAttribute('salt')] private SaltAttribute $_salt,
         #[ActiveAttribute('active')] private ActiveAttribute $_active
     ) {
     }
@@ -115,7 +111,7 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
     public static function getUniqueName(mixed $value): string
     {
         return
-            filter_var($value, FILTER_VALIDATE_EMAIL) ? '_email' : self::getIdName();
+            filter_var($value->getRepresentation(), FILTER_VALIDATE_EMAIL) ? '_email' : self::getIdName();
     }
 
     /**
@@ -163,14 +159,12 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      * properties (hash and salt).
      * 
      * @param HashAttributeInterface $hash A hash
-     * @param SaltAttributeInterface $salt Random characters
      * 
      * @return static itself
      */
-    public function setPassword(HashAttributeInterface $hash, SaltAttributeInterface $salt): static
+    public function setPassword(HashAttributeInterface $hash): static
     {
         $this->set($this->_hash, $hash);
-        $this->set($this->_salt, $salt);
         return $this;
     }
 
@@ -205,23 +199,25 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
     }
 
     /**
-     * This method returns the salt.
-     * 
-     * @return SaltAttributeInterface The salt
-     */
-    public function getSalt(): SaltAttributeInterface
-    {
-        return $this->_salt;
-    }
-
-    /**
      * This method returns true if the user is logged in; false otherwise.
      * 
-     * @return bool true if yes; false otherwise
+     * @return bool true if so; false otherwise
      */
     public function isActive(): bool
     {
         return $this->_active->getRepresentation();
+    }
+
+    /**
+     * This method activates the user.
+     * 
+     * @return static itself
+     */
+    public function makeMeActive(): static
+    {
+        $this->_active->enable();
+        $this->setState(EntityState::DETACHED);
+        return $this;
     }
 
     /**

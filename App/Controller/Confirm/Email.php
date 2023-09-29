@@ -32,17 +32,15 @@ declare(strict_types=1);
  * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/App/Controllers
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Controller\Login;
+namespace Josevaltersilvacarneiro\Html\App\Controller\Confirm;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
+
 use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
-
-use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityException;
-
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
+use Josevaltersilvacarneiro\Html\Src\Traits\EmailValidatorTrait;
+use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -50,24 +48,26 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * This class processes the user login form.
+ * This class processes the account confirmation link.
  * 
- * @category  Signin
- * @package   Josevaltersilvacarneiro\Html\App\Controllers\Login
+ * @category  Email
+ * @package   Josevaltersilvacarneiro\Html\App\Controllers\Confirm
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.1.0
+ * @version   Release: 0.0.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
-final class Signin implements RequestHandlerInterface
+final class Email implements RequestHandlerInterface
 {
+    use EmailValidatorTrait, CryptTrait;
+
     /**
      * Initializes the controller.
      * 
-     * @param SessionEntityInterface $session session
+     * @param SessionEntityInterface $_session session
      */
-    public function __construct(private readonly SessionEntityInterface $session)
+    public function __construct(private readonly SessionEntityInterface $_session)
     {
     }
 
@@ -80,40 +80,48 @@ final class Signin implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->session->isUserLogged()) {
+        if ($this->_session->isUserLogged()) {
             return new Response(302, ['Location' => '/']);
         }
 
-        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $email = filter_input(INPUT_GET, 'email', FILTER_VALIDATE_EMAIL);
         if ($email === false || $email === null) {
-            return new Response(302, ['Location' => '/login']);
+            return new Response(302, ['Location' => '/register']);
         }
 
-        $hash = filter_input(INPUT_POST, 'password');
+        $code = filter_input(INPUT_GET, 'code');
+        if ($code === false || $code === null) {
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        $decryptedCode = self::_decrypt($code, self::_PASSWORD);
+        if ($decryptedCode === false) {
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        $hash = filter_input(INPUT_GET, 'hash');
         if ($hash === false || $hash === null) {
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        if (!self::_isCodeHashValid($email, $decryptedCode, $hash)) {
+            // sleep to avoid user enumeration attack
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        $user = User::newInstance(EmailAttribute::newInstance($email));
+        if (is_null($user)) {
+            return new Response(302, ['Location' => '/register']);
+        }
+
+        if (!$user->isActive()) {
+            $user->makeMeActive();
+        }
+
+        if (!$this->_session->setUser($user)->flush()) {
             return new Response(302, ['Location' => '/login']);
         }
 
-        try {
-            $email   = new EmailAttribute($email);
-        } catch (AttributeException $e) {
-            $e->storeLog();
-            return new Response(302, ['Location' => '/login']);
-        }
-
-        $user = User::newInstance($email);
-        if (is_null($user) || !$user->getHash()->isThisYou($hash)) {
-            return new Response(302, ['Location' => '/login']);
-        }
-
-        try {
-            if ($this->session->setUser($user)->flush()) {
-                return new Response(302, ['Location' => '/']);
-            }
-        } catch (EntityException $e) {
-            $e->storeLog();
-        }
-
-        return new Response(302, ['Location' => '/login']);
+        return new Response(302, ['Location' => '/']);
     }
 }

@@ -10,7 +10,6 @@ use Josevaltersilvacarneiro\Html\App\Model\Attributes\IncrementalPrimaryKeyAttri
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\NameAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
-use Josevaltersilvacarneiro\Html\App\Model\Attributes\SaltAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\ActiveAttribute;
 
 use PHPUnit\Framework\TestCase;
@@ -25,7 +24,6 @@ class UserTest extends TestCase
         $nameOne   = new NameAttribute('José Valter');
         $emailOne  = new EmailAttribute('git@josevaltersilvacarneiro.net');
         $hashOne   = new HashAttribute('$2y$10$I8dud/n/.ew89tN/wZ8xw.zEi6U1zrJfS1c8ffqpKIaklmKIw.Wse');
-        $saltOne   = new SaltAttribute('c1pyo375pqt');
         $activeOne = ActiveAttribute::newInstance(true);
 
         $user1 = new User(
@@ -33,7 +31,6 @@ class UserTest extends TestCase
             $nameOne,
             $emailOne,
             $hashOne,
-            $saltOne,
             $activeOne
         );
 
@@ -44,7 +41,6 @@ class UserTest extends TestCase
         $nameTwo   = new NameAttribute('José Carneiro');
         $emailTwo  = new EmailAttribute('git@josevaltersilvacarneiro.net');
         $hashTwo   = new HashAttribute('$2y$10$I8dud/n/.ew89tN/wZ8xw.zEi6U1zrJfS1c8ffqpKIaklmKIw.Wse');
-        $saltTwo   = new SaltAttribute('c1p');
         $activeTwo = ActiveAttribute::newInstance(false);
 
         $user2 = new User(
@@ -52,7 +48,6 @@ class UserTest extends TestCase
             $nameTwo,
             $emailTwo,
             $hashTwo,
-            $saltTwo,
             $activeTwo
         );
 

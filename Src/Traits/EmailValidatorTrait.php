@@ -40,12 +40,14 @@ use Josevaltersilvacarneiro\Html\Src\Traits\UpCodeValidatorTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait EmailValidatorTrait
 {
     use UpCodeValidatorTrait;
+
+    private const _PASSWORD = 'password';
 
     /**
      * Generates a code for a given email.
@@ -69,7 +71,7 @@ trait EmailValidatorTrait
         string $email,
         string $code
     ): string {
-        return self::_generateCodeHash(uniqid($code, true) . $email . date('H'));
+        return self::_generateCodeHash($code . $email . date('H'));
     }
 
     /**
@@ -87,10 +89,6 @@ trait EmailValidatorTrait
         string $code,
         string $emailCodeHash
     ): bool {
-        if (!self::isCodeValid($code) || !self::isHashCodeValid($emailCodeHash)) {
-            return false;
-        }
-
         return self::_generateEmailCodeHash($email, $code) === $emailCodeHash;
     }
 }

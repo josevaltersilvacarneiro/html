@@ -169,48 +169,15 @@ final class EntityManager
 
         $result = [];
         foreach ($propers as $proper) {
-
             $name  = $map[$proper->getName()];
             $value = $proper->getValue($entity);
 
             if (is_object($value)) {
-
-                $proper = new \ReflectionObject($value);
-
-                if ($proper->implementsInterface(EntityInterface::class)) {
-
-                    try {
-                        self::flush($value);
-
-                        $method = $proper->getMethod(self::_METHOD_ENTITY_PK);
-                        $value  = $method->invoke($value)?->getRepresentation();
-                    } catch (EntityManagerException $e) {
-                        throw new EntityManagerException(
-                            'Unable to flush ' . $proper->getName(),
-                            $e
-                        );
-                    } catch (\ReflectionException $e) {
-                        throw new EntityManagerException(
-                            'Unable to invoke ' . self::_METHOD_ENTITY_PK,
-                            $e
-                        );
-                    }
-
-                    // if the object is an instance of a subclass of Entity,
-                    // the method calls the flush method to synchronize the
-                    // object with the database
+                if ($value instanceof EntityInterface) {
+                    self::flush($value);
+                    $value = $value->getId()?->getRepresentation();
                 } else {
-                    try {
-                        $method = $proper->getMethod(
-                            self::_METHOD_ATTR_GET_REPRESENTATION
-                        );
-                        $value  = $method->invoke($value);
-                    } catch (\ReflectionException $e) {
-                        throw new EntityManagerException(
-                            'Unable to invoke ' . self::_METHOD_ATTR_GET_REPRESENTATION,
-                            $e
-                        );
-                    }
+                    $value = $value->getRepresentation();
                 }
             }
 

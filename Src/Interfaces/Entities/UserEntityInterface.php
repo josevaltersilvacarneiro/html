@@ -36,7 +36,6 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\NameAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\EmailAttributeInterface;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\HashAttributeInterface;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\SaltAttributeInterface;
 
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterface;
 
@@ -48,7 +47,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\EntityExceptionInterf
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Entities
  */
 interface UserEntityInterface extends EntityWithIncrementalPrimaryKeyInterface
@@ -77,14 +76,12 @@ interface UserEntityInterface extends EntityWithIncrementalPrimaryKeyInterface
      * Sets the user's password.
      * 
      * @param HashAttributeInterface $hash The user's password hash
-     * @param SaltAttributeInterface $salt The user's password salt
      * 
      * @return static itself
      * @throws EntityExceptionInterface if the password is invalid
      */
     public function setPassword(
-        HashAttributeInterface $hash,
-        SaltAttributeInterface $salt
+        HashAttributeInterface $hash
     ): static;
 
     /**
@@ -107,13 +104,6 @@ interface UserEntityInterface extends EntityWithIncrementalPrimaryKeyInterface
      * @return HashAttributeInterface The user's hash
      */
     public function getHash(): HashAttributeInterface;
-
-    /**
-     * Gets the user's salt.
-     * 
-     * @return SaltAttributeInterface The user's salt
-     */
-    public function getSalt(): SaltAttributeInterface;
 
     /**
      * Informs if the user is active.
