@@ -39,6 +39,7 @@ $dotenv->load(__DIR__ . '/.env');
 # END DEVELOPMENT
 
 require_once 'Settings/Database.php';
+require_once 'Settings/Mail.php';
 
 include_once 'Settings/Server.php';
 include_once 'Settings/Public.php';
@@ -59,7 +60,12 @@ try {
         mb_substr(__URL__, 0, -1) . $_SERVER['REQUEST_URI'], $_SERVER
     );
 
-    $route = $routes[$_SERVER['REQUEST_METHOD'] . '|' . $_SERVER['REQUEST_URI']];
+    $queryStringPosition = mb_strpos($_SERVER['REQUEST_URI'], '?');
+
+    $route = $queryStringPosition === false
+        ? $routes[$_SERVER['REQUEST_METHOD'] . '|' . $_SERVER['REQUEST_URI']]
+        : $routes[$_SERVER['REQUEST_METHOD'] . '|' . mb_substr($_SERVER['REQUEST_URI'], 0, $queryStringPosition)];
+
     $container->add($route['controller'], $route['dependencies']);
 
     $controller = $container->get($route['controller']);
