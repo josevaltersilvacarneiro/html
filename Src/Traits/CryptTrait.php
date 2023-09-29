@@ -38,7 +38,7 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait CryptTrait
@@ -90,9 +90,9 @@ trait CryptTrait
     private static function _decrypt(
         string $encryptedData, string $key
     ): string|false {
-        $encryptedData = base64_decode($encryptedData);
+        $data = base64_decode($encryptedData);
 
-        if ($encryptedData === false) {
+        if ($data === false) {
             return false;
         }
 
@@ -102,11 +102,11 @@ trait CryptTrait
             return false;
         }
 
-        $iv = substr($encryptedData, 0, $ivSize);
-        $encryptedData = substr($encryptedData, $ivSize);
+        $iv = substr($data, 0, $ivSize);
+        $data = substr($data, $ivSize);
 
         return openssl_decrypt(
-            $encryptedData, self::ALGOCRYPT, $key,
+            $data, self::ALGOCRYPT, $key,
             OPENSSL_RAW_DATA, $iv
         );
     }
