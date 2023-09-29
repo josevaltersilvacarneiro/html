@@ -38,24 +38,11 @@ namespace Josevaltersilvacarneiro\Html\Src\Traits;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait UpCodeValidatorTrait
 {
-    /**
-     * Checks if a registration code is valid.
-     * 
-     * @param string $code Code to be checked
-     * 
-     * @return bool True if so; false otherwise
-     */
-    public static function isCodeValid(string $code): bool
-    {
-        return strlen($code) === 6 &&
-            filter_var($code, FILTER_SANITIZE_NUMBER_INT) !== false;
-    }
-
     /**
      * Checks if a registration hash code is valid.
      * 
