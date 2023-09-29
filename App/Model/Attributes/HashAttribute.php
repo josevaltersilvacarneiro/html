@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class HashAttribute implements HashAttributeInterface
@@ -106,22 +106,6 @@ final class HashAttribute implements HashAttributeInterface
     public function isThisYou(string $value): bool
     {
         return password_verify($value, $this->_hash) || $this->_hash === $value;
-    }
-
-    /**
-     * This method returns if the hashes are equal, that is,
-     * if they were generated from the same value.
-     * 
-     * @param HashAttributeInterface $hash1 The first hash
-     * @param HashAttributeInterface $hash2 The second hash
-     * 
-     * @return bool true if the hashes are equal; false otherwise
-     */
-    public static function areHashesEqual(
-        HashAttributeInterface $hash1,
-        HashAttributeInterface $hash2
-    ): bool {
-        return $hash1->getRepresentation() === $hash2->getRepresentation();
     }
 
     /**

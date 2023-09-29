@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Interfaces/Attributes
  */
 interface HashAttributeInterface extends AttributeInterface
@@ -69,18 +69,4 @@ interface HashAttributeInterface extends AttributeInterface
      *  otherwise
      */
     public function isThisYou(string $value): bool;
-
-    /**
-     * This method returns if the hashes are equal, that is,
-     * if they were generated from the same value.
-     * 
-     * @param HashAttributeInterface $hash1 The first hash
-     * @param HashAttributeInterface $hash2 The second hash
-     * 
-     * @return bool true if the hashes are equal; false otherwise
-     */
-    public static function areHashesEqual(
-        HashAttributeInterface $hash1,
-        HashAttributeInterface $hash2
-    ): bool;
 }
