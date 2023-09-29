@@ -43,7 +43,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Log\LogInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Log
  */
 class Log implements LogInterface
@@ -115,7 +115,7 @@ class Log implements LogInterface
         $date->setTimezone(new \DateTimeZone(_TIMEZONE_));
 
         $message = <<<MESSAGE
-        {$date->format('Y-m-d H:i:s')} - IN "{$this->_filename}" on LINE {$this->_line}:~# {$this->_message}
+        {$date->format('Y-m-d H:i:s')} - IN "{$this->_filename}" on LINE {$this->_line}:~# {$this->_message} {PHP_EOL}
         MESSAGE;
 
         file_put_contents(
