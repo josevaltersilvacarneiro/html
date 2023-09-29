@@ -40,7 +40,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\AttributeInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 class ActiveAttribute implements AttributeInterface
@@ -66,6 +66,17 @@ class ActiveAttribute implements AttributeInterface
     }
 
     /**
+     * This method enables the entity that has this attribute.
+     * 
+     * @return static itself
+     */
+    public function enable(): static
+    {
+        $this->_active = true;
+        return $this;
+    }
+
+    /**
      * This method returns the representation of the attribute.
      * 
      * @return mixed Status: true or false
@@ -84,6 +95,6 @@ class ActiveAttribute implements AttributeInterface
      */
     public static function newInstance(mixed $value): ?static
     {
-        return new static($value);
+        return new static((bool) $value);
     }
 }
