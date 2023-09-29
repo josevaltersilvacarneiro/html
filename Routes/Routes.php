@@ -69,6 +69,13 @@ return [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Register\Signup::class,
         'dependencies' => [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
+            \Josevaltersilvacarneiro\Html\Src\Classes\Mail\Mail::class,
+        ]
+    ],
+    'GET|/confirm/email' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Confirm\Email::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
 
