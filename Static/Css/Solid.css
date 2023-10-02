@@ -19,9 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#home__mvc {
+#home__solid {
 	background-color: var(--ternary);
-	cursor: not-allowed;
 }
 
 #main__content__body {
@@ -32,4 +31,11 @@
 	text-align:		justify;
 	text-justify:	inter-word;
 	text-indent:	2em;
+}
+
+.accordion *, .accordion-button
+{
+    color: var(--primary) !important;
+    background-color: transparent !important;
+    border-color: var(--quaternary) !important;
 }

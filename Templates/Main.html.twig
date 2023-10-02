@@ -1,0 +1,75 @@
+{#
+ * This package is responsible for displaying the html elements.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+{% extends "Layout.html.twig" %}
+
+{% set PROFILE_ = IMG_ ~ "Profile.png" %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ CSS_ ~ 'Main.css' }}>
+{% endblock %}
+
+{% block content %}
+
+<main class="d-flex">
+    <section id="main__nav" class="d-flex flex-column justify-content-center align-items-center">
+        <div id="main__nav__header" class="header d-flex justify-content-center align-items-center">
+            <div id="main__nav__header__logo" class="d-flex align-items-center">
+                <img src={{ LOGO_ }} class="image rounded-circle" alt="Profile">
+                <h1 class="fs-5 fw-semibold lh-base m-0 ms-2">Html</h1>
+            </div>
+        </div>
+        <div id="main__nav__body" class="body d-flex flex-column justify-content-evenly">
+            <div id="main__nav__body__profile" class="d-flex align-items-center">
+                <img src={{ PROFILE_ }} class="image rounded-circle" alt="Profile">
+                <p class="fs-6 fw-semibold lh-base m-0 ms-2">{{ FULLNAME_ }}</p>
+            </div>
+            <div id="main__nav__body__btns">
+                <ul class="home__list p-0">
+                    <li id="home__mvc" class="d-flex btn btn-primary border border-0 mt-2">
+                        <a href="{{ URL_ }}" class="d-flex align-items-center home__items">
+                            <span class="material-symbols-outlined">library_books</span>
+                            <p class="fs-5 fw-semibold m-0 ms-2">MVC</p>
+                        </a>
+                    </li>
+                    <li id="home__solid" class="d-flex btn btn-primary border border-0 mt-2">
+                        <a href="{{ URL_ ~ 'solid' }}" class="d-flex align-items-center home__items">
+                            <span class="material-symbols-outlined fs-3 fw-normal">developer_mode_tv</span>
+                            <p class="fs-5 fw-semibold m-0 ms-2">Solid</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section id="main__content" class="d-flex justify-content-center align-items-center">
+        <div id="main__content__body" class="body">
+
+            {% block main %}
+
+            {# your content here #}
+        
+            {% endblock %}
+
+        </div>
+    </section>
+</main>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+/**
+ * This package is responsible for styling the web pages.
+ *                                       
+ * Copyright (C) 2023, José V S Carneiro
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+main > * {
+    height: 100%;
+}
+
+.image {
+    height: 75%;
+}
+
+.header {
+    height: 5%;
+}
+
+.body {
+    height: 95%;
+}
+
+/* the code below works with the left side of the screen */
+/*-------------------------------------------------------*/
+
+/* defines the width of the left side of the screen */
+#main__nav {
+    width: 13%;
+    background-color: var(--quaternary);
+}
+
+#main__nav__header {
+    width: 100%;
+}
+
+#main__nav__body, #main__nav__header__logo {
+    width: 90%;
+}
+
+#main__nav__header__logo {
+    height: 95%;
+}
+
+#main__nav__body__profile {
+    height: 5%;
+    width: 100%;
+}
+
+/* the code below works with the buttons                  */
+/*--------------------------------------------------------*/
+
+#main__nav__body__btns {
+    height: 90%;
+}
+
+.home__list {
+    list-style: none;
+}
+
+.home__list li {
+    width: 100%;
+    background-color: var(--primary);
+}
+
+.home__list li:hover, .home__list li:active {
+    background-color: var(--ternary);
+}
+
+.home__list a, .home__list a:visited, .home__list a:link {
+    height: 100%;
+    width: 100%;
+    color: var(--quaternary);
+    text-decoration: none;
+}
+
+/* division that contains the logo and the profile images */
+#main__nav__header, #main__nav__body__profile {
+    border-bottom: thin solid var(--ternary);
+}
+
+/* the code below works with the right side of the screen */
+/*--------------------------------------------------------*/
+
+/* defines the width of the right side of the screen */
+#main__content {
+    width: 87%;
+    background-color: var(--ternary);
+}
+
+#main__content__body {
+    width: 95%;
+}
