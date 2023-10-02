@@ -52,7 +52,7 @@ use \Twig\Loader\FilesystemLoader;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.3
+ * @version   Release: 0.10.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Render
  */
 abstract class HTMLRender implements HtmlRenderInterface
@@ -176,6 +176,7 @@ abstract class HTMLRender implements HtmlRenderInterface
 
 		$vars = array_merge(
 			$glbs,
+			$this->_variables,
 		);
 
 		return $twig->render($this->_page . '.html.twig', $vars);

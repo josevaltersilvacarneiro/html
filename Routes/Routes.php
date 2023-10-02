@@ -78,4 +78,13 @@ return [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
+
+    # SOLID
+
+    'GET|/solid' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Home\Solid::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
+        ]
+    ],
 ];
