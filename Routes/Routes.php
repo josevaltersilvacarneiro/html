@@ -78,17 +78,4 @@ return [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
-
-    # API
-
-    'POST|/api/search/salt' => [
-        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Api\Search\Salt::class,
-        'dependencies' => []
-    ],
-    'POST|/api/confirm/email' => [
-        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Api\Confirm\Email::class,
-        'dependencies' => [
-            \Josevaltersilvacarneiro\Html\Src\Classes\Mail\Mail::class
-        ]
-    ],
 ];
