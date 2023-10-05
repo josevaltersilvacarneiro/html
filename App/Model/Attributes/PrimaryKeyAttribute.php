@@ -42,12 +42,12 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 abstract class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
 {
-    protected string|int $_id;
+    protected string|int $id;
 
     /**
      * Returns the representation of this attribute.
@@ -56,7 +56,7 @@ abstract class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
      */
     public function getRepresentation(): mixed
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -69,7 +69,7 @@ abstract class PrimaryKeyAttribute implements PrimaryKeyAttributeInterface
     public static function newInstance(mixed $value): ?static
     {
         $myself = new static();
-        $myself->_id = $value;
+        $myself->id = $value;
         return $myself;
     }
 }

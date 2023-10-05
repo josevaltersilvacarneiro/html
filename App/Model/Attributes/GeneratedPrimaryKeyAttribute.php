@@ -43,7 +43,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.9
+ * @version   Release: 0.0.10
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class GeneratedPrimaryKeyAttribute extends PrimaryKeyAttribute implements
@@ -58,11 +58,11 @@ final class GeneratedPrimaryKeyAttribute extends PrimaryKeyAttribute implements
      */
     public function __construct(?string $_generatedPrimaryKey = null)
     {
-        $this->_id = $_generatedPrimaryKey ?? self::generatePrimaryKey();
+        $this->id = $_generatedPrimaryKey ?? self::generatePrimaryKey();
 
-        if (preg_match('/^[a-f0-9]{64}$/', $this->_id) === false) {
+        if (preg_match('/^[a-f0-9]{64}$/', $this->id) === false) {
             throw new AttributeException(
-                "The '{$this->_id}' is not a valid primary key",
+                "The '{$this->id}' is not a valid primary key",
             );
         }
     }
