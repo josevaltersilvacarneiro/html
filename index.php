@@ -44,6 +44,8 @@ require_once 'Settings/Mail.php';
 include_once 'Settings/Server.php';
 include_once 'Settings/Public.php';
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\AppExceptionInterface;
+
 use Josevaltersilvacarneiro\Html\Src\Classes\Container\Container;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -80,6 +82,8 @@ try {
     }
 
     echo $response->getBody();
+} catch (AppExceptionInterface $e) {
+    $e->storeLog();
 } catch (\Exception $e) {
     echo $e->getMessage();
     foreach ($e->getTrace() as $exc) {
