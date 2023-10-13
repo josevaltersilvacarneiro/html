@@ -37,12 +37,21 @@ use PHPUnit\Framework\TestCase;
 
 class IpAttributeTest extends TestCase
 {
-    public function testInitialization(): void
+    /**
+     * @dataProvider validIpProvider
+     */
+    public function testInitialization(string $ip): void
     {
-        $ip1 = new IpAttribute('::1');
-        $this->assertInstanceOf(IpAttribute::class, $ip1);
-        $ip2 = new IpAttribute('127.0.0.1');
-        $this->assertInstanceOf(IpAttribute::class, $ip2);
+        $ip = new IpAttribute($ip);
+        $this->assertInstanceOf(IpAttribute::class, $ip);
+    }
+
+    public static function validIpProvider(): array
+    {
+        return [
+            'IPV6' => ['::1'],
+            'IPV4' => ['127.0.0.1']
+        ];
     }
 
     public function testInitializationError(): void
