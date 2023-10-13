@@ -56,16 +56,19 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\HashAttributeInterfac
  * 
  * @var ?IncrementalPrimaryKeyAttribute $_id     primary key
  * @var NameAttribute                   $_name   fullname @example José Carneiro
- * @var EmailAttribute                  $_email  email @example git@josevaltersilvacarneiro.net
- * @var HashAttribute                   $_hash   user's password hash
- * @var ActiveAttribute                 $_active true if the used is logged in; false otherwise
+ * @var EmailAttribute                  $_email  email @example
+ *  git@josevaltersilvacarneiro.net
+ * @var HashAttribute                   $_hash   user's password
+ *  hash
+ * @var ActiveAttribute                 $_active true if the used
+ *  is logged in; false otherwise
  * 
  * @category  User
  * @package   Josevaltersilvacarneiro\Html\App\Model\Entity
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.1
+ * @version   Release: 0.10.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserDao]
@@ -75,15 +78,16 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      * Initializes the User object.
      * 
      * @param ?IncrementalPrimaryKeyAttribute $_id     primary key
-     * @param NameAttribute                   $_name   name of the user @example José Carneiro
-     * @param EmailAttribute                  $_email  @example git@josevaltersilvacarneiro.net
+     * @param NameAttribute                   $_name   name of the user
+     * @param EmailAttribute                  $_email  email
      * @param HashAttribute                   $_hash   a SHA256 hash
-     * @param ActiveAttribute                 $_active true if active; false otherwise
+     * @param ActiveAttribute                 $_active true if so; false otherwise
      * 
      * @return void
      */
     public function __construct(
-        #[IncrementalPrimaryKeyAttribute('user_id')] private ?IncrementalPrimaryKeyAttribute $_id,
+        #[IncrementalPrimaryKeyAttribute('user_id')]
+        private ?IncrementalPrimaryKeyAttribute $_id,
         #[NameAttribute('fullname')] private NameAttribute $_name,
         #[EmailAttribute('email')] private EmailAttribute $_email,
         #[HashAttribute('hash')] private HashAttribute $_hash,
@@ -111,7 +115,10 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
     public static function getUniqueName(mixed $value): string
     {
         return
-            filter_var($value->getRepresentation(), FILTER_VALIDATE_EMAIL) ? '_email' : self::getIdName();
+            filter_var(
+                $value->getRepresentation(),
+                FILTER_VALIDATE_EMAIL
+            ) ? '_email' : self::getIdName();
     }
 
     /**

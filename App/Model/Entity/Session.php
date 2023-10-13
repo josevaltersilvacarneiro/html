@@ -49,7 +49,8 @@ use Josevaltersilvacarneiro\Html\App\Model\Attributes\IpAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\PortAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\DateAttribute;
 
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\AttributeExceptionInterface;
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\{
+    AttributeExceptionInterface};
 
 use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
 
@@ -66,7 +67,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.0
+ * @version   Release: 0.10.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]

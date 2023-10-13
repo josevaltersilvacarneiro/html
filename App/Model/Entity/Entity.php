@@ -67,7 +67,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.5
+ * @version   Release: 0.4.6
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
@@ -165,7 +165,8 @@ abstract class Entity implements EntityInterface
      * such as an invalid or missing ID property, the method gracefully returns
      * an empty string as a default value.
      * 
-     * @return ?PrimaryKeyAttributeInterface Entity's identifier on success; empty string otherwise
+     * @return ?PrimaryKeyAttributeInterface Entity's identifier on success;
+     *  empty string otherwise
      * @throws EntityExceptionInterface      if the entity doesn't have a id
      */
     public function getId(): ?PrimaryKeyAttributeInterface
