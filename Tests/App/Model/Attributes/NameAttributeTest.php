@@ -61,4 +61,11 @@ class NameAttributeTest extends TestCase
         $this->expectException(AttributeException::class);
         new NameAttribute('José V');
     }
+
+    public function testIndividual(): void
+    {
+        $fullname = new NameAttribute('josé da silva carneiro');
+        $this->assertEquals('José', $fullname->getFirstName());
+        $this->assertEquals('Carneiro', $fullname->getLastName());
+    }
 }
