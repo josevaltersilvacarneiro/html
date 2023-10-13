@@ -55,8 +55,10 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
  * 
  * @method static setState(EntityState $state) Sets the state
  * 
- * @method EntityState getState() Returns the entity's state
- * @method string|int  getId()    Returns the entity's id
+ * @method EntityState                    getState()
+ *  Returns the entity's state
+ * @method ?PrimaryKeyAttributeInterface  getId()
+ *  Returns the entity's id
  * 
  * @method ?static newInstance(UniqueAttributeInterface $uid)
  * @method bool flush()  Synchronizes with the database
@@ -67,7 +69,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\EntityManagerException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.6
+ * @version   Release: 0.4.7
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 abstract class Entity implements EntityInterface
