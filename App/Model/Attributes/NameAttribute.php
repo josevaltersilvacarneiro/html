@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.6
+ * @version   Release: 0.0.7
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class NameAttribute implements NameAttributeInterface
@@ -61,6 +61,8 @@ final class NameAttribute implements NameAttributeInterface
                 "The value '{$_completeName}' is not a valid name."
             );
         }
+
+        $this->_completeName = mb_convert_case($_completeName, MB_CASE_LOWER);
     }
 
     /**
