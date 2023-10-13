@@ -42,7 +42,7 @@ use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.4
+ * @version   Release: 0.0.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Attributes
  */
 final class NameAttribute implements NameAttributeInterface
@@ -91,7 +91,7 @@ final class NameAttribute implements NameAttributeInterface
      */
     public function getFirstName(): string
     {
-        return $this->_getFormattedName(explode(" ", $this->_completeName)[0]);
+        return $this->_getFormattedName(explode(' ', $this->_completeName)[0]);
     }
 
     /**
@@ -153,7 +153,7 @@ final class NameAttribute implements NameAttributeInterface
      */
     private function _getFormattedName(string $name): string
     {
-        $case = mb_strlen($name) > 2 ? MB_CASE_UPPER : MB_CASE_LOWER;
+        $case = mb_strlen($name) > 2 ? MB_CASE_TITLE_SIMPLE : MB_CASE_LOWER;
         return mb_convert_case($name, $case);
     }
 }
