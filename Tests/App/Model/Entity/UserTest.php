@@ -49,7 +49,7 @@ class UserTest extends TestCase
             $activeTwo
         );
 
-        $this->assertEquals('José Carneiro', $user2->getFullname()->getRepresentation());
+        $this->assertEquals('josé carneiro', $user2->getFullname()->getRepresentation());
         $this->assertEquals('José', $user2->getFullname()->getFirstName());
     }
 }
