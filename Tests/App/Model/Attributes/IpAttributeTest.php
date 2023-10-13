@@ -50,4 +50,10 @@ class IpAttributeTest extends TestCase
         $this->expectException(AttributeException::class);
         new IpAttribute('192.168.0.256');
     }
+
+    public function testDBInitialization(): void
+    {
+        $this->assertInstanceOf(IpAttribute::class, IpAttribute::newInstance('192.168.1.1'));
+        $this->assertInstanceOf(IpAttribute::class, IpAttribute::newInstance('::2'));
+    }
 }
