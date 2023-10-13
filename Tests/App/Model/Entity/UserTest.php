@@ -18,8 +18,6 @@ class UserTest extends TestCase
 {
     public function testInitialization(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-
         $idOne     = IncrementalPrimaryKeyAttribute::newInstance(1);
         $nameOne   = new NameAttribute('José Valter');
         $emailOne  = new EmailAttribute('git@josevaltersilvacarneiro.net');
