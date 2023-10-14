@@ -32,46 +32,46 @@ declare(strict_types=1);
  * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/App/Controllers
  */
 
-namespace Josevaltersilvacarneiro\Html\App\Controller\Home;
+namespace Josevaltersilvacarneiro\Html\App\Controller\Sign;
 
+use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
 use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
-    SessionEntityInterface};
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * This class serves the solid page.
+ * This class returns the sign page.
  * 
- * @category  Solid
- * @package   Josevaltersilvacarneiro\Html\App\Controllers\Home
+ * @category  Sign
+ * @package   Josevaltersilvacarneiro\Html\App\Controllers\Sign
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
-final class Solid extends HTMLController
+final class Sign extends HTMLController
 {
     /**
-     * Initializes the home page controller.
+     * Initializes the controller.
      * 
      * @param SessionEntityInterface $session session
      */
     public function __construct(private readonly SessionEntityInterface $session)
     {
-        $this->setPage('Solid');
-        $this->setTitle('HTML - Solid');
+        $this->setPage('Sign');
+        $this->setTitle('Sign');
         $this->setDescription(
-            'This page is a demonstration of the SOLID principles.'
+            'The sign page provides two buttons for users click to sign in or
+			sign up.'
         );
-        $this->setKeywords('SOLID josevaltersilvacarneiro');
+        $this->setKeywords('MVC SOLID josevaltersilvacarneiro sign');
     }
 
     /**
-     * Handles the request and returns a response.
+     * Handles the request and produces a response.
      * 
      * @param ServerRequestInterface $request request
      * 
@@ -79,21 +79,10 @@ final class Solid extends HTMLController
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (!$this->session->isUserLogged()) {
-            return new Response(302, ['Location' => '/sign']);
+        if ($this->session->isUserLogged()) {
+            return new Response(302, ['Location' => '/']);
         }
 
-        $this->setVariables(
-            [
-                'FULLNAME_' => $this->session->getUser()
-                    ->getFullname()->getRepresentation(),
-            ]
-        );
-
-        return new Response(
-            200, [
-            'Content-Type'    => 'text/html;charset=UTF-8'
-            ], parent::renderLayout()
-        );
+        return new Response(200, body: $this->renderLayout());
     }
 }

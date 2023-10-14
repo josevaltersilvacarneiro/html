@@ -1,0 +1,52 @@
+{#
+ * This package is responsible for displaying the html elements.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+{% extends "Layout.html.twig" %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ CSS_ ~ 'Logout.css' }}>
+{% endblock %}
+
+{% block content %}
+
+<main class="d-flex justify-content-center align-items-center">
+    <section id="presentation" class="d-flex justify-content-center align-items-center">
+        <div>
+            <h1 id="presentation__title">Structure of a PHP web<br>project<strong id="presentation__title__emphasis"> using MVC and<br>SOLID!</strong></h1>
+            <small id="presentation__copyright">By José V S Carneiro</small>
+        <div>
+    </section>
+    <section id="form" class="d-flex justify-content-center align-items-center flex-column">
+
+        <div id="form__center__header" class="d-flex justify-content-center">
+            <img src="{{ LOGO_ }}"
+                alt="greater-than and less-than signs with a vertical bar inside"
+                title="Web Development" id="form__center__header__logo" class="rounded-circle">
+        </div>
+        <div id="form__center__body" class="d-flex justify-content-between">
+            {% block body %}
+                {# your code here #}
+            {% endblock %}
+        </div>
+
+    </section>
+</main>
+
+{% endblock %}

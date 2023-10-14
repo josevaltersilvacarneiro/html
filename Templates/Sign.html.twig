@@ -1,0 +1,35 @@
+{#
+ * This package is responsible for displaying the html elements.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+#}
+
+{% extends "Logout.html.twig" %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ CSS_ ~ 'Sign.css' }}>
+{% endblock %}
+
+{% block body %}
+    <div id="body__sign" class="d-flex flex-column align-items-center">
+        <h3>Get started</h3>
+        <div id="body__sign__btns" class="d-flex justify-content-between">
+            <a href="{{ URL_ ~ 'login'}}" class="d-flex justify-content-center align-items-center btn btn-primary border border-0 text-center">Sign in</a>
+            <a href="{{ URL_ ~ 'register' }}" class="d-flex justify-content-center align-items-center btn btn-primary border border-0 text-center">Sign up</a>
+        </div>
+    </div>
+{% endblock %}
