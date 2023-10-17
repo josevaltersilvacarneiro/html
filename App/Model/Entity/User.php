@@ -68,7 +68,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\HashAttributeInterfac
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.2
+ * @version   Release: 0.10.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserDao]
@@ -182,7 +182,7 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      */
     public function getFullname(): NameAttributeInterface
     {
-        return $this->_name;
+        return clone $this->_name;
     }
 
     /**
@@ -192,7 +192,7 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      */
     public function getEmail(): EmailAttributeInterface
     {
-        return $this->_email;
+        return clone $this->_email;
     }
 
     /**
@@ -202,7 +202,7 @@ class User extends EntityWithIncrementalPrimaryKey implements UserEntityInterfac
      */
     public function getHash(): HashAttributeInterface
     {
-        return $this->_hash;
+        return clone $this->_hash;
     }
 
     /**

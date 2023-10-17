@@ -61,7 +61,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Attributes\PortAttributeInterfac
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.1
+ * @version   Release: 0.4.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[RequestDao]
@@ -112,7 +112,7 @@ final class Request extends EntityWithIncrementalPrimaryKey implements
      */
     public function getIp(): IpAttributeInterface
     {
-        return $this->_ip;
+        return clone $this->_ip;
     }
 
     /**
@@ -122,7 +122,7 @@ final class Request extends EntityWithIncrementalPrimaryKey implements
      */
     public function getPort(): PortAttributeInterface
     {
-        return $this->_port;
+        return clone $this->_port;
     }
 
     /**
@@ -132,7 +132,7 @@ final class Request extends EntityWithIncrementalPrimaryKey implements
      */
     public function getDate(): DateAttribute
     {
-        return $this->_access;
+        return clone $this->_access;
     }
 
     /**
