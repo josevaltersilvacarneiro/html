@@ -43,12 +43,12 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Log\LogInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Log
  */
 class Log implements LogInterface
 {
-    private const FILENAME = __ROOT__ . '/Logs/';
+    private const FILENAME = __ROOT__ . 'Logs/';
     private string $_filename = '/example/foo/bar.log';
     private int $_line = 0;
     private string $_message = 'It saves without setting the message';
