@@ -30,7 +30,15 @@ $filename = end($files);
 
 try {
     $pdo = new \PDO('mysql:host=127.0.0.1;dbname=database_html', 'root', 'admin');
-    $pdo->exec(file_get_contents($dir . $filename));
+    $contents = file_get_contents($dir . $filename);
+    if ($contents === false) {
+        throw new \Exception('Error opening file');
+    }
+    $pdo->exec($contents);
 } catch (\PDOException $e) {
+    echo 'Error connecting to database' . PHP_EOL;
+    echo $e->getMessage();
+} catch (\Exception $e) {
+    echo 'Error opening file' . PHP_EOL;
     echo $e->getMessage();
 }
