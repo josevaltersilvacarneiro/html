@@ -31,8 +31,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Tests\App\Model\Dao;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Dao\GenericDao;
-use Josevaltersilvacarneiro\Html\Src\Classes\Sql\MockConnect;
+use Josevaltersilvacarneiro\Html\App\Model\Dao\UserDao;
 
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +43,7 @@ use PHPUnit\Framework\TestCase;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Tests\App/Model/Dao
  */
 class UserDaoTest extends TestCase
@@ -234,13 +233,5 @@ class UserDaoTest extends TestCase
         foreach (self::$createdUsers as $user) {
             self::assertEquals(true, self::$dao->d(['user_id' => $user]));
         }
-    }
-}
-
-class UserDao extends GenericDao
-{
-    public function __construct()
-    {
-        parent::__construct(MockConnect::newMysqlConnection(), _TB_USERNAME);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\Tests\Src\Classes\Sql;
 
-use Josevaltersilvacarneiro\Html\Src\Classes\Sql\MockConnect;
+use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Connect;
 use Josevaltersilvacarneiro\Html\Src\Classes\Sql\Sql;
 
 use PHPUnit\Framework\TestCase;
@@ -93,6 +93,6 @@ class SqlExampleExtension extends Sql
 {
     public function __construct()
     {
-        parent::__construct(MockConnect::newMysqlConnection());
+        parent::__construct(Connect::newMysqlConnection());
     }
 }
