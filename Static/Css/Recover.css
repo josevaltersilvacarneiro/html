@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+/**
+ * This package is responsible for styling the web pages.
+ * 
+ * Copyright (C) 2023, José V S Carneiro
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *                                      
+ * This program is distributed in the hope that it will be useful,    
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#form__recover {
+    height: 100%;
+}
+
+#form__recover label {
+    color: var(--secondary);
+
+    font-size: 1.15em;
+}
+
+#form__recover input {
+    height: 15%;
+    border: none;
+    outline: none;
+}
+
+#form__recover input[type=email] {
+    background-color: transparent;
+    color: var(--primary);
+    font-size: 1.5em;
+    border-bottom: thick solid var(--secondary);
+    box-sizing: border-box;
+}
+
+#form__recover input[type=email]::placeholder {
+    color: var(--secondary);
+}
+
+#form__recover input[type=submit] {
+    margin-top: 5%;
+    background-color: var(--primary);
+    font-size: 1.5em !important;
+    color: var(--quaternary);
+}
+
+#form__recover input[type=submit]:hover {
+    background-color: var(--secondary);
+}
