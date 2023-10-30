@@ -50,7 +50,7 @@ use Nyholm\Psr7\Response;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class Recover extends HTMLController
@@ -63,7 +63,7 @@ final class Recover extends HTMLController
     public function __construct(private readonly SessionEntityInterface $session)
     {
         $this->setPage('Recover');
-        $this->setTitle('I forgot my password');
+        $this->setTitle('Recover my account');
         $this->setDescription(
             'Users are required to enter their registered email address to
             initiate the account recovery process.'
