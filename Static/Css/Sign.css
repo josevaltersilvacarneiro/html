@@ -19,6 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#form__center__body {
+    justify-content: space-between !important;
+}
+
 #body__sign, #body__sign__btns {
     width: 100%;
 }
