@@ -65,6 +65,19 @@ return [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
+    'POST|/recover/process' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Recover\ProcessRecovery::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
+            \Josevaltersilvacarneiro\Html\Src\Classes\Mail\Mail::class,
+        ]
+    ],
+    'GET|/recover/reset' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Recover\ResetPassword::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
+        ]
+    ],
     'POST|/login/signout' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Signout::class,
         'dependencies' => [

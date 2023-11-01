@@ -35,7 +35,7 @@
     outline: none;
 }
 
-#form__recover input[type=email] {
+#form__recover .form__field {
     background-color: transparent;
     color: var(--primary);
     font-size: 1.5em;
@@ -43,7 +43,7 @@
     box-sizing: border-box;
 }
 
-#form__recover input[type=email]::placeholder {
+#form__recover .form__field::placeholder {
     color: var(--secondary);
 }
 
