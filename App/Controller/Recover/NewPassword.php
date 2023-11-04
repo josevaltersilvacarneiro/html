@@ -34,44 +34,42 @@ declare(strict_types=1);
 
 namespace Josevaltersilvacarneiro\Html\App\Controller\Recover;
 
-use Josevaltersilvacarneiro\Html\App\Controller\HTMLController;
+use Josevaltersilvacarneiro\Html\App\Model\Entity\User;
 use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\SessionEntityInterface;
+
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\EmailAttribute;
+use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
 
 use Josevaltersilvacarneiro\Html\Src\Traits\EmailAuthenticatorTrait;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Nyholm\Psr7\Response;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * This class is responsible for rendering the page that
- * resets the user's password.
+ * This controller changes the user password.
  * 
- * @category  ResetPassword
+ * @category  NewPassword
  * @package   Josevaltersilvacarneiro\Html\App\Controllers\Recover
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
-final class ResetPassword extends HTMLController
+final class NewPassword implements RequestHandlerInterface
 {
     use EmailAuthenticatorTrait;
 
     /**
      * Initializes the controller.
      * 
-     * @param SessionEntityInterface $session session
+     * @param SessionEntityInterface $_session session
      */
-    public function __construct(private readonly SessionEntityInterface $session)
-    {
-        $this->setPage('ResetPassword');
-        $this->setTitle('Type a new password');
-        $this->setDescription(
-            'This page allows users to reset their account password.'
-        );
-        $this->setKeywords('MVC SOLID josevaltersilvacarneiro reset');
+    public function __construct(
+        private readonly SessionEntityInterface $_session
+    ) {
     }
 
     /**
@@ -83,9 +81,11 @@ final class ResetPassword extends HTMLController
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($this->session->isUserLogged()) {
+        if ($this->_session->isUserLogged()) {
             return new Response(302, ['Location' => '/']);
         }
+
+        // get the parameters
 
         $code = filter_input(INPUT_GET, 'code');
         if ($code === false || $code === null) {
@@ -102,13 +102,35 @@ final class ResetPassword extends HTMLController
             return new Response(302, ['Location' => '/recover']);
         }
 
+        $newPassword = filter_input(INPUT_POST, 'password');
+        if ($newPassword === false || $newPassword === null) {
+            return new Response(302, ['Location' => '/recover']);
+        }
+
+        // check if the request is authenticated
+
         if (!$this->isEmailAuthenticated($code, $email, $hash)) {
             return new Response(302, ['Location' => '/recover']);
         }
 
-        $this->setVariables([
-            'GET_URL_' => '?email=' . $email . '&code=' . $code . '&hash=' . $hash,
-        ]);
-        return new Response(200, body: $this->renderLayout());
+        // get the user if it exists
+
+        $user = User::newInstance(EmailAttribute::newInstance($email));
+        if ($user === null) {
+            return new Response(302, ['Location' => '/recover']);
+        }
+
+        // update the user password
+
+        $user->setPassword(HashAttribute::newInstance($newPassword));
+
+        if (!$user->flush()) {
+            // it wasn't possible to update the user password
+            return new Response(302, ['Location' => '/recover']);
+        }
+
+        // all right! redircet to the login page
+    
+        return new Response(302, ['Location' => '/login']);
     }
 }

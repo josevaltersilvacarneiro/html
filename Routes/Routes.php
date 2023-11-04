@@ -78,6 +78,12 @@ return [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
+    'POST|/recover/newpassword' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Recover\NewPassword::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class
+        ]
+    ],
     'POST|/login/signout' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Signout::class,
         'dependencies' => [
