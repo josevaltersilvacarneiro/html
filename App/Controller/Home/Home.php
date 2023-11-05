@@ -52,7 +52,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.6
+ * @version   Release: 0.0.7
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class Home extends HTMLController
@@ -88,10 +88,11 @@ final class Home extends HTMLController
             return new Response(302, ['Location' => '/sign']);
         }
 
+        $name = $this->session->getUser()->getFullname();
+
         $this->setVariables(
             [
-                'FULLNAME_' => $this->session->getUser()
-                    ->getFullname()->getRepresentation(),
+                'FULLNAME_' => $name->getFirstName() . ' ' . $name->getLastName(),
             ]
         );
 
