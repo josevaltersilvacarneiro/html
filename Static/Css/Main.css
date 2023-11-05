@@ -44,16 +44,14 @@ main > * {
     background-color: var(--quaternary);
 }
 
-#main__nav__header {
-    width: 100%;
-}
-
-#main__nav__body, #main__nav__header__logo {
+#main__nav > div {
     width: 90%;
 }
 
-#main__nav__header__logo {
-    height: 95%;
+hr {
+    width: 100%;
+    border-color: var(--ternary);
+    margin: 0;
 }
 
 #main__nav__body__profile {
@@ -65,7 +63,7 @@ main > * {
 /*--------------------------------------------------------*/
 
 #main__nav__body__btns {
-    height: 90%;
+    height: 95%;
 }
 
 .home__list {
@@ -86,11 +84,6 @@ main > * {
     width: 100%;
     color: var(--quaternary);
     text-decoration: none;
-}
-
-/* division that contains the logo and the profile images */
-#main__nav__header, #main__nav__body__profile {
-    border-bottom: thin solid var(--ternary);
 }
 
 /* the code below works with the right side of the screen */
