@@ -22,11 +22,10 @@ declare(strict_types=1);
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$dir = __DIR__ . '/Migrations/';
-$files = array_diff(scandir($dir), ['..', '.']);
-sort($files);
+define('VERSION_', 'V2');
 
-$filename = end($files);
+$dir = __DIR__ . '/Migrations/' . VERSION_ . '/';
+$filename = 'tables.sql';
 
 try {
     $pdo = new \PDO('mysql:host=127.0.0.1;dbname=database_html', 'root', 'admin');
