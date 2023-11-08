@@ -44,10 +44,8 @@ use Josevaltersilvacarneiro\Html\App\Model\Attributes\HashAttribute;
 use Josevaltersilvacarneiro\Html\App\Model\Attributes\ActiveAttribute;
 
 use Josevaltersilvacarneiro\Html\Src\Classes\Exceptions\AttributeException;
-use Josevaltersilvacarneiro\Html\Src\Interfaces\Exceptions\MailExceptionInterface;
 
-use Josevaltersilvacarneiro\Html\Src\Traits\EmailValidatorTrait;
-use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
+use Josevaltersilvacarneiro\Html\Src\Traits\EmailAuthenticatorTrait;
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
@@ -62,12 +60,12 @@ use Psr\Http\Message\ResponseInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.1.0
+ * @version   Release: 0.1.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 class Signup implements RequestHandlerInterface
 {
-    use EmailValidatorTrait, CryptTrait;
+    use EmailAuthenticatorTrait;
 
     private const _SENDER_NAME = 'José Carneiro';
     private const _SENDER      = 'me@message.josevaltersilvacarneiro.net';
@@ -130,32 +128,15 @@ class Signup implements RequestHandlerInterface
 
         // confirm email
 
-        $url           = __URL__;
-        $email         = $user->getEmail()->getRepresentation();
-        $hash          = self::_generateEmailCodeHash($email, $code = self::_generateEmailCode());
-        $encryptedCode = self::_encrypt($code, self::_PASSWORD);
-
-        if ($encryptedCode === false) {
-            return new Response(302, ['Location' => '/register']);
-        }
-
-        $encryptedCode = urlencode($encryptedCode);
-        $hash          = urlencode($hash);
-        $message = <<<MESSAGE
-            <p>Confirm your email address by clicking on the link below:</p>
-            <a href="{$url}confirm/email?email=$email&code=$encryptedCode&hash=$hash">Confirm</a>
-        MESSAGE;
-
-        try {
-            $this->_mail->setSender(self::_SENDER, self::_SENDER_NAME)
-                ->setReplyTo(self::_REPLY, self::_REPLY_NAME)
-                ->setSubject('Confirm your email address')
-                ->setBody($message)
-                ->addRecipient($email, $name->getRepresentation())
-                ->send();
-        } catch (MailExceptionInterface $e) {
-            $e->storeLog();
-            return new Response(302, ['Location' => '/register']);
+        if (!$this->sendConfirmationEmail(
+            $this->_mail,
+            __URL__ . 'confirm/email',
+            $email->getRepresentation(),
+            'Confirm your email address',
+            'Confirm your email address by clicking on the link below:'
+        )
+        ) {
+            return new Response(302, ['Location' => '/recover']);
         }
 
         return new Response(302, ['Location' => '/login']);
