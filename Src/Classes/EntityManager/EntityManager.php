@@ -51,21 +51,23 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
  * for initializing, deleting, and synchronizing the state of EntityDatabase
  * objects with the database.
  * 
- * @staticvar string _METHOD_GET_UNIQUE_NAME      id
- * @staticvar string _METHOD_ATTR_GET_REPRESENTATION representation of the class in DB
+ * @staticvar string _METHOD_GET_UNIQUE_NAME  Method name to get the unique name
+ * @staticvar string _METHOD_ATTR_NEWINSTANCE Method name to create a new instance
  * 
- * @method GenericDao|false _getDaoEntity(\ReflectionClass &$reflect)
- * @method array _getProperties(\ReflectionObject &$reflect, EntityDatabase &$entity)
  * @method EntityDatabase init(string $entityName, string|int $entityId)
- * @method bool del(EntityDatabase &$entity)
  * @method bool flush(EntityDatabase &$entity)
+ * @method bool del(EntityDatabase &$entity)
+ * 
+ * @method GenericDao|false _getDaoEntity(\ReflectionClass $reflect)
+ * @method array _getProperties(\ReflectionObject $reflect, EntityDatabase $entity)
+ * @method array _processParameters(\ReflectionClass $reflect, \ReflectionMethod $construct, array $entity)
  * 
  * @category  EntityManager
  * @package   Josevaltersilvacarneiro\Html\Src\Classes\EntityManager
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.3
+ * @version   Release: 0.4.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
