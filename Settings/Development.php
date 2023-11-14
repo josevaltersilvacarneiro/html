@@ -31,18 +31,4 @@ declare(strict_types=1);
  * @link     https://github.com/josevaltersilvacarneiro/html/tree/main/Settings
  */
 
-define('_TIMEZONE_', 'America/Bahia');
-
-date_default_timezone_set(_TIMEZONE_);
-
-require_once 'Development.php'; // development environment
-
-require_once 'Tables.php';   // required tables and fields in the database
-
-require_once 'Host.php';     // hosting machine
-require_once 'MVC.php';      // var for the app
-
-define('__VERSION__',    'v1');                   // current code version
-define('__AUTHOR__',    'José V S Carneiro');     // who wrote this code
-
-define('__ACCESS__',    date(DATE_RSS, time())); // date of access
+define('IS_DEVELOPMENT', true);

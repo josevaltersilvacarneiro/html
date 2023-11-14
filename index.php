@@ -33,8 +33,10 @@ include_once 'Src/vendor/autoload.php';
 
 # DEVELOPMENT
 
-$dotenv = new Symfony\Component\Dotenv\Dotenv();
-$dotenv->load(__DIR__ . '/.env');
+if (IS_DEVELOPMENT) {
+    $dotenv = new Symfony\Component\Dotenv\Dotenv();
+    $dotenv->load(__DIR__ . '/.env');
+}
 
 # END DEVELOPMENT
 
