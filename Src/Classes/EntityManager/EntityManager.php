@@ -65,7 +65,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.1
+ * @version   Release: 0.4.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
@@ -284,86 +284,13 @@ final class EntityManager
         }
 
         try {
-            $map = self::_getMappedProperties($reflection);
+            $args = self::_processParameters($reflection, $constructEntity, $entity);
         } catch (EntityManagerException $e) {
-            throw new EntityManagerException(previous: $e);
+            throw new EntityManagerException(
+                'Unable to process the parameters',
+                $e
+            );
         }
-
-        $args = [];
-        foreach ($constructEntity->getParameters() as $param) {
-
-            $name = $map[$param->getName()];
-
-            if (!array_key_exists($name, $entity)) {
-
-                if (!$param->allowsNull() && !$param->isOptional()) {
-
-                    throw new EntityManagerException(
-                        'The ' . $constructEntity->getShortName() .
-                        ' is mapped to ' . $name .
-                        ' but the table doesn\'t have this field'
-                    );
-                }
-
-                if ($param->allowsNull()) {
-                    $args[] = null;
-                }
-            } elseif ($param->hasType() && $param->getType()->isBuiltin()) {
-
-                settype(
-                    $entity[$name],
-                    (string) $param->getType()->getName()
-                );
-
-                $args[] = $entity[$name];
-
-                // if $param is a builtin [ int, float, string, bool [
-                // of php, set its type and add it to args
-            } else {
-
-                try {
-                    $attrs         = $param->getAttributes();
-                    $attr          = $attrs[0];
-                    $reflectProper = new \ReflectionClass($attr->getName());
-                } catch (\ReflectionException $e) {
-                    throw new EntityManagerException(
-                        'Unable to create a instance of reflection class on line ' .
-                        __LINE__, $e
-                    );
-                }
-
-                if ($reflectProper->isSubclassOf(Entity::class)) {
-
-                    try {
-                        $args[] = empty($entity[$name]) ? null :
-                            self::init($attr->getName(), self::_instantiatePrimaryKey($reflection, $entity[$name]));
-                    } catch (EntityManagerException $e) {
-                        throw new EntityManagerException(
-                            $attr->getName() .
-                            'Couldn\'t be instantiated using a recursive call',
-                            $e
-                        );
-                    }
-
-                } elseif ($reflectProper->implementsInterface(
-                    AttributeInterface::class
-                )
-                ) {
-
-                    try {
-                        $method = $reflectProper->getMethod(
-                            self::_METHOD_ATTR_NEWINSTANCE
-                        );
-                        $args[] = $method->invoke(null, $entity[$name]);
-                    } catch (\ReflectionException $e) {
-                        throw new EntityManagerException(
-                            'Unable to invoke ' . self::_METHOD_ATTR_NEWINSTANCE,
-                            $e
-                        );
-                    }
-                }
-            } // end of instantiating a Entity object
-        } // end of foreach for each $proper
 
         if (count($args) < $constructEntity->getNumberOfRequiredParameters()) {
 
@@ -496,5 +423,101 @@ final class EntityManager
         // on success, change the state to persistent
 
         return true;
+    }
+
+    /**
+     * This method is used to instantiate the params of the Entity.
+     * 
+     * @param \ReflectionClass $reflect A \ReflectionClass of Entity
+     * @param \ReflectionMethod $construct A \ReflectionMethod of __construct
+     * @param array<string,mixed>  $entity Key-value pairs of the fields and values on db
+     * 
+     * @return array<mixed> Arguments to initialize the Entity
+     * @throws EntityManagerException If any errors occur during the process
+     */
+    private static function _processParameters(\ReflectionClass $reflect, \ReflectionMethod $construct, array $entity): array
+    {
+        try {
+            $map = self::_getMappedProperties($reflect);
+        } catch (EntityManagerException $e) {
+            throw new EntityManagerException(previous: $e);
+        }
+
+        $args = [];
+        foreach ($construct->getParameters() as $param) {
+            $name = $map[$param->getName()];
+
+            if (!array_key_exists($name, $entity)) {
+
+                if (!$param->allowsNull() && !$param->isOptional()) {
+
+                    throw new EntityManagerException(
+                        'The ' . $construct->getShortName() .
+                        ' is mapped to ' . $name .
+                        ', but the table doesn\'t have this field'
+                    );
+                }
+
+                if ($param->allowsNull()) {
+                    $args[] = null;
+                }
+            } elseif ($param->hasType() && $param->getType()->isBuiltin()) {
+
+                settype(
+                    $entity[$name],
+                    (string) $param->getType()->getName()
+                );
+
+                $args[] = $entity[$name];
+
+                // if $param is a builtin [ int, float, string, bool [
+                // of php, set its type and add it to args
+            } else {
+
+                try {
+                    $attrs         = $param->getAttributes();
+                    $attr          = $attrs[0];
+                    $reflectProper = new \ReflectionClass($attr->getName());
+                } catch (\ReflectionException $e) {
+                    throw new EntityManagerException(
+                        'Unable to create a instance of reflection class on line ' .
+                        __LINE__, $e
+                    );
+                }
+
+                if ($reflectProper->isSubclassOf(Entity::class)) {
+
+                    try {
+                        $args[] = empty($entity[$name]) ? null :
+                            self::init($attr->getName(), self::_instantiatePrimaryKey($reflect, $entity[$name]));
+                    } catch (EntityManagerException $e) {
+                        throw new EntityManagerException(
+                            $attr->getName() .
+                            'Couldn\'t be instantiated using a recursive call',
+                            $e
+                        );
+                    }
+
+                } elseif ($reflectProper->implementsInterface(
+                    AttributeInterface::class
+                )
+                ) {
+
+                    try {
+                        $method = $reflectProper->getMethod(
+                            self::_METHOD_ATTR_NEWINSTANCE
+                        );
+                        $args[] = $method->invoke(null, $entity[$name]);
+                    } catch (\ReflectionException $e) {
+                        throw new EntityManagerException(
+                            'Unable to invoke ' . self::_METHOD_ATTR_NEWINSTANCE,
+                            $e
+                        );
+                    }
+                }
+            } // end of instantiating a Entity object
+        }
+
+        return $args;
     }
 }
