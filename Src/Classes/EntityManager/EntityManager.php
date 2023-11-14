@@ -65,14 +65,12 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.0
+ * @version   Release: 0.4.1
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
 {
-    private const _METHOD_ENTITY_PK               = 'getId';
     private const _METHOD_GET_UNIQUE_NAME         = 'getUniqueName';
-    private const _METHOD_ATTR_GET_REPRESENTATION = 'getRepresentation';
     private const _METHOD_ATTR_NEWINSTANCE        = 'newInstance';
 
     /**
