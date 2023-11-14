@@ -65,7 +65,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.2
+ * @version   Release: 0.4.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
@@ -462,6 +462,8 @@ final class EntityManager
                     $args[] = null;
                 }
             } elseif ($param->hasType() && $param->getType()->isBuiltin()) {
+
+                // https://www.php.net/manual/en/class.reflectionnamedtype.php
 
                 settype(
                     $entity[$name],
