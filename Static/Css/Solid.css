@@ -20,7 +20,8 @@
  */
 
 #home__solid {
-	background-color: var(--ternary);
+	background-color: var(--ternary) !important;
+	cursor: not-allowed !important;
 }
 
 #main__content__body {

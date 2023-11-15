@@ -20,8 +20,8 @@
  */
 
 #home__mvc {
-	background-color: var(--ternary);
-	cursor: not-allowed;
+	background-color: var(--ternary) !important;
+	cursor: not-allowed !important;
 }
 
 #main__content__body {

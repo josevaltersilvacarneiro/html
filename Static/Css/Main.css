@@ -70,13 +70,17 @@ hr {
     list-style: none;
 }
 
-.home__list li {
-    width: 100%;
-    background-color: var(--primary);
+.btn {
+    background-color: var(--primary) !important;
 }
 
-.home__list li:hover, .home__list li:active {
-    background-color: var(--ternary);
+.btn:hover {
+    background-color: var(--ternary) !important;
+    cursor: pointer !important;
+}
+
+.home__list li {
+    width: 100%;
 }
 
 .home__list a, .home__list a:visited, .home__list a:link {
@@ -84,6 +88,7 @@ hr {
     width: 100%;
     color: var(--quaternary);
     text-decoration: none;
+    cursor: inherit;
 }
 
 /* the code below works with the right side of the screen */
