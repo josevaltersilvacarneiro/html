@@ -70,6 +70,12 @@ try {
         ? $routes[$_SERVER['REQUEST_METHOD'] . '|' . $_SERVER['REQUEST_URI']]
         : $routes[$_SERVER['REQUEST_METHOD'] . '|' . mb_substr($_SERVER['REQUEST_URI'], 0, $queryStringPosition)];
 
+    // the code below establishes the default route
+
+    if (is_null($route)) {
+        $route = $routes['GET|/'];
+    }
+
     $container->add($route['controller'], $route['dependencies']);
 
     $controller = $container->get($route['controller']);
