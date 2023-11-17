@@ -43,7 +43,6 @@
 }
 
 #form__recover input[type=submit] {
-    margin-top: 5%;
     background-color: var(--primary);
     font-size: 1.5em !important;
     color: var(--quaternary);
