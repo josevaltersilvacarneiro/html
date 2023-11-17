@@ -19,14 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-main > * {
-    height: 100%;
-}
-
-.image {
-    height: 75%;
-}
-
 .header {
     height: 5%;
 }
@@ -45,18 +37,15 @@ main > * {
 }
 
 #main__nav > div {
-    width: 90%;
+    width: 95%;
 }
 
 hr {
-    width: 100%;
     border-color: var(--ternary);
-    margin: 0;
 }
 
 #main__nav__body__profile {
     height: 5%;
-    width: 100%;
 }
 
 /* the code below works with the buttons                  */
@@ -79,13 +68,7 @@ hr {
     cursor: pointer !important;
 }
 
-.home__list li {
-    width: 100%;
-}
-
 .home__list a, .home__list a:visited, .home__list a:link {
-    height: 100%;
-    width: 100%;
     color: var(--quaternary);
     text-decoration: none;
     cursor: inherit;

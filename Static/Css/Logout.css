@@ -21,15 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-main {
-    height: 100%;
-    width: 100%;
-}
-
-main > * {
-    height: 100%;
-}
-
 /* the code below works with the left side of the screen */
 /*--------------------------------------------------------*/
 
@@ -60,22 +51,7 @@ main > * {
     background-color: var(--quaternary);
 }
 
-/* children of the right side to occupy 75% of the screen  */
-#form > * {
-    width: 75%;
-}
-
 /* defines the form header where the logo is located to occupy 25% */
 #form__center__header {
     height: 20%;
-}
-
-/* configures the image size to occupy 75% of your parent */
-#form__center__header__logo {
-    height: 50%;
-}
-
-/* defines the form parent to occupy 75% of the right side */
-#form__center__body {
-    height: 50%;
 }

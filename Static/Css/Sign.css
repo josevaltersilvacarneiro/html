@@ -23,16 +23,11 @@
     justify-content: space-between !important;
 }
 
-#body__sign, #body__sign__btns {
-    width: 100%;
-}
-
 h3 {
     color: var(--secondary);
 }
 
 a {
-    height: 100%;
     width: 45%;
     font-size: 1.1em;
     font-weight: 500;

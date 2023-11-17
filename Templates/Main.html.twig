@@ -29,28 +29,28 @@
 {% block content %}
 
 <main class="d-flex">
-    <section id="main__nav" class="d-flex flex-column justify-content-center align-items-center">
+    <section id="main__nav" class="h-100 d-flex flex-column justify-content-center align-items-center">
         <div id="main__nav__header" class="header d-flex align-items-center">
-            <img src={{ LOGO_ }} class="image rounded-circle" alt="Profile">
+            <img src={{ LOGO_ }} class="h-75 rounded-circle" alt="Profile">
             <h1 class="fs-5 fw-semibold lh-base m-0 ms-2">Html</h1>
         </div>
-        <hr>
+        <hr class="w-100 m-0">
         <div id="main__nav__body" class="body d-flex flex-column justify-content-evenly">
-            <div id="main__nav__body__profile" class="d-flex align-items-center">
-                <img src={{ PROFILE_ }} class="image rounded-circle" alt="Profile">
+            <div id="main__nav__body__profile" class="w-100 d-flex align-items-center">
+                <img src={{ PROFILE_ }} class="h-75 rounded-circle" alt="Profile">
                 <p class="fs-6 fw-semibold lh-base m-0 ms-2">{{ FULLNAME_ }}</p>
             </div>
-            <hr>
+            <hr class="m-0">
             <div id="main__nav__body__btns">
                 <ul class="home__list p-0">
-                    <li id="home__mvc" class="d-flex btn btn-primary border border-0 mt-2">
-                        <a href="{{ URL_ }}" class="d-flex align-items-center home__items">
+                    <li id="home__mvc" class="w-100 d-flex btn btn-primary border border-0 rounded-0 mt-2">
+                        <a href="{{ URL_ }}" class="h-100 w-100 d-flex align-items-center home__items">
                             <span class="material-symbols-outlined">library_books</span>
                             <p class="fs-5 fw-semibold m-0 ms-2">MVC</p>
                         </a>
                     </li>
-                    <li id="home__solid" class="d-flex btn btn-primary border border-0 mt-2">
-                        <a href="{{ URL_ ~ 'solid' }}" class="d-flex align-items-center home__items">
+                    <li id="home__solid" class="w-100 d-flex btn btn-primary border border-0 rounded-0 mt-2">
+                        <a href="{{ URL_ ~ 'solid' }}" class="h-100 w-100 d-flex align-items-center home__items">
                             <span class="material-symbols-outlined fs-3 fw-normal">developer_mode_tv</span>
                             <p class="fs-5 fw-semibold m-0 ms-2">Solid</p>
                         </a>
@@ -59,7 +59,7 @@
             </div>
         </div>
     </section>
-    <section id="main__content" class="d-flex justify-content-center align-items-center">
+    <section id="main__content" class="h-100 d-flex justify-content-center align-items-center">
         <div id="main__content__body" class="body">
 
             {% block main %}

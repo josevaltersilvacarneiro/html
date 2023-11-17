@@ -19,13 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#form__recover {
-    height: 100%;
-}
-
 #form__recover label {
     color: var(--secondary);
-
     font-size: 1.15em;
 }
 
