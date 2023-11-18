@@ -38,3 +38,8 @@
     </div>
     {{ parent() }}
 {% endblock %}
+
+{# defining the link and text below the form #}
+
+{% block link_below URL_ ~ 'login' %}
+{% block text_below "I already have an account" %}
