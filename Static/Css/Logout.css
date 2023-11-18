@@ -49,6 +49,11 @@
     background-color: var(--quaternary);
 }
 
+/* defines the occupation of the main area */
+#form > * {
+    width: 85%;
+}
+
 /* defines the form header where the logo is located to occupy 25% */
 #form__center__header {
     height: 20%;
