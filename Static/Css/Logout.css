@@ -47,11 +47,16 @@
 
 /* defines the right side to occupy 30% of the screen */
 #form {
-    width: 30%;
     background-color: var(--quaternary);
 }
 
 /* defines the form header where the logo is located to occupy 25% */
 #form__center__header {
     height: 20%;
+}
+
+@media screen and (min-width: 768px) {
+    #form {
+        width: 30% !important;
+    }
 }
