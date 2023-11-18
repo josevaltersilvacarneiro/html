@@ -44,7 +44,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait EmailAuthenticatorTrait
@@ -59,12 +59,13 @@ trait EmailAuthenticatorTrait
     /**
      * Sends an email with a link to confirm the email.
      * 
-     * @param MailInterface $mail    The mail object
-     * @param string        $url     The url to be sent in the email
-     * @param string        $email   The email to be sent
-     * @param string        $title   The title of the email
-     * @param string        $message The message to be sent
-     * @param string        $name    The name of the recipient
+     * @param MailInterface $mail     The mail object
+     * @param string        $url      The url to be sent in the email
+     * @param string        $email    The email to be sent
+     * @param string        $title    The title of the email
+     * @param string        $message  The message to be sent
+     * @param string        $name     The name of the recipient
+     * @param string        $password The password to be sent
      * 
      * @return bool True if the email was sent or false if an error occurs
      */
@@ -74,12 +75,12 @@ trait EmailAuthenticatorTrait
         string $email,
         string $title,
         string $message,
-        string $name = 'User'
+        string $name = 'User',
+        string $password = ''
     ): bool {
-        $hash = self::_generateEmailCodeHash(
-            $email,
-            $code = self::_generateEmailCode()
-        );
+        $code = self::_generateEmailCode();
+        $hash = self::_generateEmailCodeHash($email, $code . $password);
+
         $encryptedCode = self::_encrypt($code, self::_PASSWORD);
 
         if ($encryptedCode === false) {
@@ -111,22 +112,24 @@ trait EmailAuthenticatorTrait
     /**
      * Confirms the email.
      * 
-     * @param string $code  The code to be confirmed
-     * @param string $email The email to be confirmed
-     * @param string $hash  The hash to be confirmed
+     * @param string $code     The code to be confirmed
+     * @param string $email    The email to be confirmed
+     * @param string $hash     The hash to be confirmed
+     * @param string $password The password to be confirmed
      * 
      * @return bool True if the email was confirmed or false if an error occurs
      */
     private function isEmailAuthenticated(
         string $code,
         string $email,
-        string $hash
+        string $hash,
+        string $password = ''
     ): bool {
         $decryptedCode = self::_decrypt($code, self::_PASSWORD);
         if ($decryptedCode === false) {
             return false;
         }
 
-        return self::_isCodeHashValid($email, $decryptedCode, $hash);
+        return self::_isCodeHashValid($email, $decryptedCode . $password, $hash);
     }
 }
