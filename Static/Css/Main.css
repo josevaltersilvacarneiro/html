@@ -24,7 +24,11 @@
 }
 
 .body {
-    height: 95%;
+    height: 93%;
+}
+
+.nav__title {
+    color: var(--quaternary);
 }
 
 /* the code below works with the left side of the screen */
@@ -32,27 +36,12 @@
 
 /* defines the width of the left side of the screen */
 #main__nav {
-    width: 13%;
-    background-color: var(--quaternary);
+    width: 10%;
+    background-color: var(--primary);
 }
 
 #main__nav > div {
     width: 95%;
-}
-
-hr {
-    border-color: var(--ternary);
-}
-
-#main__nav__body__profile {
-    height: 5%;
-}
-
-/* the code below works with the buttons                  */
-/*--------------------------------------------------------*/
-
-#main__nav__body__btns {
-    height: 95%;
 }
 
 .home__list {
@@ -64,7 +53,7 @@ hr {
 }
 
 .btn:hover {
-    background-color: var(--ternary) !important;
+    background-color: transparent !important;
     cursor: pointer !important;
 }
 
@@ -79,8 +68,8 @@ hr {
 
 /* defines the width of the right side of the screen */
 #main__content {
-    width: 87%;
-    background-color: var(--ternary);
+    width: 90%;
+    background-color: var(--secondary);
 }
 
 #main__content__body {

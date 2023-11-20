@@ -20,12 +20,12 @@
  */
 
 #home__solid {
-	background-color: var(--ternary) !important;
+	background-color: var(--secondary) !important;
 	cursor: not-allowed !important;
 }
 
 #main__content__body {
-	color: var(--primary);
+	color: var(--quaternary);
 }
 
 #main__content__body p {
@@ -36,7 +36,7 @@
 
 .accordion *, .accordion-button
 {
-    color: var(--primary) !important;
+    color: var(--quaternary) !important;
     background-color: transparent !important;
-    border-color: var(--quaternary) !important;
+    border-color: var(--ternary) !important;
 }

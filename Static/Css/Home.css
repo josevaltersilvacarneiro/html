@@ -20,12 +20,12 @@
  */
 
 #home__mvc {
-	background-color: var(--ternary) !important;
+	background-color: var(--secondary) !important;
 	cursor: not-allowed !important;
 }
 
 #main__content__body {
-	color: var(--primary);
+	color: var(--quaternary);
 }
 
 #main__content__body p {
