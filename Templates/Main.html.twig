@@ -28,32 +28,32 @@
 
 {% block content %}
 
-<main class="d-flex">
-    <section id="main__nav" class="h-100 d-flex flex-column justify-content-between align-items-center">
-        <div id="main__nav__header" class="header d-flex align-items-center">
+<main class="w-100 d-flex flex-column">
+    <section id="main__nav" class="order-2 w-100 d-flex justify-content-between align-items-center">
+        <div id="main__nav__header" class="header d-none d-md-flex d-flex align-items-center">
             <img src={{ IMG_ ~ "Logo__Two.png" }} class="h-100" alt="Profile">
             <h1 class="nav__title fs-5 fw-semibold lh-base m-0 ms-1">HTML</h1>
         </div>
-        <div id="main__nav__body" class="body d-flex flex-column justify-content-evenly">
-            <div id="main__nav__body__btns" class="h-100">
-                <ul class="home__list p-0">
-                    <li id="home__mvc" class="w-100 d-flex btn border border-0 rounded-0">
+        <div id="main__nav__body" class="body w-100">
+            <div id="main__nav__body__btns" class="h-100 w-100 d-flex align-items-center">
+                <ul class="home__list h-75 w-75 d-flex align-items-center p-0 m-0">
+                    <li id="home__mvc" class="d-flex btn border border-0 rounded-0 m-2">
                         <a href="{{ URL_ }}" class="h-100 w-100 d-flex align-items-center">
                             <span class="material-symbols-outlined">library_books</span>
-                            <p class="fs-5 fw-semibold m-0 ms-2">MVC</p>
+                            <p class="d-none d-sm-block fs-6 fw-semibold m-0 ms-2">MVC</p>
                         </a>
                     </li>
-                    <li id="home__solid" class="w-100 d-flex btn border border-0 rounded-0 mt-2">
+                    <li id="home__solid" class="d-flex btn border border-0 rounded-0 mt-lg-2"> <!-- mt-md-2 -->
                         <a href="{{ URL_ ~ 'solid' }}" class="h-100 w-100 d-flex align-items-center">
                             <span class="material-symbols-outlined fs-3 fw-normal">developer_mode_tv</span>
-                            <p class="fs-5 fw-semibold m-0 ms-2">Solid</p>
+                            <p class="d-none d-sm-block fs-6 fw-semibold m-0 ms-2">Solid</p>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
-    <section id="main__content" class="h-100 d-flex justify-content-center align-items-center">
+    <section id="main__content" class="order-1 w-100 d-flex justify-content-center align-items-center">
         <div id="main__content__body" class="body">
 
             {% block main %}

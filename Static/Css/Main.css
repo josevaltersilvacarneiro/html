@@ -36,7 +36,6 @@
 
 /* defines the width of the left side of the screen */
 #main__nav {
-    width: 10%;
     background-color: var(--primary);
 }
 
@@ -46,15 +45,6 @@
 
 .home__list {
     list-style: none;
-}
-
-.btn {
-    background-color: var(--primary) !important;
-}
-
-.btn:hover {
-    background-color: transparent !important;
-    cursor: pointer !important;
 }
 
 .home__list a, .home__list a:visited, .home__list a:link {
@@ -68,10 +58,21 @@
 
 /* defines the width of the right side of the screen */
 #main__content {
-    width: 90%;
     background-color: var(--secondary);
 }
 
 #main__content__body {
     width: 95%;
+}
+
+@media screen and (min-width: 768px) {
+
+    .btn {
+        cursor: not-allowed !important;
+    }
+
+    .btn:hover {
+        background-color: transparent !important;
+        cursor: pointer !important;
+    }
 }
