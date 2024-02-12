@@ -67,6 +67,21 @@
 
 @media screen and (min-width: 768px) {
 
+    main {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    #main__nav {
+        height: 100%;
+        width: 10% !important;
+    }
+
+    .home__list {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
     .btn {
         cursor: not-allowed !important;
     }
