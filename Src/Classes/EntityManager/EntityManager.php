@@ -67,7 +67,7 @@ use Josevaltersilvacarneiro\Html\Src\Interfaces\Entities\{
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.4.4
+ * @version   Release: 0.4.5
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/EntityManager
  */
 final class EntityManager
@@ -281,7 +281,7 @@ final class EntityManager
 
         if ($entity === false) {
             throw new EntityManagerException(
-                'No record matching the ' . $id->getRepresentation() . ' was found'
+                'No record matching the ' . $id->getRepresentation() . " was found\n"
             );
         }
 
@@ -340,21 +340,22 @@ final class EntityManager
         // it returns false because only entities in the PERSISTENT state
         // can be deleted
 
-        $reflect    = new \ReflectionObject($entity);
-
-        $dao        = self::_getDaoEntity($reflect);
+        $reflect = new \ReflectionObject($entity);
+        $dao = self::_getDaoEntity($reflect);
 
         if ($dao === false) {
             return false;
         }
 
         try {
-            return $dao->d(
-                array(
-                    $entity::getIdName() => $entity->getId()->getRepresentation(),
-                )
-            );
-        } catch (EntityException) {
+            $methodEntity = $reflect->getMethod(self::_METHOD_GET_UNIQUE_NAME);
+            $unique = self::_getMappedProperties($reflect)[$methodEntity->invoke(null, $entity->getId())];
+
+            return $dao->d([
+                $unique => $entity->getId()->getRepresentation(),
+            ]);
+        } catch (EntityException $e) {
+            $e->storeLog();
             return false;
         }
     }

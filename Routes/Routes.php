@@ -59,6 +59,12 @@ return [
             \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
         ]
     ],
+    'GET|/logout' => [
+        'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Login\Signout::class,
+        'dependencies' => [
+            \Josevaltersilvacarneiro\Html\App\Model\Entity\Session::class,
+        ]
+    ],
     'GET|/recover' => [
         'controller' => \Josevaltersilvacarneiro\Html\App\Controller\Recover\Recover::class,
         'dependencies' => [

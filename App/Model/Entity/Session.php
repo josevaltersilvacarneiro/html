@@ -67,7 +67,7 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.10.1
+ * @version   Release: 0.10.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Model/Entity
  */
 #[UserSessionDao]
@@ -254,5 +254,15 @@ final class Session extends Entity implements SessionEntityInterface
         }
 
         return null;
+    }
+
+    /**
+     * This method is responsible for killing the session.
+     * 
+     * @return bool True on success; false otherwise
+     */
+    public function killme(): bool
+    {
+        return parent::killme() && setcookie(SessionEntityInterface::KEYWORD);
     }
 }
