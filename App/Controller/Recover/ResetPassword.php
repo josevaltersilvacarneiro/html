@@ -55,7 +55,7 @@ use Nyholm\Psr7\Response;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.3
+ * @version   Release: 0.0.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class ResetPassword extends HTMLController
@@ -107,18 +107,24 @@ final class ResetPassword extends HTMLController
 
         // get the user if it exists
 
-        $user = User::newInstance(EmailAttribute::newInstance($email));
-        if ($user === null) {
+        $email = EmailAttribute::newInstance($email);
+        if (is_null($email) || is_null($user = User::newInstance($email))) {
             return new Response(302, ['Location' => '/recover']);
         }
 
-        if (!$this->isEmailAuthenticated($code, $email, $hash, $user->getHash()->getRepresentation())) {
+        if (!$this->isEmailAuthenticated(
+            $code, $email->getRepresentation(),
+            $hash, $user->getHash()->getRepresentation()
+        )
+        ) {
             return new Response(302, ['Location' => '/recover']);
         }
 
-        $this->setVariables([
-            'GET_URL_' => '?email=' . $email . '&code=' . urlencode($code) . '&hash=' . urlencode($hash),
-        ]);
+        $this->setVariables(
+            [
+            'GET_URL_' => '?email=' . $email->getRepresentation() . '&code=' . urlencode($code) . '&hash=' . urlencode($hash),
+            ]
+        );
         return new Response(200, body: $this->renderLayout());
     }
 }
