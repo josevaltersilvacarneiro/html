@@ -52,7 +52,7 @@ use PHPMailer\PHPMailer\SMTP;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.2.3
+ * @version   Release: 0.2.4
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Classes/Mail
  * @see       https://github.com/PHPMailer/PHPMailer/tree/master
  */
@@ -69,6 +69,7 @@ class Mail implements MailInterface
         $this->_mailman->isSMTP();
         //$this->mailman->SMTPDebug = SMTP::DEBUG_SERVER;
         $this->_mailman->SMTPDebug = SMTP::DEBUG_OFF;
+        $this->_mailman->CharSet = 'UTF-8';
 
         $this->_mailman->Host = _MAIL_SMTP;
         $this->_mailman->Port = _PORT_SMTP;
