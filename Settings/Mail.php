@@ -39,3 +39,8 @@ define('_MAIL_SMTP', $_ENV['MAIL_SMTP']);
 define('_PORT_SMTP', $_ENV['PORT_SMTP']);
 define('_USER_SMTP', $_ENV['USER_SMTP']);
 define('_PASS_SMTP', $_ENV['PASS_SMTP']);
+
+define('_MAIN_FROM_NAME', $_ENV['MAIN_NAME']);
+define('_MAIL_FROM', $_ENV['MAIN_EMAIL_ADDRESS']);
+define('_MAIL_REPLY_NAME', $_ENV['REPLY_NAME']);
+define('_MAIL_REPLY', $_ENV['REPLY_EMAIL_ADDRESS']);

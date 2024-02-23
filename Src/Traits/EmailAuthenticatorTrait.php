@@ -44,17 +44,17 @@ use Josevaltersilvacarneiro\Html\Src\Traits\CryptTrait;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/Src/Traits
  */
 trait EmailAuthenticatorTrait
 {
     use EmailValidatorTrait, CryptTrait;
 
-    private const _SENDER_NAME = 'José Carneiro';
-    private const _SENDER      = 'me@message.josevaltersilvacarneiro.net';
-    private const _REPLY_NAME  = 'José Carneiro';
-    private const _REPLY       = 'me@message.josevaltersilvacarneiro.net';
+    private const _SENDER_NAME = _MAIN_FROM_NAME;
+    private const _SENDER      = _MAIL_FROM;
+    private const _REPLY_NAME  = _MAIL_REPLY_NAME;
+    private const _REPLY       = _MAIL_REPLY;
 
     /**
      * Sends an email with a link to confirm the email.
