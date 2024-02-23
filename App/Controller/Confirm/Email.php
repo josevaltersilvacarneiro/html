@@ -55,7 +55,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.1
+ * @version   Release: 0.0.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class Email implements RequestHandlerInterface
@@ -109,8 +109,8 @@ final class Email implements RequestHandlerInterface
             return new Response(302, ['Location' => '/register']);
         }
 
-        $user = User::newInstance(EmailAttribute::newInstance($email));
-        if (is_null($user)) {
+        $email = EmailAttribute::newInstance($email);
+        if (is_null($user = User::newInstance($email))) {
             return new Response(302, ['Location' => '/register']);
         }
 

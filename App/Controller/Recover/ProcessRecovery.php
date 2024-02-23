@@ -55,7 +55,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.0.2
+ * @version   Release: 0.0.3
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 final class ProcessRecovery implements RequestHandlerInterface
@@ -92,15 +92,15 @@ final class ProcessRecovery implements RequestHandlerInterface
             return new Response(302, ['Location' => '/recover']);
         }
 
-        $user = User::newInstance(EmailAttribute::newInstance($email));
-        if ($user === null) {
+        $email = EmailAttribute::newInstance($email);
+        if (is_null($email) || is_null($user = User::newInstance($email))) {
             return new Response(302, ['Location' => '/recover']);
         }
 
         if (!$this->sendConfirmationEmail(
             $this->_mail,
             __URL__ . 'recover/reset',
-            $email,
+            $email->getRepresentation(),
             'Recover your account',
             'Click the link below to recover your account',
             $user->getFullname()->getFirstName(),
