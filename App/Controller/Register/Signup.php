@@ -60,17 +60,12 @@ use Psr\Http\Message\ResponseInterface;
  * @author    José Carneiro <git@josevaltersilvacarneiro.net>
  * @copyright 2023 José Carneiro
  * @license   GPLv3 https://www.gnu.org/licenses/quick-guide-gplv3.html
- * @version   Release: 0.1.1
+ * @version   Release: 0.1.2
  * @link      https://github.com/josevaltersilvacarneiro/html/tree/main/App/Cotrollers
  */
 class Signup implements RequestHandlerInterface
 {
     use EmailAuthenticatorTrait;
-
-    private const _SENDER_NAME = 'José Carneiro';
-    private const _SENDER      = 'me@message.josevaltersilvacarneiro.net';
-    private const _REPLY_NAME  = 'José Carneiro';
-    private const _REPLY       = 'me@message.josevaltersilvacarneiro.net';
 
     /**
      * Initialize the object.
