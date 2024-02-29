@@ -16,4 +16,4 @@
 FROM mysql:latest
 LABEL net.josevaltersilvacarneiro.author="José Carneiro <git@josevaltersilvacarneiro.net>"
 
-COPY tables.sql /docker-entrypoint-initdb.d/
+COPY *.sql /docker-entrypoint-initdb.d/
